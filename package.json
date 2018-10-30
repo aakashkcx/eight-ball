@@ -1,0 +1,35 @@
+{
+  "name": "eight-ball",
+  "version": "1.0.0",
+  "description": "A multiplayer 8 ball pool game",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aakashkcx/eight-ball.git"
+  },
+  "author": "Aakash Kc",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aakashkcx/eight-ball/issues"
+  },
+  "homepage": "https://github.com/aakashkcx/eight-ball#readme",
+  "dependencies": {
+    "bcryptjs": "*",
+    "body-parser": "*",
+    "connect-flash": "*",
+    "cookie-parser": "*",
+    "express": "*",
+    "express-handlebars": "*",
+    "express-session": "*",
+    "express-validator": "*",
+    "morgan": "*",
+    "socket.io": "*",
+    "sqlite3": "*"
+  },
+  "devDependencies": {
+    "nodemon": "*"
+  }
+}
