@@ -15,6 +15,7 @@ const logger = require('morgan');
 
 // Components
 const socket = require('./socket');
+const authentication = require('./authentication');
 
 // Routers
 const indexRouter = require('./routes/index');
@@ -53,11 +54,16 @@ app.use(expressSession({
     secret: 'secret',
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 60 * 60 * 1000 }
+    cookie: {
+        maxAge: 60 * 60 * 1000
+    }
 }));
 
 // Validation
 app.use(expressValidator());
+
+// Authentication
+app.use(authentication);
 
 // Flash messaging
 app.use(flash());
