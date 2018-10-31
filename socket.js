@@ -7,6 +7,7 @@ const socket = require('socket.io');
 // Constants
 const TICKRATE = 60;
 
+// Initialise http server, attach socket then return the server
 module.exports = function(app) {
 
     const server = http.createServer(app);
@@ -15,9 +16,11 @@ module.exports = function(app) {
     events(io.of('/play'));
 
     return server;
+
 };
 
 const events = function(io) {
+
     io.on('connection', (socket) => {
 
         socket.on('disconnect', () => {
@@ -25,4 +28,7 @@ const events = function(io) {
         });
 
     });
+
 };
+
+const gameLoop = setInterval(() => {}, 1000/TICKRATE);
