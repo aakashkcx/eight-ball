@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.get('/', (req, res) => {
 
-    if (req.session.user) {
+    if (req.authenticated) {
         res.render('dashboard');
     } else {
         res.render('login');
@@ -18,7 +18,7 @@ router.get('/', (req, res) => {
 
 router.get('/play').get((req, res) => {
 
-    if (req.session.user) {
+    if (req.authenticated) {
         res.render('play');
     } else {
         req.flash('error', 'You are not logged in');
