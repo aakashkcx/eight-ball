@@ -14,7 +14,6 @@ const flash = require('connect-flash');
 const logger = require('morgan');
 
 // Components
-const database = require('./database');
 const socket = require('./socket');
 
 // Routers
@@ -90,6 +89,10 @@ app.use((req, res) => {
  * Start the server
  */
 
+// Listen to a port
 server.listen(PORT, () => {
     console.log(`Server started...\nListening on port ${PORT}...`);
 });
+
+// Connect to database
+require('./database');
