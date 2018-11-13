@@ -4,5 +4,5 @@ A multiplayer 8 ball pool game made in [Node.js](https://nodejs.org/) using [Exp
 
 ## Objectives
 
-- [x] Text
-- [ ] Text
+- [ ] Objective 1
+- [ ] Objective 2
