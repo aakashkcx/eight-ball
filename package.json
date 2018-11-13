@@ -8,10 +8,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/aakashkcx/eight-ball.git"
+    "url": "git://github.com/aakashkcx/eight-ball.git"
   },
   "author": "Aakash Kc",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/aakashkcx/eight-ball/issues"
   },
