@@ -8,6 +8,7 @@ sqlite.verbose();
 const database = new sqlite.Database('./database.db');
 
 database.serialize(() => {
+
     database.run(`CREATE TABLE IF NOT EXISTS user (
         id INTEGER PRIMARY KEY NOT NULL UNIQUE,
         username TEXT NOT NULL UNIQUE,
@@ -17,6 +18,7 @@ database.serialize(() => {
         lastname TEXT NOT NULL,
         rating INTEGER DEFAULT 1500
     )`);
+    
 });
 
 module.exports = database;

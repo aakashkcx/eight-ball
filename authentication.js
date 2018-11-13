@@ -4,7 +4,7 @@
 
 const User = require('./models/User')
 
-var authentication = function(req, res, next) {
+var authentication = function (req, res, next) {
 
     if (req.session.user_id) {
 

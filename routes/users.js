@@ -40,7 +40,7 @@ router.get('/logout', (req, res) => {
  * Register
  */
 
- router.get('/register', (req, res) => {
+router.get('/register', (req, res) => {
 
     if (req.session.user) {
         req.flash('error', 'You are already logged in');
@@ -49,10 +49,10 @@ router.get('/logout', (req, res) => {
         res.render('register');
     }
 
- });
+});
 
- router.post('/register', (req, res) => {
+router.post('/register', (req, res) => {
 
- });
+});
 
 module.exports = router;
