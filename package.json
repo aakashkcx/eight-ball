@@ -18,7 +18,6 @@
   "homepage": "https://github.com/aakashkcx/eight-ball#readme",
   "dependencies": {
     "bcryptjs": "*",
-    "body-parser": "*",
     "connect-flash": "*",
     "cookie-parser": "*",
     "express": "*",
