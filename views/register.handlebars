@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    {{> meta}}
+
+    <title>Register | Eight Ball</title>
+
+    {{> css}}
+
+</head>
+
+<body>
+
+    {{> navbar}}
+
+    <div class="container">
+
+        <h1 class="display-4">Register</h1>
+
+        <div class="row">
+
+            <div class="col-md-6">
+                <hr>
+                <form action="/register/" method="post">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" name="username" placeholder="Username" value="" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" name="email" placeholder="Email" value="" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Name</label>
+                        <div class="input-group">
+                            <input type="text" name="firstname" placeholder="First Name" value="" class="form-control">
+                            <input type="text" name="lastname" placeholder="Last Name" value="" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" name="password" placeholder="Password" value="" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="passwordConfirm">Confirm Password</label>
+                        <input type="password" name="passwordConfirm" placeholder="Confirm Password" value="" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-lg btn-primary">Register</button>
+                </form>
+                <hr>
+                <div>
+                    <p class="text-muted">Already have an account?</p>
+                    <a href="/login/" class="btn btn-secondary">Login</a>
+                </div>
+            </div>
+
+            <div class="col-md-6 mt-3 mt-md-0">
+
+                {{> flash}}
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {{> js}}
+
+</body>
+
+</html>

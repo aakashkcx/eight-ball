@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    {{> meta}}
+
+    <title>Login | Eight Ball</title>
+
+    {{> css}}
+
+</head>
+
+<body>
+
+    {{> navbar}}
+
+    <div class="container">
+
+        <h1 class="display-4">Login</h1>
+
+        <div class="row">
+
+            <div class="col-md-6">
+                <hr>
+                <form action="/login/" method="post">
+                    <div class="form-group">
+                        <input type="text" name="username" placeholder="Username" value="" class="form-control form-control-lg">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" name="password" placeholder="Password" value="" class="form-control form-control-lg">
+                    </div>
+                    <button type="submit" class="btn btn-lg btn-block btn-primary">Login</button>
+                </form>
+                <hr>
+                <div>
+                    <p class="text-muted">Don't have an account?</p>
+                    <a href="/register/" class="btn btn-secondary">Register</a>
+                </div>
+            </div>
+
+            <div class="col-md-6 mt-3 mt-md-0">
+
+                {{> flash}}
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {{> js}}
+
+</body>
+
+</html>

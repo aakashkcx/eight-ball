@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    {{> meta}}
+
+    <title>{{profile.username}} | Eight Ball</title>
+
+    {{> css}}
+
+</head>
+
+<body>
+
+    {{> navbar}}
+
+    <div class="container">
+
+        {{> flash}}
+
+        <div class="jumbotron">
+            <div class="clearfix">
+                <div class="float-left">
+                    <h1 class="display-2">{{profile.username}}</h1>
+                </div>
+                <div class="float-right">
+                    <h1 class="display-2">{{profile.rating}}</h1>
+                </div>
+            </div>
+            <div class="clearfix">
+                <div class="float-left">
+                    <h4 class="float-left">{{profile.firstname}} {{profile.lastname}}</h4>
+                </div>
+                <div class="float-right">
+                    <h4 class="float-right">{{profile.email}}</h4>
+                </div>
+            </div>
+            <small class="float-left text-muted">#{{profile.id}}</small>
+        </div>
+
+        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Neque error autem ducimus corrupti molestias,
+            reiciendis pariatur aliquid voluptas soluta, hic quibusdam odit recusandae iusto sunt? Officia veritatis
+            non minima expedita.</p>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci ex animi praesentium, modi, temporibus
+            ullam minima aspernatur possimus dolor beatae unde voluptatum labore eaque optio cum deleniti vel
+            cupiditate. Et.</p>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque, deserunt deleniti! Ratione ipsa illo fuga ex
+            dignissimos, delectus fugiat, facilis doloribus repellendus veniam atque, commodi cupiditate dolorem optio
+            dolorum natus.</p>
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus saepe quas ut hic veniam, libero
+            repellat, error omnis numquam quisquam quis, natus impedit commodi facere in? Explicabo non adipisci
+            voluptatum?</p>
+        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem nobis quam illo fugiat cupiditate
+            quisquam dolorem, sint deleniti hic nam veniam mollitia architecto aspernatur possimus atque similique
+            reiciendis eos corporis?</p>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod nobis voluptate, veritatis ducimus adipisci
+            quidem consequatur voluptatibus culpa tempore dolore quia cumque? Quisquam eum ea explicabo consequuntur
+            eveniet ad quibusdam!</p>
+        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Modi deserunt voluptates quam minima ipsa rem
+            eaque beatae voluptatum dolorum, eum similique, officiis veniam. Voluptatum asperiores quod, quae
+            dignissimos quas delectus!</p>
+
+    </div>
+
+    {{> js}}
+
+</body>
+
+</html>
