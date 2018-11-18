@@ -13,7 +13,7 @@ const expressValidator = require('express-validator');
 const flash = require('connect-flash');
 const logger = require('morgan');
 
-// Components
+// Imports
 const socket = require('./socket');
 const authentication = require('./authentication');
 
@@ -48,16 +48,21 @@ app.use(logger('dev'));
 
 // Body parser
 app.use(express.json());
+app.use(express.urlencoded({
+    extended: true
+}));
 
 // Session
-app.use(expressSession({
+const sessionMiddleware = expressSession({
     secret: 'secret',
     resave: false,
     saveUninitialized: false,
     cookie: {
         maxAge: 60 * 60 * 1000
     }
-}));
+});
+app.use(sessionMiddleware);
+server.io.use((socket, next) => sessionMiddleware(socket.request, socket.request.res, next));
 
 // Validation
 app.use(expressValidator());

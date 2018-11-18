@@ -3,8 +3,9 @@
 // Dependencies
 const express = require('express');
 
-// Components
+// Imports
 const User = require('../models/User');
+const authentication = require('../authentication');
 
 // Initialise route handler
 const router = express.Router();
@@ -13,18 +14,50 @@ const router = express.Router();
  * Login Route
  */
 
+// GET
 router.get('/login', (req, res) => {
 
-    if (req.session.user) {
-        req.flash('error', 'You are already logged in');
-        res.redirect('/');
-    } else {
+    if (!req.authenticated) {
+
         res.render('login');
+
+    } else {
+
+        req.flash('error', 'You are already logged in.');
+        res.redirect('/');
+
     }
 
 });
 
+// POST
 router.post('/login', (req, res) => {
+
+    let {username,password} = req.body;
+
+    User.findIdByUsername(username, (err, id) => {
+        if (!err && id) {
+            User.findPasswordById(id, (err, hash) => {
+                if (!err) {
+                    authentication.comparePassword(password, hash, (err, success) => {
+                        if (success) {
+                            req.session.user_id = id;
+                            req.flash('success', 'You have logged in.');
+                            res.redirect('/');
+                        } else {
+                            req.flash('danger', 'Incorrect password.');
+                            res.redirect('/login/');
+                        }
+                    });
+                } else {
+                    res.redirect('/login/');
+                }
+            });
+        } else {
+            req.flash('danger', 'User not found.');
+            res.redirect('/login/');
+        }
+    });
 
 });
 
@@ -32,26 +65,99 @@ router.post('/login', (req, res) => {
  * Logout Route
  */
 
+// GET
 router.get('/logout', (req, res) => {
 
-});
+    if (req.authenticated) {
 
-/**
- * Register
- */
+        req.authenticated = false;
+        delete req.user_id;
+        delete req.session.user_id;
 
-router.get('/register', (req, res) => {
-
-    if (req.session.user) {
-        req.flash('error', 'You are already logged in');
+        req.flash('success', 'You have logged out.');
         res.redirect('/');
+
     } else {
-        res.render('register');
+
+        req.flash('error', 'You are not logged in.');
+        res.redirect('/login/');
+
     }
 
 });
 
+/**
+ * Register Route
+ */
+
+// GET
+router.get('/register', (req, res) => {
+
+    if (!req.authenticated) {
+
+        res.render('register');
+
+    } else {
+
+        req.flash('error', 'You are already logged in.');
+        res.redirect('/');
+
+    }
+
+});
+
+// POST
 router.post('/register', (req, res) => {
+
+    req.check('username', 'Username cannot be empty.').notEmpty();
+    req.check('username', 'Username must be 3-64 characters long.').len(3, 64);
+    req.check('email', 'Email cannot be empty.').notEmpty();
+    req.check('email', 'Email must be valid.').isEmail();
+    req.check('email', 'Email must be 5-255 characters long.').len(5, 255);
+    req.check('password', 'Password cannot be empty.').notEmpty();
+    req.check('password', 'Password must be 8-255 characters long.').len(8, 255);
+    req.check('password', 'Passwords must match.').equals(req.body.passwordConfirm);
+    req.check('firstname', 'Firstname cannot be empty.').notEmpty();
+    req.check('firstname', 'Firstname must be 2-64 characters long.').len(2, 64);
+    req.check('lastname', 'Lastname cannot be empty.').notEmpty();
+    req.check('lastname', 'Lastname must be 2-64 characters long.').len(2, 64);
+
+    let errors = req.validationErrors();
+
+    if (!errors) {
+
+        let newUser = {
+            username: req.body.username,
+            email: req.body.email,
+            password: req.body.password,
+            firstname: req.body.firstname,
+            lastname: req.body.lastname
+        };
+
+        User.create(newUser, (err, user_id) => {
+            if (!err) {
+
+                req.session.user_id = user_id;
+
+                req.flash('success', 'You have registered.');
+                res.redirect('/');
+
+            } else {
+
+                req.flash('danger', err);
+                res.redirect('/register/');
+
+            }
+        });
+
+    } else {
+
+        let msg = errors.map(errors => errors.msg);
+
+        req.flash('danger', msg);
+        res.redirect('/register/');
+
+    }
 
 });
 
