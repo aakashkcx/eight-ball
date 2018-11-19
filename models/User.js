@@ -1,10 +1,10 @@
-"use strict";
+'use strict';
 
 // Dependencies
 const bcrypt = require('bcryptjs');
 
 // Imports
-const database = require("../database");
+const database = require('../database');
 
 const User = {};
 
