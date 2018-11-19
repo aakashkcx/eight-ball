@@ -13,7 +13,8 @@ User.create = function (user, callback) {
     bcrypt.hash(user.password, 10, (err, hash) => {
         if (!err) {
             let sql = `INSERT INTO user (username, email, password, firstname, lastname) VALUES (?, ?, ?, ?, ?);`;
-            database.run(sql, [user.username, user.email, hash, user.firstname, user.lastname], function (err) {
+            let data = [user.username, user.email, hash, user.firstname, user.lastname];
+            database.run(sql, data, function (err) {
                 callback(err, this.lastID);
             });
         } else {
