@@ -12,11 +12,16 @@ User.create = function (user, callback) {
 
     bcrypt.hash(user.password, 10, (err, hash) => {
         if (!err) {
-            let sql = `INSERT INTO user (username, email, password, firstname, lastname) VALUES (?, ?, ?, ?, ?);`;
+
+            let sql = `INSERT INTO user (username, email, password, firstname, lastname)
+                       VALUES (?, ?, ?, ?, ?);`;
+
             let data = [user.username, user.email, hash, user.firstname, user.lastname];
+
             database.run(sql, data, function (err) {
                 callback(err, this.lastID);
             });
+
         } else {
             callback(err, null);
         }
@@ -26,7 +31,10 @@ User.create = function (user, callback) {
 
 User.findUserById = function (id, callback) {
 
-    let sql = `SELECT id, username, email, firstname, lastname, rating FROM user WHERE id = ?;`;
+    let sql = `SELECT id, username, email, firstname, lastname, rating
+               FROM user
+               WHERE id = ?;`;
+
     database.get(sql, id, (err, user) => {
         callback(err, user);
     });
@@ -35,7 +43,10 @@ User.findUserById = function (id, callback) {
 
 User.findIdByUsername = function (username, callback) {
 
-    let sql = `SELECT id FROM user WHERE username = ?;`;
+    let sql = `SELECT id
+               FROM user
+               WHERE username = ?;`;
+
     database.get(sql, username, (err, user) => {
         callback(err, user.id);
     });
@@ -44,7 +55,10 @@ User.findIdByUsername = function (username, callback) {
 
 User.findPasswordById = function (id, callback) {
 
-    let sql = `SELECT password FROM user WHERE id = ?;`;
+    let sql = `SELECT password
+               FROM user
+               WHERE id = ?;`;
+
     database.get(sql, id, (err, user) => {
         callback(err, user.password);
     });
