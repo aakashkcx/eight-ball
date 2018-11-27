@@ -37,7 +37,19 @@ const events = function (io) {
             console.log(`${player.username}#${player.id} has connected - ${players.size} player(s) online`);
 
             socket.on('disconnect', () => {
+                if (player.inQueue) queue.remove(player);
+                players.delete(player.id);
+                console.log(`${player.name} has disconnected - ${players.size} player(s) online`);
+            });
 
+            socket.on('queue-join', () => {
+                queue.enqueue(player);
+                console.log(`${player.username}#${player.id} has joined the queue - ${queue.length} player(s) in queue`);
+            });
+
+            socket.on('queue-leave', () => {
+                queue.enqueue(player);
+                console.log(`${player.username}#${player.id} has left the queue - ${queue.length} player(s) in queue`);
             });
 
         }
