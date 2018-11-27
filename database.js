@@ -10,7 +10,7 @@ const database = new sqlite.Database('./database.db');
 database.serialize(() => {
 
     let user = `CREATE TABLE IF NOT EXISTS user (
-                id INTEGER PRIMARY KEY NOT NULL UNIQUE,
+                id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
                 username TEXT NOT NULL UNIQUE,
                 email TEXT NOT NULL UNIQUE,
                 password TEXT NOT NULL,
@@ -22,7 +22,7 @@ database.serialize(() => {
     database.run(user);
 
     let game = `CREATE TABLE IF NOT EXISTS game (
-                id INTEGER PRIMARY KEY NOT NULL UNIQUE,
+                id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
                 player1id INTEGER NOT NULL,
                 player2id INTEGER NOT NULL,
                 player1score INTEGER DEFAULT 0,
