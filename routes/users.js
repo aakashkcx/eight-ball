@@ -19,7 +19,7 @@ router.get('/login', (req, res) => {
 
     if (!req.authenticated) {
 
-        res.render('login');
+        res.render('login', { login: req.flash('login')[0] });
 
     } else {
 
@@ -33,29 +33,44 @@ router.get('/login', (req, res) => {
 // POST
 router.post('/login', (req, res) => {
 
-    let {username,password} = req.body;
+    let { username, password } = req.body;
 
     User.findIdByUsername(username, (err, id) => {
         if (!err && id) {
+
             User.findPasswordById(id, (err, hash) => {
-                if (!err) {
+                if (!err && hash) {
+
                     authentication.comparePassword(password, hash, (err, success) => {
                         if (success) {
+
                             req.session.user_id = id;
                             req.flash('success', 'You have logged in.');
                             res.redirect('/');
+
                         } else {
+
+                            req.flash('login', { username });
                             req.flash('danger', 'Incorrect password.');
                             res.redirect('/login/');
+
                         }
                     });
+
                 } else {
+
+                    req.flash('login', { username });
                     res.redirect('/login/');
+
                 }
             });
+
         } else {
+
             req.flash('danger', 'User not found.');
+            req.flash('login', { username });
             res.redirect('/login/');
+
         }
     });
 
@@ -95,7 +110,7 @@ router.get('/register', (req, res) => {
 
     if (!req.authenticated) {
 
-        res.render('register');
+        res.render('register', { register: req.flash('register')[0] });
 
     } else {
 
@@ -109,6 +124,8 @@ router.get('/register', (req, res) => {
 // POST
 router.post('/register', (req, res) => {
 
+    let { username, email, password, firstname, lastname } = req.body;
+
     req.check('username', 'Username cannot be empty.').notEmpty();
     req.check('username', 'Username must be 3-64 characters long.').len(3, 64);
     req.check('email', 'Email cannot be empty.').notEmpty();
@@ -117,22 +134,16 @@ router.post('/register', (req, res) => {
     req.check('password', 'Password cannot be empty.').notEmpty();
     req.check('password', 'Password must be 8-255 characters long.').len(8, 255);
     req.check('password', 'Passwords must match.').equals(req.body.passwordConfirm);
-    req.check('firstname', 'Firstname cannot be empty.').notEmpty();
-    req.check('firstname', 'Firstname must be 2-64 characters long.').len(2, 64);
-    req.check('lastname', 'Lastname cannot be empty.').notEmpty();
-    req.check('lastname', 'Lastname must be 2-64 characters long.').len(2, 64);
+    req.check('firstname', 'First Name cannot be empty.').notEmpty();
+    req.check('firstname', 'First Name must be 2-64 characters long.').len(2, 64);
+    req.check('lastname', 'Last Name cannot be empty.').notEmpty();
+    req.check('lastname', 'Last Name must be 2-64 characters long.').len(2, 64);
 
     let errors = req.validationErrors();
 
     if (!errors) {
 
-        let newUser = {
-            username: req.body.username,
-            email: req.body.email,
-            password: req.body.password,
-            firstname: req.body.firstname,
-            lastname: req.body.lastname
-        };
+        let newUser = { username, email, password, firstname, lastname };
 
         User.create(newUser, (err, user_id) => {
             if (!err) {
@@ -145,6 +156,7 @@ router.post('/register', (req, res) => {
             } else {
 
                 req.flash('danger', err);
+                req.flash('register', { username, email, firstname, lastname });
                 res.redirect('/register/');
 
             }
@@ -155,6 +167,7 @@ router.post('/register', (req, res) => {
         let msg = errors.map(errors => errors.msg);
 
         req.flash('danger', msg);
+        req.flash('register', { username, email, firstname, lastname });
         res.redirect('/register/');
 
     }

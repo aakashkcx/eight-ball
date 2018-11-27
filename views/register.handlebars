@@ -26,26 +26,26 @@
                 <form action="/register/" method="post">
                     <div class="form-group">
                         <label for="username">Username</label>
-                        <input type="text" name="username" placeholder="Username" value="" class="form-control">
+                        <input type="text" name="username" placeholder="Username" value="{{register.username}}" class="form-control">
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" name="email" placeholder="Email" value="" class="form-control">
+                        <input type="email" name="email" placeholder="Email" value="{{register.email}}" class="form-control">
                     </div>
                     <div class="form-group">
                         <label for="email">Name</label>
                         <div class="input-group">
-                            <input type="text" name="firstname" placeholder="First Name" value="" class="form-control">
-                            <input type="text" name="lastname" placeholder="Last Name" value="" class="form-control">
+                            <input type="text" name="firstname" placeholder="First Name" value="{{register.firstname}}" class="form-control">
+                            <input type="text" name="lastname" placeholder="Last Name" value="{{register.lastname}}" class="form-control">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input type="password" name="password" placeholder="Password" value="" class="form-control">
+                        <input type="password" name="password" placeholder="Password" class="form-control">
                     </div>
                     <div class="form-group">
                         <label for="passwordConfirm">Confirm Password</label>
-                        <input type="password" name="passwordConfirm" placeholder="Confirm Password" value="" class="form-control">
+                        <input type="password" name="passwordConfirm" placeholder="Confirm Password" class="form-control">
                     </div>
                     <button type="submit" class="btn btn-lg btn-primary">Register</button>
                 </form>
