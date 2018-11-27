@@ -1,6 +1,5 @@
 'use strict';
 
-// Player constructor
 const Player = function (socket) {
 
     this.id = socket.session.user_id;
