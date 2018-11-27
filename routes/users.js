@@ -146,7 +146,7 @@ router.post('/register', (req, res) => {
         let newUser = { username, email, password, firstname, lastname };
 
         User.create(newUser, (err, user_id) => {
-            if (!err) {
+            if (!err && user_id) {
 
                 req.session.user_id = user_id;
 
@@ -155,7 +155,7 @@ router.post('/register', (req, res) => {
 
             } else {
 
-                req.flash('danger', err);
+                req.flash('danger', JSON.stringify(err));
                 req.flash('register', { username, email, firstname, lastname });
                 res.redirect('/register/');
 
