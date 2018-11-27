@@ -19,7 +19,11 @@ User.create = function (user, callback) {
             let data = [user.username, user.email, hash, user.firstname, user.lastname];
 
             database.run(sql, data, function (err) {
-                callback(err, this.lastID);
+                if (!err) {
+                    callback(null, this.lastID);
+                } else {
+                    callback(err, null);
+                }
             });
 
         } else {
@@ -36,7 +40,11 @@ User.findUserById = function (id, callback) {
                WHERE id = ?;`;
 
     database.get(sql, id, (err, user) => {
-        callback(err, user);
+        if (!err && user) {
+            callback(null, user);
+        } else {
+            callback(err, null);
+        }
     });
 
 };
@@ -48,7 +56,11 @@ User.findIdByUsername = function (username, callback) {
                WHERE username = ?;`;
 
     database.get(sql, username, (err, user) => {
-        callback(err, user.id);
+        if (!err && user) {
+            callback(null, user.id);
+        } else {
+            callback(err, null);
+        }
     });
 
 };
@@ -60,7 +72,11 @@ User.findPasswordById = function (id, callback) {
                WHERE id = ?;`;
 
     database.get(sql, id, (err, user) => {
-        callback(err, user.password);
+        if (!err && user) {
+            callback(null, user.password);
+        } else {
+            callback(err, null);
+        }
     });
 
 };

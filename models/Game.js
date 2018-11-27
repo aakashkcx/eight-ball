@@ -13,7 +13,11 @@ Game.create = function (player1id, player2id, callback) {
     let data = [player1id, player2id];
 
     database.run(sql, data, function (err) {
-        callback(err, this.lastID);
+        if (!err) {
+            callback(null, this.lastID);
+        } else {
+            callback(err, null);
+        }
     });
 
 };
@@ -26,7 +30,11 @@ Game.findGamesByUserId = function (id, callback) {
                ORDER BY game.time DESC;`;
 
     database.all(sql, id, (err, games) => {
-        callback(err, games);
+        if (!err && games) {
+            callback(null, games);
+        } else {
+            callback(err, null);
+        }
     });
 
 };
