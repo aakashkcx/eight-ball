@@ -62,7 +62,7 @@ const sessionMiddleware = expressSession({
     }
 });
 app.use(sessionMiddleware);
-server.io.use((socket, next) => sessionMiddleware(socket.request, socket.request.res, next));
+server.sio.use((socket, next) => sessionMiddleware(socket.request, socket.request.res, next));
 
 // Validation
 app.use(expressValidator());

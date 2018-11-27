@@ -21,8 +21,10 @@ module.exports = function (app) {
 
     const server = http.createServer(app);
     const io = socket(server);
-    server.io = io;
+
     events(io);
+
+    server.sio = io;
     return server;
 
 };
