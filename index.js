@@ -57,9 +57,7 @@ const sessionMiddleware = expressSession({
     secret: 'secret',
     resave: false,
     saveUninitialized: false,
-    cookie: {
-        maxAge: 60 * 60 * 1000
-    }
+    cookie: { maxAge: 60 * 60 * 1000 }
 });
 app.use(sessionMiddleware);
 server.sio.use((socket, next) => sessionMiddleware(socket.request, socket.request.res, next));
@@ -92,9 +90,10 @@ app.use('/', indexRouter);
 app.use('/', usersRouter);
 
 // Invalid route
-app.use((req, res) => {
-    res.redirect('/');
-});
+app.get('*', (req, res, next) => next('Page not found.'));
+
+// Error handler
+app.use((err, req, res, next) => res.render('error', { error: err }));
 
 /**
  * Start the server
@@ -102,8 +101,6 @@ app.use((req, res) => {
 
 // Listen to a port
 server.listen(PORT, () => {
-    console.log(`Server started...\nListening on port ${PORT}...`);
+    console.log('Server started...');
+    console.log(`Listening on port ${PORT}...`);
 });
-
-// Connect to database
-require('./database');
