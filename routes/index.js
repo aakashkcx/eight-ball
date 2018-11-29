@@ -57,7 +57,7 @@ router.get('/profile', (req, res) => {
 
     if (req.authenticated) {
 
-        res.render('profile', {profile: req.user});
+        res.render('profile', { profile: req.user });
 
     } else {
 
@@ -69,14 +69,17 @@ router.get('/profile', (req, res) => {
 });
 
 // GET
-router.get('/profile/:id', (req, res) => {
+router.get('/profile/:id', (req, res, next) => {
 
     User.findUserById(req.params.id, (err, user) => {
         if (!err && user) {
-            res.render('profile', {profile: user});
+
+            res.render('profile', { profile: user });
+
         } else {
-            req.flash('error', 'User not found.');
-            res.redirect('/');
+
+            next('User not found.');
+
         }
     });
 
