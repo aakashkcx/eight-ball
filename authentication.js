@@ -8,6 +8,10 @@ const User = require('./models/User');
 
 const authentication = function (req, res, next) {
 
+    req.login = (user_id) => req.session.user_id = user_id;
+
+    req.logout = () => delete req.session.user_id;
+
     if (req.session.user_id) {
 
         req.user_id = req.session.user_id;

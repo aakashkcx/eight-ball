@@ -19,7 +19,7 @@ router.get('/login', (req, res) => {
 
     if (!req.authenticated) {
 
-        res.render('login', { login: req.flash('login')[0] });
+        res.render('login', { login: req.session.login });
 
     } else {
 
@@ -34,23 +34,24 @@ router.get('/login', (req, res) => {
 router.post('/login', (req, res) => {
 
     let { username, password } = req.body;
+    req.session.login = { username };
 
-    User.findIdByUsername(username, (err, id) => {
-        if (!err && id) {
+    User.findIdByUsername(username, (err, user_id) => {
+        if (!err && user_id) {
 
-            User.findPasswordById(id, (err, hash) => {
+            User.findPasswordById(user_id, (err, hash) => {
                 if (!err && hash) {
 
                     authentication.comparePassword(password, hash, (err, success) => {
-                        if (success) {
+                        if (!err && success) {
 
-                            req.session.user_id = id;
+                            req.login(user_id);
+
                             req.flash('success', 'You have logged in.');
                             res.redirect('/');
 
                         } else {
 
-                            req.flash('login', { username });
                             req.flash('danger', 'Incorrect password.');
                             res.redirect('/login/');
 
@@ -59,7 +60,7 @@ router.post('/login', (req, res) => {
 
                 } else {
 
-                    req.flash('login', { username });
+                    req.flash('danger', JSON.stringify(err));
                     res.redirect('/login/');
 
                 }
@@ -68,7 +69,6 @@ router.post('/login', (req, res) => {
         } else {
 
             req.flash('danger', 'User not found.');
-            req.flash('login', { username });
             res.redirect('/login/');
 
         }
@@ -85,11 +85,9 @@ router.get('/logout', (req, res) => {
 
     if (req.authenticated) {
 
-        req.authenticated = false;
-        delete req.user_id;
-        delete req.session.user_id;
+        req.logout();
 
-        req.flash('success', 'You have logged out.');
+        req.flash('success', 'You have successfully logged out.');
         res.redirect('/');
 
     } else {
@@ -110,7 +108,7 @@ router.get('/register', (req, res) => {
 
     if (!req.authenticated) {
 
-        res.render('register', { register: req.flash('register')[0] });
+        res.render('register', { register: req.session.register });
 
     } else {
 
@@ -125,6 +123,7 @@ router.get('/register', (req, res) => {
 router.post('/register', (req, res) => {
 
     let { username, email, password, firstname, lastname } = req.body;
+    req.session.register = { username, email, firstname, lastname };
 
     req.check('username', 'Username cannot be empty.').notEmpty();
     req.check('username', 'Username must be 3-64 characters long.').len(3, 64);
@@ -148,15 +147,14 @@ router.post('/register', (req, res) => {
         User.create(newUser, (err, user_id) => {
             if (!err && user_id) {
 
-                req.session.user_id = user_id;
+                req.login(user_id);
 
-                req.flash('success', 'You have registered.');
+                req.flash('success', 'You have successfully registered.');
                 res.redirect('/');
 
             } else {
 
                 req.flash('danger', JSON.stringify(err));
-                req.flash('register', { username, email, firstname, lastname });
                 res.redirect('/register/');
 
             }
@@ -164,10 +162,7 @@ router.post('/register', (req, res) => {
 
     } else {
 
-        let msg = errors.map(errors => errors.msg);
-
-        req.flash('danger', msg);
-        req.flash('register', { username, email, firstname, lastname });
+        req.flash('danger', errors.map(errors => errors.msg));
         res.redirect('/register/');
 
     }
