@@ -42,8 +42,8 @@ router.post('/login', (req, res) => {
             User.findPasswordById(user_id, (err, hash) => {
                 if (!err && hash) {
 
-                    authentication.comparePassword(password, hash, (err, success) => {
-                        if (!err && success) {
+                    authentication.comparePassword(password, hash, (match) => {
+                        if (match) {
 
                             req.login(user_id);
 
