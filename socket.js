@@ -41,7 +41,7 @@ const events = function (io) {
             socket.on('disconnect', () => {
                 if (player.inQueue) queue.remove(player);
                 players.delete(player.id);
-                console.log(`${player.name} has disconnected - ${players.size} player(s) online`);
+                console.log(`${player.username}#${player.id} has disconnected - ${players.size} player(s) online`);
             });
 
             socket.on('queue-join', () => {
