@@ -19,25 +19,22 @@
 
         {{> flash}}
 
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolore similique, assumenda corrupti possimus
-            reiciendis ratione nobis officiis! Similique fugit sequi non exercitationem enim quo ea minus consequuntur,
-            cum rem placeat?</p>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione, magnam fuga at expedita saepe veritatis
-            autem beatae, ullam maiores error dolores aut sapiente architecto officia consectetur facere maxime hic
-            delectus.</p>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Reiciendis error fugit officiis alias quos
-            laboriosam inventore eius, deserunt iure doloremque, obcaecati distinctio iusto. Suscipit perspiciatis
-            rerum repudiandae! Doloribus, assumenda dicta.</p>
-        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Id ab iure vitae sint repudiandae aspernatur! Iste
-            in dolorem quasi. Facere minima dolorem asperiores omnis in voluptates eos, deleniti eligendi maiores.</p>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat officiis similique, saepe aspernatur quis
-            neque maiores quo amet qui velit eius et repudiandae placeat iure? Asperiores, quia sequi? Velit,
-            veritatis?</p>
-        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Amet magnam beatae officia illum esse eius fugiat,
-            harum laborum aut! A possimus excepturi quis assumenda dolorum aliquid aperiam omnis error aspernatur?</p>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum odio non, necessitatibus, quidem amet
-            explicabo commodi sit sapiente voluptatibus excepturi nam deleniti. Doloribus voluptates fugit odit libero
-            error quasi sit!</p>
+        <div id="menu" class="border shadow-lg text-center py-5 px-5">
+            <h1 class="display-3">Eight-Ball</h1>
+            <hr class="my-5">
+            <button type="button" id="btn-join-queue" class="btn btn-lg btn-primary">Join Queue</button>
+        </div>
+
+        <div id="queue" class="border shadow-lg text-center py-5 px-5">
+            <h1 class="display-3">Queue</h1>
+            <div class="loader mx-auto my-5"></div>
+            <button type="button" id="btn-leave-queue" class="btn btn-danger">Leave Queue</button>
+        </div>
+
+        <div id="game">
+            <canvas id="canvas" class="shadow-large"></canvas>
+        </div>
+
     </div>
 
     <!-- Socket.IO JS -->
@@ -46,10 +43,7 @@
 
     {{> js}}
 
-    <script>
-        var socket = io();
-    </script>
-
+    <script src="/js/game/socket.js"></script>
 
 </body>
 
