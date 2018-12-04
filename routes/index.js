@@ -22,7 +22,7 @@ router.get('/', (req, res) => {
 
     } else {
 
-        res.render('login');
+        res.render('login', { login: req.session.login });
 
     }
 
