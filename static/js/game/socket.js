@@ -22,6 +22,12 @@ const showGame = () => {
 
 showMenu();
 
-$('#btn-join-queue').click(() => showQueue());
+$('#btn-join-queue').click(() => {
+    socket.emit('queue-join');
+    showQueue();
+});
 
-$('#btn-leave-queue').click(() => showMenu());
+$('#btn-leave-queue').click(() => {
+    socket.emit('queue-leave');
+    showMenu();
+});
