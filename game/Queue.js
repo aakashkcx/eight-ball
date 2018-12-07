@@ -5,9 +5,9 @@ const Queue = function () {
 };
 
 Queue.prototype = {
-    get length() {
+    get size() {
         return this._queue.length;
-    }
+    },
 };
 
 Queue.prototype.enqueue = function (player) {
