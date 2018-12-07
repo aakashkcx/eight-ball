@@ -148,6 +148,7 @@ router.post('/register', (req, res) => {
             if (!err && user_id) {
 
                 req.login(user_id);
+                req.session.login = {username};
 
                 req.flash('success', 'You have successfully registered.');
                 res.redirect('/');
