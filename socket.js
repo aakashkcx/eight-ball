@@ -36,22 +36,26 @@ const events = function (io) {
 
             let player = new Player(socket);
             players.set(player.id, player);
-            console.log(`${player.username}#${player.id} has connected - ${players.size} player(s) online`);
+            console.log(`\nGAME [${players.size}][${queue.size}][${games.size}] » ${player.username}#${player.id} has connected - ${players.size} player(s) online.\n`);
+            // console.log(`${player.username}#${player.id} has connected - ${players.size} player(s) online`);
 
             socket.on('disconnect', () => {
                 if (player.inQueue) queue.remove(player);
                 players.delete(player.id);
-                console.log(`${player.username}#${player.id} has disconnected - ${players.size} player(s) online`);
+                console.log(`\nGAME [${players.size}][${queue.size}][${games.size}] » ${player.username}#${player.id} has disconnected - ${players.size} player(s) online.\n`);
+                // console.log(`${player.username}#${player.id} has disconnected - ${players.size} player(s) online`);
             });
 
             socket.on('queue-join', () => {
                 queue.enqueue(player);
-                console.log(`${player.username}#${player.id} has joined the queue - ${queue.length} player(s) in queue`);
+                console.log(`\nGAME [${players.size}][${queue.size}][${games.size}] » ${player.username}#${player.id} has joined the queue - ${queue.size} player(s) in queue.\n`);
+                // console.log(`${player.username}#${player.id} has joined the queue - ${queue.size} player(s) in queue`);
             });
 
             socket.on('queue-leave', () => {
-                queue.enqueue(player);
-                console.log(`${player.username}#${player.id} has left the queue - ${queue.length} player(s) in queue`);
+                queue.remove(player);
+                console.log(`\nGAME [${players.size}][${queue.size}][${games.size}] » ${player.username}#${player.id} has left the queue - ${queue.size} player(s) in queue.\n`);
+                // console.log(`${player.username}#${player.id} has left the queue - ${queue.size} player(s) in queue`);
             });
 
         }
