@@ -1,18 +1,20 @@
+'use strict';
+
 const socket = io();
 
-const showMenu = function () {
+const showMenu = () => {
     $('#menu').show();
     $('#queue').hide();
     $('#game').hide();
 };
 
-const showQueue = function () {
+const showQueue = () => {
     $('#menu').hide();
     $('#queue').show();
     $('#game').hide();
 };
 
-const showGame = function () {
+const showGame = () => {
     $('#menu').hide();
     $('#queue').hide();
     $('#game').show();
@@ -20,10 +22,6 @@ const showGame = function () {
 
 showMenu();
 
-$('#btn-join-queue').click(() => {
-    showQueue();
-});
+$('#btn-join-queue').click(() => showQueue());
 
-$('#btn-leave-queue').click(() => {
-    showMenu();
-});
+$('#btn-leave-queue').click(() => showMenu());
