@@ -7,6 +7,7 @@ const socket = require('socket.io');
 // Imports
 const Player = require('./game/Player');
 const Queue = require('./game/Queue');
+const Game = require('./game/Game');
 
 // Constants
 const TICKRATE = 60;
@@ -36,22 +37,22 @@ const events = function (io) {
 
             let player = new Player(socket);
             players.set(player.id, player);
-            console.log(`${player.username}#${player.id} has connected - ${players.size} player(s) online`);
+            console.log(`GAME [${players.size}][${queue.size}][${games.size}] » ${player.username}#${player.id} has connected - ${players.size} player(s) online.`);
 
             socket.on('disconnect', () => {
                 if (player.inQueue) queue.remove(player);
                 players.delete(player.id);
-                console.log(`${player.username}#${player.id} has disconnected - ${players.size} player(s) online`);
+                console.log(`GAME [${players.size}][${queue.size}][${games.size}] » ${player.username}#${player.id} has disconnected - ${players.size} player(s) online.`);
             });
 
             socket.on('queue-join', () => {
                 queue.enqueue(player);
-                console.log(`${player.username}#${player.id} has joined the queue - ${queue.length} player(s) in queue`);
+                console.log(`GAME [${players.size}][${queue.size}][${games.size}] » ${player.username}#${player.id} has joined the queue - ${queue.size} player(s) in queue.`);
             });
 
             socket.on('queue-leave', () => {
-                queue.enqueue(player);
-                console.log(`${player.username}#${player.id} has left the queue - ${queue.length} player(s) in queue`);
+                queue.remove(player);
+                console.log(`GAME [${players.size}][${queue.size}][${games.size}] » ${player.username}#${player.id} has left the queue - ${queue.size} player(s) in queue.`);
             });
 
         }
@@ -59,5 +60,20 @@ const events = function (io) {
 };
 
 const gameLoop = setInterval(() => {
+
+    if (queue.size >= 2) {
+
+        const player1 = queue.dequeue();
+        const player2 = queue.dequeue();
+
+        const game = new Game(player1, player2);
+        games.set(game.id, game)
+
+        console.log(`GAME [${players.size}][${queue.size}][${games.size}] » game#${game.id} has started - ${games.size} games(s) in progress.`);
+
+        player1.socket.emit('game-start', game.startData());
+        player2.socket.emit('game-start', game.startData());
+
+    }
 
 }, 1000 / TICKRATE);

@@ -48,9 +48,7 @@ app.use(logger('dev'));
 
 // Body parser
 app.use(express.json());
-app.use(express.urlencoded({
-    extended: true
-}));
+app.use(express.urlencoded({ extended: true }));
 
 // Session
 const sessionMiddleware = expressSession({

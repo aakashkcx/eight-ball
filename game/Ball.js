@@ -6,21 +6,18 @@ const Vector = require('./Vector');
 // Constants
 const BALL_RADIUS = 15;
 
-const Ball = function (position, velocity, color) {
+const Ball = function (position, velocity, colour) {
 
     this.position = position;
     this.velocity = velocity;
     this.acceleration = new Vector();
+    
     this.radius = BALL_RADIUS;
-    this.color = color;
+    this.colour = colour;
 
 };
 
-Ball.prototype = {
-    get moving() {
-        return this.velocity.length() > 0.25;
-    }
-}
+Ball.prototype.moving = () => this.velocity.length > 0.25;
 
 Ball.prototype.update = function () {
 
@@ -28,7 +25,7 @@ Ball.prototype.update = function () {
     this.velocity.add(this.acceleration);
     this.position.add(this.velocity);
 
-    if (!this.moving) this.velocity = new Vector();
+    if (!this.moving()) this.velocity = new Vector();
 
 };
 
