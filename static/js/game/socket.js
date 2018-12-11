@@ -1,26 +1,32 @@
 'use strict';
 
 const socket = io();
+let game;
+let frame;
 
-const showMenu = () => {
+const showMenu = function () {
     $('#menu').show();
     $('#queue').hide();
     $('#game').hide();
 };
+showMenu();
 
-const showQueue = () => {
+const showQueue = function () {
     $('#menu').hide();
     $('#queue').show();
     $('#game').hide();
 };
 
-const showGame = () => {
+const showGame = function () {
     $('#menu').hide();
     $('#queue').hide();
     $('#game').show();
 };
 
-showMenu();
+const gameloop = function () {
+    game.draw();
+    window.requestAnimationFrame(gameloop);
+};
 
 $('#btn-join-queue').click(() => {
     socket.emit('queue-join');
@@ -30,4 +36,10 @@ $('#btn-join-queue').click(() => {
 $('#btn-leave-queue').click(() => {
     socket.emit('queue-leave');
     showMenu();
+});
+
+socket.on('game-start', (data) => {
+    game = new Game(data);
+    showGame();
+    frame = window.requestAnimationFrame(gameloop);
 });
