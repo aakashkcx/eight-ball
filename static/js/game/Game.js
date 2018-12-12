@@ -12,7 +12,7 @@ const Game = function (data) {
 
 };
 
-Game.prototype.update = function () {
+Game.prototype.update = function (data) {
 
     this.balls = data.balls.map(ball => new Ball(ball.position, ball.radius, ball.colour));
 

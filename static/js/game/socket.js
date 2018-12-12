@@ -2,7 +2,6 @@
 
 const socket = io();
 let game;
-let frame;
 
 const showMenu = function () {
     $('#menu').show();
@@ -24,9 +23,12 @@ const showGame = function () {
 };
 
 const gameloop = function () {
-    game.draw();
+    if (game) game.draw();
     window.requestAnimationFrame(gameloop);
 };
+window.requestAnimationFrame(gameloop);
+
+const debug = (string) => socket.emit('debug', string);
 
 $('#btn-join-queue').click(() => {
     socket.emit('queue-join');
@@ -41,5 +43,8 @@ $('#btn-leave-queue').click(() => {
 socket.on('game-start', (data) => {
     game = new Game(data);
     showGame();
-    frame = window.requestAnimationFrame(gameloop);
+});
+
+socket.on('game-update', (data) => {
+    game.update(data);
 });
