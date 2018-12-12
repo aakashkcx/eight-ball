@@ -29,7 +29,7 @@ const usersRouter = require('./routes/users');
 const app = express();
 
 // Initialise server
-const server = socket(app);
+const server = socket.server(app);
 
 // Set port
 const PORT = process.env.PORT || 8080;
@@ -51,14 +51,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Session
-const sessionMiddleware = expressSession({
+const session = expressSession({
     secret: 'secret',
     resave: false,
     saveUninitialized: false,
     cookie: { maxAge: 60 * 60 * 1000 }
 });
-app.use(sessionMiddleware);
-server.sio.use((socket, next) => sessionMiddleware(socket.request, socket.request.res, next));
+app.use(session);
+server.io.use((socket, next) => session(socket.request, socket.request.res, next));
 
 // Validation
 app.use(expressValidator());
@@ -81,7 +81,7 @@ app.use((req, res, next) => {
  */
 
 // Static path
-app.use(express.static(path.join(__dirname, 'static')));
+app.use(express.static('static'));
 
 // Routers
 app.use('/', indexRouter);

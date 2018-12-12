@@ -19,9 +19,6 @@ const Game = function (player1, player2) {
     this.width = WIDTH;
     this.height = HEIGHT;
 
-    this.player1 = player1;
-    this.player2 = player2;
-
     this.balls = [
         [320, 360, 20, 20, 'white'],
         [960, 360, 0, 0, 'red'],
@@ -40,8 +37,12 @@ const Game = function (player1, player2) {
         [1060, 390, 0, 0, 'red'],
         [1060, 420, 0, 0, 'yellow']
     ].map(params => new Ball(new Vector(params[0], params[1]), new Vector(params[2], params[3]), params[4]));
-
     this.cueBall = this.balls[0];
+
+    this.active = false;
+
+    this.player1 = player1;
+    this.player2 = player2;
 
     player1.inGame = true;
     player1.game = this;
@@ -52,7 +53,7 @@ const Game = function (player1, player2) {
 
 Game.prototype.update = function () {
 
-    let active = false;
+    this.active = false;
 
     for (let i = 0; i < this.balls.length; i++) {
 
@@ -60,19 +61,15 @@ Game.prototype.update = function () {
         Physics.collideCushions(ball1, this.width, this.height);
 
         for (let j = i + 1; j < this.balls.length; j++) {
-
             const ball2 = this.balls[j];
             Physics.collideBalls(ball1, ball2);
-
         };
 
         ball1.update();
 
-        if (ball1.moving) active = true;
+        if (ball1.moving) this.active = true;
 
     };
-
-    return active;
 
 };
 

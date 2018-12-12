@@ -18,16 +18,12 @@ const games = new Map();
 const queue = new Queue();
 
 // Initialise http server, attach socket then return the server
-module.exports = function (app) {
-
+const server = function (app) {
     const server = http.createServer(app);
     const io = socket(server);
-
     events(io);
-
-    server.sio = io;
+    server.io = io;
     return server;
-
 };
 
 const events = function (io) {
@@ -82,15 +78,19 @@ const gameLoop = setInterval(() => {
 
         const {player1, player2} = game;
 
-        const active = game.update();
+        game.update();
 
-        if (active) {
-
+        if (game.active) {
             player1.socket.emit('game-update', game.updateData());
             player2.socket.emit('game-update', game.updateData());
-
         };
 
     });
 
 }, 1000 / TICKRATE);
+
+module.exports = {};
+module.exports.server = server;
+module.exports.playersOnline = () => players.size;
+module.exports.playersInQueue = () => queue.size;
+module.exports.gamesInProgress = () => games.size;

@@ -5,6 +5,7 @@ const express = require('express');
 
 // Imports
 const User = require('../models/User');
+const socket = require('../socket');
 
 // Initialise route handler
 const router = express.Router();
@@ -18,7 +19,11 @@ router.get('/', (req, res) => {
 
     if (req.authenticated) {
 
-        res.render('dashboard');
+        res.render('dashboard', {
+            playersOnline: socket.playersOnline,
+            playersInQueue: socket.playersInQueue,
+            gamesInProgress: socket.gamesInProgress
+        });
 
     } else {
 

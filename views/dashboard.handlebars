@@ -19,32 +19,52 @@
 
         {{> flash}}
 
-        <div class="jumbotron clearfix">
-            <h1 class="display-2 float-left">{{user.username}}</h1>
-            <h1 class="display-2 float-right">{{user.rating}}</h1>
+        <div class="jumbotron d-flex flex-lg-row flex-column justify-content-sm-between align-items-center">
+            <h1 class="display-1">{{user.username}}</h1>
+            <h1 class="display-3 text-muted"><span class="badge badge-secondary">{{user.rating}}</span></h1>
         </div>
 
-        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Neque error autem ducimus corrupti molestias,
-            reiciendis pariatur aliquid voluptas soluta, hic quibusdam odit recusandae iusto sunt? Officia veritatis
-            non minima expedita.</p>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci ex animi praesentium, modi, temporibus
-            ullam minima aspernatur possimus dolor beatae unde voluptatum labore eaque optio cum deleniti vel
-            cupiditate. Et.</p>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque, deserunt deleniti! Ratione ipsa illo fuga ex
-            dignissimos, delectus fugiat, facilis doloribus repellendus veniam atque, commodi cupiditate dolorem optio
-            dolorum natus.</p>
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus saepe quas ut hic veniam, libero
-            repellat, error omnis numquam quisquam quis, natus impedit commodi facere in? Explicabo non adipisci
-            voluptatum?</p>
-        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem nobis quam illo fugiat cupiditate
-            quisquam dolorem, sint deleniti hic nam veniam mollitia architecto aspernatur possimus atque similique
-            reiciendis eos corporis?</p>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod nobis voluptate, veritatis ducimus adipisci
-            quidem consequatur voluptatibus culpa tempore dolore quia cumque? Quisquam eum ea explicabo consequuntur
-            eveniet ad quibusdam!</p>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Modi deserunt voluptates quam minima ipsa rem
-            eaque beatae voluptatum dolorum, eum similique, officiis veniam. Voluptatum asperiores quod, quae
-            dignissimos quas delectus!</p>
+        <div class="row">
+            <div class="col-md">
+                <a href="/play/" class="btn btn-primary btn-lg btn-block py-4"><h1>Play</h1></a>
+                <ul class="list-group mt-4">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Players Online:
+                        <span class="badge badge-info badge-pill">{{playersOnline}}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Players in Queue:
+                        <span class="badge badge-info badge-pill">{{playersInQueue}}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Games in Progress:
+                        <span class="badge badge-info badge-pill">{{gamesInProgress}}</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md mt-4 mt-md-0">
+                <a href="/profile/" class="btn btn-dark btn-lg btn-block py-4"><h3>Profile</h3></a>
+                <div class="card mt-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span>Game#1</span>
+                        <span>12:12:12 12/12/12</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Player1</h5>
+                            <h5 class="mb-0">Player2</h5>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-top">
+                            <span class="text-muted">#1</span>
+                        <h2 class="">15 - 10</h2>
+                            <span class="text-muted">#2</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p></p>
 
     </div>
 
