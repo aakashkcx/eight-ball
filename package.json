@@ -4,7 +4,8 @@
   "description": "A multiplayer 8 ball pool game",
   "main": "index.js",
   "scripts": {
-    "start": "node index"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "repository": {
     "type": "git",
