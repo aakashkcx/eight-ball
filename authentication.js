@@ -52,7 +52,7 @@ const authentication = function (req, res, next) {
 
                 next(err);
 
-            }
+            };
         });
 
     } else {
@@ -72,7 +72,7 @@ const authentication = function (req, res, next) {
 
         next();
 
-    }
+    };
 
 };
 

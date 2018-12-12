@@ -3,7 +3,7 @@
 // Components
 const Ball = require('./Ball');
 const Vector = require('./Vector');
-const Physics = require('./Physics');
+const physics = require('./physics');
 
 // Constants
 const WIDTH = 1280;
@@ -11,7 +11,7 @@ const HEIGHT = 720;
 
 let num = 0;
 
-// Game constructor
+// Game class constructor
 const Game = function (player1, player2) {
 
     this.id = ++num;
@@ -37,13 +37,13 @@ const Game = function (player1, player2) {
         [1060, 390, 0, 0, 'red'],
         [1060, 420, 0, 0, 'yellow']
     ].map(params => new Ball(new Vector(params[0], params[1]), new Vector(params[2], params[3]), params[4]));
+    
     this.cueBall = this.balls[0];
 
     this.active = false;
 
     this.player1 = player1;
     this.player2 = player2;
-
     player1.inGame = true;
     player1.game = this;
     player2.inGame = true;
@@ -51,6 +51,7 @@ const Game = function (player1, player2) {
 
 };
 
+// Update class method
 Game.prototype.update = function () {
 
     this.active = false;
@@ -58,11 +59,11 @@ Game.prototype.update = function () {
     for (let i = 0; i < this.balls.length; i++) {
 
         const ball1 = this.balls[i];
-        Physics.collideCushions(ball1, this.width, this.height);
+        physics.collideCushions(ball1, this.width, this.height);
 
         for (let j = i + 1; j < this.balls.length; j++) {
             const ball2 = this.balls[j];
-            Physics.collideBalls(ball1, ball2);
+            physics.collideBalls(ball1, ball2);
         };
 
         ball1.update();
@@ -73,10 +74,12 @@ Game.prototype.update = function () {
 
 };
 
+// Shoot class method
 Game.prototype.shoot = function (power, angle) {
     this.cueBall.velocity = new Vector(power * Math.cos(angle), power * Math.sin(angle));
 };
 
+// Data that is sent to the players when the game starts
 Game.prototype.startData = function () {
     return {
         width: this.width,
@@ -87,10 +90,12 @@ Game.prototype.startData = function () {
     };
 };
 
+// Data that is sent to the players each game update
 Game.prototype.updateData = function () {
     return {
         balls: this.balls
     };
 };
 
+// Export game class
 module.exports = Game;

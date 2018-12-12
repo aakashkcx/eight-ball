@@ -11,10 +11,10 @@ const socket = require('../socket');
 const router = express.Router();
 
 /**
- * Index Route
+ * Index route
  */
 
-//GET
+// GET
 router.get('/', (req, res) => {
 
     if (req.authenticated) {
@@ -29,7 +29,7 @@ router.get('/', (req, res) => {
 
         res.render('login', { login: req.session.login });
 
-    }
+    };
 
 });
 
@@ -49,7 +49,7 @@ router.get('/play', (req, res) => {
         req.flash('error', 'You are not logged in.');
         res.redirect('/login/');
 
-    }
+    };
 
 });
 
@@ -69,7 +69,7 @@ router.get('/profile', (req, res) => {
         req.flash('error', 'You are not logged in.');
         res.redirect('/login/');
 
-    }
+    };
 
 });
 
@@ -85,7 +85,7 @@ router.get('/profile/:id', (req, res, next) => {
 
             next('User not found.');
 
-        }
+        };
     });
 
 });

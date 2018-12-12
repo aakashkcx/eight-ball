@@ -26,7 +26,7 @@ router.get('/login', (req, res) => {
         req.flash('error', 'You are already logged in.');
         res.redirect('/');
 
-    }
+    };
 
 });
 
@@ -55,7 +55,7 @@ router.post('/login', (req, res) => {
                             req.flash('danger', 'Incorrect password.');
                             res.redirect('/login/');
 
-                        }
+                        };
                     });
 
                 } else {
@@ -63,7 +63,7 @@ router.post('/login', (req, res) => {
                     req.flash('danger', JSON.stringify(err));
                     res.redirect('/login/');
 
-                }
+                };
             });
 
         } else {
@@ -71,7 +71,7 @@ router.post('/login', (req, res) => {
             req.flash('danger', 'User not found.');
             res.redirect('/login/');
 
-        }
+        };
     });
 
 });
@@ -95,7 +95,7 @@ router.get('/logout', (req, res) => {
         req.flash('error', 'You are not logged in.');
         res.redirect('/login/');
 
-    }
+    };
 
 });
 
@@ -115,7 +115,7 @@ router.get('/register', (req, res) => {
         req.flash('error', 'You are already logged in.');
         res.redirect('/');
 
-    }
+    };
 
 });
 
@@ -148,7 +148,7 @@ router.post('/register', (req, res) => {
             if (!err && user_id) {
 
                 req.login(user_id);
-                req.session.login = {username};
+                req.session.login = { username };
 
                 req.flash('success', 'You have successfully registered.');
                 res.redirect('/');
@@ -166,7 +166,7 @@ router.post('/register', (req, res) => {
         req.flash('danger', errors.map(errors => errors.msg));
         res.redirect('/register/');
 
-    }
+    };
 
 });
 

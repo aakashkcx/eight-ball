@@ -3,15 +3,18 @@
 // Imports
 const Vector = require('./Vector');
 
-const Physics = {};
+// Initialise physics object
+const physics = {};
 
-Physics.doBallsOverlap = function (ball1, ball2) {
+// Check if two balls overlap
+physics.doBallsOverlap = function (ball1, ball2) {
 
     return Vector.distanceSquared(ball1.position, ball2.position) <= (ball1.radius + ball2.radius) ** 2;
-    
+
 };
 
-Physics.collideCushions = function (ball, width, height) {
+// Resolve the collisions between a ball and the table
+physics.collideCushions = function (ball, width, height) {
 
     if (ball.position.x + ball.radius >= width) {
 
@@ -55,9 +58,10 @@ Physics.collideCushions = function (ball, width, height) {
 
 };
 
-Physics.collideBalls = function (ball1, ball2) {
+// Resolve the collision between two balls
+physics.collideBalls = function (ball1, ball2) {
 
-    if (Physics.doBallsOverlap(ball1, ball2)) {
+    if (physics.doBallsOverlap(ball1, ball2)) {
 
         /**
          * Method 1
@@ -143,4 +147,5 @@ Physics.collideBalls = function (ball1, ball2) {
 
 };
 
-module.exports = Physics;
+// Export physics object
+module.exports = physics;

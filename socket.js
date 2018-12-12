@@ -12,20 +12,12 @@ const Game = require('./game/Game');
 // Constants
 const TICKRATE = 60;
 
-// Data Structures
+// Data structures
 const players = new Map();
 const games = new Map();
 const queue = new Queue();
 
-// Initialise http server, attach socket then return the server
-const server = function (app) {
-    const server = http.createServer(app);
-    const io = socket(server);
-    events(io);
-    server.io = io;
-    return server;
-};
-
+// Socket events
 const events = function (io) {
     io.on('connection', (socket) => {
         socket.session = socket.request.session;
@@ -35,28 +27,34 @@ const events = function (io) {
             players.set(player.id, player);
             console.log(`GAME [${players.size}][${queue.size}][${games.size}] » ${player.username}#${player.id} has connected - ${players.size} player(s) online.`);
 
-            socket.on('disconnect', () => {
+            player.socket.on('disconnect', () => {
                 if (player.inQueue) queue.remove(player);
+                if (player.inGame) games.delete(player.game.id);
                 players.delete(player.id);
                 console.log(`GAME [${players.size}][${queue.size}][${games.size}] » ${player.username}#${player.id} has disconnected - ${players.size} player(s) online.`);
             });
 
-            socket.on('queue-join', () => {
-                queue.enqueue(player);
-                console.log(`GAME [${players.size}][${queue.size}][${games.size}] » ${player.username}#${player.id} has joined the queue - ${queue.size} player(s) in queue.`);
+            player.socket.on('queue-join', () => {
+                if (!player.inQueue && !player.inGame) {
+                    queue.enqueue(player);
+                    console.log(`GAME [${players.size}][${queue.size}][${games.size}] » ${player.username}#${player.id} has joined the queue - ${queue.size} player(s) in queue.`);
+                };
             });
 
-            socket.on('queue-leave', () => {
-                queue.remove(player);
-                console.log(`GAME [${players.size}][${queue.size}][${games.size}] » ${player.username}#${player.id} has left the queue - ${queue.size} player(s) in queue.`);
+            player.socket.on('queue-leave', () => {
+                if (player.inQueue) {
+                    queue.remove(player);
+                    console.log(`GAME [${players.size}][${queue.size}][${games.size}] » ${player.username}#${player.id} has left the queue - ${queue.size} player(s) in queue.`);
+                };
             });
 
-            socket.on('debug', (string) => {eval(string)});
+            player.socket.on('debug', (string) => eval(string));
 
         };
     });
 };
 
+// Main game loop
 const gameLoop = setInterval(() => {
 
     if (queue.size >= 2) {
@@ -76,18 +74,35 @@ const gameLoop = setInterval(() => {
 
     games.forEach((game, game_id) => {
 
-        const {player1, player2} = game;
+        const { player1, player2 } = game;
 
         game.update();
 
         if (game.active) {
-            player1.socket.emit('game-update', game.updateData());
-            player2.socket.emit('game-update', game.updateData());
+            try {
+                player1.socket.emit('game-update', game.updateData());
+                player2.socket.emit('game-update', game.updateData());
+            } catch (err) {
+                console.log(err);
+            };
         };
 
     });
 
 }, 1000 / TICKRATE);
+
+
+// Initialise http server, attach socket then return the server
+const server = function (app) {
+
+    const server = http.createServer(app);
+    const io = socket(server);
+    server.io = io;
+
+    events(io);
+    return server;
+
+};
 
 module.exports = {};
 module.exports.server = server;
