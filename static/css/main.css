@@ -3,12 +3,13 @@
 }
 
 .loader {
-    border: 16px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 16px solid #3498db;
-    width: 120px;
-    height: 120px;
-    animation: spin 2s linear infinite;
+    border: 15px solid #f0f0f0;
+    border-radius: 100%;
+    border-top: 15px solid #17a2b8;
+    border-bottom: 15px solid #17a2b8;
+    width: 100px;
+    height: 100px;
+    animation: spin 2.5s linear infinite;
 }
 
 @keyframes spin {
