@@ -43,8 +43,6 @@ const Game = function (player1, player2) {
 
     this.cueBall = this.balls[0];
 
-    this.physics = new Physics(this);
-
     player1.inGame = true;
     player1.game = this;
     player2.inGame = true;
@@ -54,17 +52,33 @@ const Game = function (player1, player2) {
 
 Game.prototype.update = function () {
 
-    this.physics.update();
+    let active = false;
 
-    this.balls.forEach((ball) => ball.update());
+    for (let i = 0; i < this.balls.length; i++) {
+
+        const ball1 = this.balls[i];
+        Physics.collideCushions(ball1, this.width, this.height);
+
+        for (let j = i + 1; j < this.balls.length; j++) {
+
+            const ball2 = this.balls[j];
+            Physics.collideBalls(ball1, ball2);
+
+        };
+
+        ball1.update();
+
+        if (ball1.moving) active = true;
+
+    };
+
+    return active;
 
 };
 
 Game.prototype.shoot = function (power, angle) {
-
     this.cueBall.velocity = new Vector(power * Math.cos(angle), power * Math.sin(angle));
-
-}
+};
 
 Game.prototype.startData = function () {
     return {
