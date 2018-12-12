@@ -17,7 +17,11 @@ const Ball = function (position, velocity, colour) {
 
 };
 
-Ball.prototype.moving = () => this.velocity.length > 0.25;
+Ball.prototype = {
+    get moving() {
+        return this.velocity.length > 0.25;
+    }
+}
 
 Ball.prototype.update = function () {
 
@@ -25,7 +29,7 @@ Ball.prototype.update = function () {
     this.velocity.add(this.acceleration);
     this.position.add(this.velocity);
 
-    if (!this.moving()) this.velocity = new Vector();
+    if (!this.moving) this.velocity = new Vector();
 
 };
 
