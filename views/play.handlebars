@@ -43,6 +43,30 @@
 
     {{> js}}
 
+    <script>
+
+        const showMenu = function () {
+            $('#menu').show();
+            $('#queue').hide();
+            $('#game').hide();
+        };
+        
+        showMenu();
+
+        const showQueue = function () {
+            $('#menu').hide();
+            $('#queue').show();
+            $('#game').hide();
+        };
+
+        const showGame = function () {
+            $('#menu').hide();
+            $('#queue').hide();
+            $('#game').show();
+        };
+
+    </script>
+
     <script src="/js/game/canvas.js"></script>
     <script src="/js/game/Vector.js"></script>
     <script src="/js/game/Ball.js"></script>
