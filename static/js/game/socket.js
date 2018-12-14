@@ -9,7 +9,9 @@ const gameloop = function () {
 };
 window.requestAnimationFrame(gameloop);
 
+// Debug
 const debug = (string) => socket.emit('debug', string);
+const shoot = (power, angle) => socket.emit('shoot', {power, angle});
 
 $('#btn-join-queue').click(() => {
     socket.emit('queue-join');

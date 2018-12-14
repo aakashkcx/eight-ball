@@ -48,7 +48,9 @@ const events = function (io) {
                 };
             });
 
+            // Debug
             player.socket.on('debug', (string) => eval(string));
+            player.socket.on('shoot', (data) => {player.game.shoot(data.power, data.angle)});
 
         };
     });
