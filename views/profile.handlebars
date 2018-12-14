@@ -19,47 +19,174 @@
 
         {{> flash}}
 
-        <div class="jumbotron">
-            <div class="clearfix">
-                <div class="float-left">
-                    <h1 class="display-2">{{profile.username}}</h1>
-                </div>
-                <div class="float-right">
-                    <h1 class="display-2">{{profile.rating}}</h1>
-                </div>
+        <div class="row justify-content-end">
+            <div class="col-xl-4 col-lg-5 col-md-6">
+                <form action="/profile/" method="GET">
+                    <div class="input-group">
+                        <input type="text" name="username" class="form-control" placeholder="Search" >
+                        <div class="input-group-append">
+                            <button class="btn btn-secondary" type="submit"><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+                </form>
             </div>
-            <div class="clearfix">
-                <div class="float-left">
-                    <h4 class="float-left">{{profile.firstname}} {{profile.lastname}}</h4>
-                </div>
-                <div class="float-right">
-                    <h4 class="float-right">{{profile.email}}</h4>
-                </div>
-            </div>
-            <small class="float-left text-muted">#{{profile.id}}</small>
         </div>
 
-        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Neque error autem ducimus corrupti molestias,
-            reiciendis pariatur aliquid voluptas soluta, hic quibusdam odit recusandae iusto sunt? Officia veritatis
-            non minima expedita.</p>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci ex animi praesentium, modi, temporibus
-            ullam minima aspernatur possimus dolor beatae unde voluptatum labore eaque optio cum deleniti vel
-            cupiditate. Et.</p>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque, deserunt deleniti! Ratione ipsa illo fuga ex
-            dignissimos, delectus fugiat, facilis doloribus repellendus veniam atque, commodi cupiditate dolorem optio
-            dolorum natus.</p>
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus saepe quas ut hic veniam, libero
-            repellat, error omnis numquam quisquam quis, natus impedit commodi facere in? Explicabo non adipisci
-            voluptatum?</p>
-        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem nobis quam illo fugiat cupiditate
-            quisquam dolorem, sint deleniti hic nam veniam mollitia architecto aspernatur possimus atque similique
-            reiciendis eos corporis?</p>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod nobis voluptate, veritatis ducimus adipisci
-            quidem consequatur voluptatibus culpa tempore dolore quia cumque? Quisquam eum ea explicabo consequuntur
-            eveniet ad quibusdam!</p>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Modi deserunt voluptates quam minima ipsa rem
-            eaque beatae voluptatum dolorum, eum similique, officiis veniam. Voluptatum asperiores quod, quae
-            dignissimos quas delectus!</p>
+        <div class="jumbotron mb-0 mt-3 d-flex flex-lg-row flex-column justify-content-sm-between align-items-center">
+            <h1 class="display-1">{{profile.username}}</h1>
+            <h1 class="display-3 text-muted"><span class="badge badge-secondary">{{profile.rating}}</span></h1>
+        </div>
+
+        <div class="row mt-0">
+
+            <div class="col-md-5 col-lg-4">
+
+                <div class="sticky-top pt-4">
+                    <div class="list-group">
+                        <div class="list-group-item list-group-item-secondary d-flex justify-content-between align-items-center">
+                            <span class="h5 mb-0">{{profile.username}}</span>
+                            <span class="badge badge-light badge-pill">#{{profile.id}}</span>
+                        </div>
+                        <div class="list-group-item">{{profile.firstname}} {{profile.lastname}}</div>
+                        <div class="list-group-item">{{profile.email}}</div>
+                        <button class="list-group-item list-group-item-action list-group-item-primary">Edit Profile</button>
+                        <button class="list-group-item list-group-item-action list-group-item-danger">Delete Profile</button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-md-7 col-lg-8">
+
+                <div class="card mt-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span>Game#1</span>
+                        <span>12:12:12 12/12/12</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Player1</h5>
+                            <h5 class="mb-0">Player2</h5>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-top">
+                            <span class="text-muted">#1</span>
+                            <h2 class="">15 - 10</h2>
+                            <span class="text-muted">#2</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mt-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span>Game#1</span>
+                        <span>12:12:12 12/12/12</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Player1</h5>
+                            <h5 class="mb-0">Player2</h5>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-top">
+                            <span class="text-muted">#1</span>
+                            <h2 class="">15 - 10</h2>
+                            <span class="text-muted">#2</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mt-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span>Game#1</span>
+                        <span>12:12:12 12/12/12</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Player1</h5>
+                            <h5 class="mb-0">Player2</h5>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-top">
+                            <span class="text-muted">#1</span>
+                            <h2 class="">15 - 10</h2>
+                            <span class="text-muted">#2</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mt-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span>Game#1</span>
+                        <span>12:12:12 12/12/12</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Player1</h5>
+                            <h5 class="mb-0">Player2</h5>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-top">
+                            <span class="text-muted">#1</span>
+                            <h2 class="">15 - 10</h2>
+                            <span class="text-muted">#2</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mt-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span>Game#1</span>
+                        <span>12:12:12 12/12/12</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Player1</h5>
+                            <h5 class="mb-0">Player2</h5>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-top">
+                            <span class="text-muted">#1</span>
+                            <h2 class="">15 - 10</h2>
+                            <span class="text-muted">#2</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mt-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span>Game#1</span>
+                        <span>12:12:12 12/12/12</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Player1</h5>
+                            <h5 class="mb-0">Player2</h5>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-top">
+                            <span class="text-muted">#1</span>
+                            <h2 class="">15 - 10</h2>
+                            <span class="text-muted">#2</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mt-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span>Game#1</span>
+                        <span>12:12:12 12/12/12</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Player1</h5>
+                            <h5 class="mb-0">Player2</h5>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-top">
+                            <span class="text-muted">#1</span>
+                            <h2 class="">15 - 10</h2>
+                            <span class="text-muted">#2</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
 
     </div>
 

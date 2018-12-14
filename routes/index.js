@@ -58,16 +58,30 @@ router.get('/play', (req, res) => {
  */
 
 // GET
-router.get('/profile', (req, res) => {
+router.get('/profile', (req, res, next) => {
 
-    if (req.authenticated) {
+    if (req.query.username) {
 
-        res.render('profile', { profile: req.user });
+        User.findIdByUsername(req.query.username, (err, id) => {
+            if (!err && id) {
+                res.redirect(`/profile/${id}`);
+            } else {
+                next('User not found.');
+            }
+        });
 
     } else {
 
-        req.flash('error', 'You are not logged in.');
-        res.redirect('/login/');
+        if (req.authenticated) {
+
+            res.redirect(`/profile/${req.user_id}`);
+
+        } else {
+
+            req.flash('error', 'You are not logged in.');
+            res.redirect('/login/');
+
+        };
 
     };
 
