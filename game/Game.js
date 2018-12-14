@@ -20,23 +20,23 @@ const Game = function (player1, player2) {
     this.height = HEIGHT;
 
     this.balls = [
-        [320, 360, 20, 20, 'white'],
-        [960, 360, 0, 0, 'red'],
-        [985, 345, 0, 0, 'yellow'],
-        [985, 375, 0, 0, 'red'],
-        [1010, 330, 0, 0, 'yellow'],
-        [1010, 360, 0, 0, 'B'],
-        [1010, 390, 0, 0, 'red'],
-        [1035, 314, 0, 0, 'yellow'],
-        [1035, 345, 0, 0, 'red'],
-        [1035, 375, 0, 0, 'yellow'],
-        [1035, 405, 0, 0, 'red'],
-        [1060, 300, 0, 0, 'yellow'],
-        [1060, 330, 0, 0, 'red'],
-        [1060, 360, 0, 0, 'yellow'],
-        [1060, 390, 0, 0, 'red'],
-        [1060, 420, 0, 0, 'yellow']
-    ].map(params => new Ball(new Vector(params[0], params[1]), new Vector(params[2], params[3]), params[4]));
+        [320, 360, 'white'],
+        [960, 360, 'red'],
+        [985, 345, 'yellow'],
+        [985, 375, 'red'],
+        [1010, 330, 'yellow'],
+        [1010, 360, 'B'],
+        [1010, 390, 'red'],
+        [1035, 314, 'yellow'],
+        [1035, 345, 'red'],
+        [1035, 375, 'yellow'],
+        [1035, 405, 'red'],
+        [1060, 300, 'yellow'],
+        [1060, 330, 'red'],
+        [1060, 360, 'yellow'],
+        [1060, 390, 'red'],
+        [1060, 420, 'yellow']
+    ].map(params => new Ball(new Vector(params[0], params[1]), new Vector(0,0), params[2]));
     
     this.cueBall = this.balls[0];
 
