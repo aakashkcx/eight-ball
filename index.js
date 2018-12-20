@@ -5,7 +5,6 @@
  */
 
 // Dependencies
-const path = require('path');
 const express = require('express');
 const expressHandlebars = require('express-handlebars');
 const expressSession = require('express-session');
