@@ -39,15 +39,22 @@ const Game = function (player1, player2) {
     ].map(params => new Ball(new Vector(params[0], params[1]), new Vector(0,0), params[2]));
     
     this.cueBall = this.balls[0];
+    
+    this.turn = 1;
 
     this.active = false;
 
     this.player1 = player1;
     this.player2 = player2;
-    player1.inGame = true;
+    
     player1.game = this;
-    player2.inGame = true;
     player2.game = this;
+
+    player1.inGame = true;
+    player2.inGame = true;
+
+    player1.playerNum = 1;
+    player2.playerNum = 2;
 
 };
 
@@ -58,17 +65,19 @@ Game.prototype.update = function () {
 
     for (let i = 0; i < this.balls.length; i++) {
 
-        const ball1 = this.balls[i];
+        let ball1 = this.balls[i];
         physics.collideCushions(ball1, this.width, this.height);
 
         for (let j = i + 1; j < this.balls.length; j++) {
-            const ball2 = this.balls[j];
+            let ball2 = this.balls[j];
             physics.collideBalls(ball1, ball2);
         };
 
         ball1.update();
 
-        if (ball1.moving) this.active = true;
+        if (ball1.moving) {
+            this.active = true;
+        };
 
     };
 
@@ -76,6 +85,9 @@ Game.prototype.update = function () {
 
 // Shoot class method
 Game.prototype.shoot = function (power, angle) {
+    if (player.playerNum = player.game.turn) {
+        game.shoot
+    }
     this.cueBall.velocity = new Vector(power * Math.cos(angle), power * Math.sin(angle));
 };
 

@@ -8,6 +8,7 @@ const Player = function (socket) {
 
     this.inQueue = false;
     this.inGame = false;
+    this.playerNum = null;
 
     this.socket = socket;
     socket.player = this;
