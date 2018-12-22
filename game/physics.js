@@ -8,9 +8,7 @@ const physics = {};
 
 // Check if two balls overlap
 physics.doBallsOverlap = function (ball1, ball2) {
-
     return Vector.distanceSquared(ball1.position, ball2.position) <= (ball1.radius + ball2.radius) ** 2;
-
 };
 
 // Resolve the collisions between a ball and the table

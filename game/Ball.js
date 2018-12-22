@@ -3,17 +3,14 @@
 // Imports
 const Vector = require('./Vector');
 
-// Constants
-const BALL_RADIUS = 15;
-
 // Ball class constructor
-const Ball = function (position, velocity, colour) {
+const Ball = function (position, radius, colour) {
 
     this.position = position;
-    this.velocity = velocity;
+    this.velocity = new Vector();
     this.acceleration = new Vector();
     
-    this.radius = BALL_RADIUS;
+    this.radius = radius;
     this.colour = colour;
 
 };
