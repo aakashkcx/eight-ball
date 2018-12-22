@@ -1,6 +1,11 @@
 'use strict';
 
 const socket = io();
+
+let WIDTH;
+let HEIGHT;
+let BALL_RADIUS;
+
 let game;
 
 const gameloop = function () {
@@ -8,10 +13,6 @@ const gameloop = function () {
     window.requestAnimationFrame(gameloop);
 };
 window.requestAnimationFrame(gameloop);
-
-// Debug
-const debug = (string) => socket.emit('debug', string);
-const shoot = (power, angle) => socket.emit('shoot', {power, angle});
 
 $('#btn-join-queue').click(() => {
     socket.emit('queue-join');
@@ -24,10 +25,24 @@ $('#btn-leave-queue').click(() => {
 });
 
 socket.on('game-start', (data) => {
+
+    WIDTH = data.WIDTH;
+    HEIGHT = data.HEIGHT;
+    BALL_RADIUS = data.BALL_RADIUS;
+
+    canvas.width = WIDTH;
+    canvas.height = HEIGHT;
+
     game = new Game(data);
+    
     showGame();
+
 });
 
 socket.on('game-update', (data) => {
     game.update(data);
 });
+
+// Debug
+const debug = (string) => socket.emit('debug', string);
+const shoot = (power, angle) => socket.emit('shoot', {power, angle});
