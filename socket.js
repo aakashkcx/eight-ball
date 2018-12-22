@@ -20,8 +20,7 @@ const queue = new Queue();
 // Socket events
 const events = function (io) {
     io.on('connection', (socket) => {
-        socket.session = socket.request.session;
-        if (socket.session.authenticated) {
+        if (socket.request.session.authenticated) {
 
             let player = new Player(socket);
             players.set(player.id, player);

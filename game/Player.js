@@ -3,8 +3,8 @@
 // Player class constructor
 const Player = function (socket) {
 
-    this.id = socket.session.user_id;
-    this.username = socket.session.user.username;
+    this.id = socket.request.session.user_id;
+    this.username = socket.request.session.user.username;
 
     this.inQueue = false;
     this.inGame = false;
