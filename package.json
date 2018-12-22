@@ -20,6 +20,7 @@
   "dependencies": {
     "bcryptjs": "*",
     "connect-flash": "*",
+    "connect-sqlite3": "*",
     "cookie-parser": "*",
     "express": "*",
     "express-handlebars": "*",

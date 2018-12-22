@@ -13,6 +13,7 @@ const flash = require('connect-flash');
 const logger = require('morgan');
 
 // Imports
+const database = require('./database');
 const socket = require('./socket');
 const authentication = require('./authentication');
 
@@ -50,7 +51,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Session
+const SessionStore = database.sessionStore(expressSession);
 const session = expressSession({
+    store: new SessionStore({ db: 'database.db' }),
     secret: 'secret',
     resave: false,
     saveUninitialized: false,
