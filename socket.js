@@ -22,7 +22,7 @@ const events = function (io) {
     io.on('connection', (socket) => {
         if (socket.request.session.authenticated) {
 
-            let player = new Player(socket);
+            const player = new Player(socket);
             players.set(player.id, player);
             console.log(`GAME [${players.size}][${queue.size}][${games.size}] » ${player.username}#${player.id} has connected - ${players.size} player(s) online.`);
 
@@ -80,17 +80,19 @@ const gameLoop = setInterval(() => {
 
     games.forEach((game, game_id) => {
 
-        const { player1, player2 } = game;
-
-        game.update();
-
         if (game.active) {
+
+            game.update();
+
+            const { player1, player2 } = game;
+
             try {
                 player1.socket.emit('game-update', game.updateData());
                 player2.socket.emit('game-update', game.updateData());
             } catch (err) {
                 console.log(err);
             };
+            
         };
 
     });
