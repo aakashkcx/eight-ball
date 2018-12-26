@@ -8,7 +8,8 @@ const physics = require('./physics');
 // Constants
 const WIDTH = 1280;
 const HEIGHT = 720;
-const BALL_RADIUS = 15;
+const BALL_RADIUS = 20;
+const FRICTION = 0.01;
 
 let num = 0;
 
@@ -19,21 +20,21 @@ const Game = function (player1, player2) {
 
     this.balls = [
         [320, 360, 'white'],
-        [1010, 360, 'black'],
+        [1030, 360, 'black'],
         [960, 360, 'red'],
-        [985, 345, 'yellow'],
-        [985, 375, 'red'],
-        [1010, 330, 'red'],
-        [1010, 390, 'yellow'],
-        [1035, 314, 'yellow'],
-        [1035, 345, 'red'],
-        [1035, 375, 'yellow'],
-        [1035, 405, 'red'],
-        [1060, 300, 'yellow'],
-        [1060, 330, 'red'],
-        [1060, 360, 'yellow'],
-        [1060, 390, 'red'],
-        [1060, 420, 'yellow']
+        [995, 340, 'yellow'],
+        [995, 380, 'red'],
+        [1030, 320, 'red'],
+        [1030, 400, 'yellow'],
+        [1065, 300, 'yellow'],
+        [1065, 340, 'red'],
+        [1065, 380, 'yellow'],
+        [1065, 420, 'red'],
+        [1100, 280, 'yellow'],
+        [1100, 320, 'red'],
+        [1100, 360, 'yellow'],
+        [1100, 400, 'red'],
+        [1100, 440, 'yellow']
     ].map(params => new Ball(new Vector(params[0], params[1]), BALL_RADIUS, params[2]));
 
     this.cueBall = this.balls[0];
@@ -62,16 +63,17 @@ Game.prototype.update = function () {
 
     for (let i = 0; i < this.balls.length; i++) {
 
-        let ball = this.balls[i];
-        physics.collideCushions(ball, WIDTH, HEIGHT);
+        const ball = this.balls[i];
+        physics.collideCushions(ball, WIDTH, HEIGHT, FRICTION);
 
         for (let j = i + 1; j < this.balls.length; j++) {
-            let collidingBall = this.balls[j];
-            physics.collideBalls(ball, collidingBall);
+            const collidingBall = this.balls[j];
+            physics.collideBalls(ball, collidingBall, FRICTION);
         };
 
-        ball.update();
-        if (ball.moving) this.active = true;
+        let ballActive = physics.ballMotion(ball, FRICTION);
+
+        if (ballActive) this.active = true;
 
     };
 
@@ -86,19 +88,16 @@ Game.prototype.shoot = function (power, angle) {
 // Data that is sent to the players when the game starts
 Game.prototype.startData = function () {
     return {
-        BALL_RADIUS: BALL_RADIUS,
-        WIDTH: WIDTH,
-        HEIGHT: HEIGHT,
         player1: { id: this.player1.id, name: this.player1.name },
         player2: { id: this.player2.id, name: this.player2.name },
-        balls: this.balls
+        balls: this.balls.map(ball => {return {x: ball.position.x, y: ball.position.y, colour: ball.colour}})
     };
 };
 
 // Data that is sent to the players each game update
 Game.prototype.updateData = function () {
     return {
-        balls: this.balls
+        balls: this.balls.map(ball => {return {x: ball.position.x, y: ball.position.y, colour: ball.colour}})
     };
 };
 

@@ -2,10 +2,6 @@
 
 const socket = io();
 
-let WIDTH;
-let HEIGHT;
-let BALL_RADIUS;
-
 let game;
 
 const gameloop = function () {
@@ -25,18 +21,8 @@ $('#btn-leave-queue').click(() => {
 });
 
 socket.on('game-start', (data) => {
-
-    WIDTH = data.WIDTH;
-    HEIGHT = data.HEIGHT;
-    BALL_RADIUS = data.BALL_RADIUS;
-
-    canvas.width = WIDTH;
-    canvas.height = HEIGHT;
-
     game = new Game(data);
-    
     showGame();
-
 });
 
 socket.on('game-update', (data) => {

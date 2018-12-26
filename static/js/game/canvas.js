@@ -1,8 +1,14 @@
 'use strict';
 
+const WIDTH = 1280;
+const HEIGHT = 720;
+
 const canvas = $('#canvas').get(0);
 
 canvas.context = canvas.getContext('2d');
+
+canvas.width = WIDTH;
+canvas.height = HEIGHT;
 
 canvas.clear = function () {
     canvas.context.clearRect(0, 0, canvas.width, canvas.height);
@@ -10,12 +16,12 @@ canvas.clear = function () {
 
 canvas.drawTable = function () {
     canvas.drawRect(new Vector(), WIDTH, HEIGHT, 'green');
-    canvas.drawCircle(new Vector(0, 0), BALL_RADIUS * 3, 'black');
-    canvas.drawCircle(new Vector(WIDTH / 2, -10), BALL_RADIUS * 2.5, 'black');
-    canvas.drawCircle(new Vector(WIDTH, 0), BALL_RADIUS * 3, 'black');
-    canvas.drawCircle(new Vector(0, HEIGHT), BALL_RADIUS * 3, 'black');
-    canvas.drawCircle(new Vector(WIDTH / 2, HEIGHT + 10), BALL_RADIUS * 2.5, 'black');
-    canvas.drawCircle(new Vector(WIDTH, HEIGHT), BALL_RADIUS * 3, 'black');
+    canvas.drawCircle(new Vector(0, 0), BALL_RADIUS * 2.5, 'black');
+    canvas.drawCircle(new Vector(WIDTH / 2, -10), BALL_RADIUS * 2, 'black');
+    canvas.drawCircle(new Vector(WIDTH, 0), BALL_RADIUS * 2.5, 'black');
+    canvas.drawCircle(new Vector(0, HEIGHT), BALL_RADIUS * 2.5, 'black');
+    canvas.drawCircle(new Vector(WIDTH / 2, HEIGHT + 10), BALL_RADIUS * 2, 'black');
+    canvas.drawCircle(new Vector(WIDTH, HEIGHT), BALL_RADIUS * 2.5, 'black');
 }
 
 canvas.drawRect = function (position, width, height, colour) {

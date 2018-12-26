@@ -24,16 +24,5 @@ Ball.prototype = {
 
 };
 
-// Update class method
-Ball.prototype.update = function () {
-
-    this.acceleration = Vector.multiply(this.velocity, -0.005);
-    this.velocity.add(this.acceleration);
-    this.position.add(this.velocity);
-
-    if (!this.moving) this.velocity = new Vector();
-
-};
-
 // Export ball class
 module.exports = Ball;

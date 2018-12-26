@@ -11,8 +11,24 @@ physics.doBallsOverlap = function (ball1, ball2) {
     return Vector.distanceSquared(ball1.position, ball2.position) <= (ball1.radius + ball2.radius) ** 2;
 };
 
+// Resolve the motion of a ball
+physics.ballMotion = function (ball, friction) {
+
+    ball.acceleration = Vector.multiply(ball.velocity, -friction);
+    ball.velocity.add(ball.acceleration);
+    ball.position.add(ball.velocity);
+
+    if (ball.moving) {
+        return true;
+    } else {
+        ball.velocity = Vector.zero();
+        return false;
+    };
+
+};
+
 // Resolve the collisions between a ball and the table
-physics.collideCushions = function (ball, width, height) {
+physics.collideCushions = function (ball, width, height, friction) {
 
     if (ball.position.x + ball.radius >= width) {
 
@@ -20,7 +36,7 @@ physics.collideCushions = function (ball, width, height) {
         ball.position.x -= 0.5 * offset;
 
         ball.velocity.x *= -1;
-        ball.velocity.multiply(0.9);
+        ball.velocity.multiply(1 - 10 * friction);
 
     };
 
@@ -30,7 +46,7 @@ physics.collideCushions = function (ball, width, height) {
         ball.position.x += 0.5 * offset;
 
         ball.velocity.x *= -1;
-        ball.velocity.multiply(0.9);
+        ball.velocity.multiply(1 - 10 * friction);
 
     };
 
@@ -40,7 +56,7 @@ physics.collideCushions = function (ball, width, height) {
         ball.position.y -= 0.5 * offset;
 
         ball.velocity.y *= -1;
-        ball.velocity.multiply(0.9);
+        ball.velocity.multiply(1 - 10 * friction);
 
     };
 
@@ -50,14 +66,14 @@ physics.collideCushions = function (ball, width, height) {
         ball.position.y += 0.5 * offset;
 
         ball.velocity.y *= -1;
-        ball.velocity.multiply(0.9);
+        ball.velocity.multiply(1 - 10 * friction);
 
     };
 
 };
 
 // Resolve the collision between two balls
-physics.collideBalls = function (ball1, ball2) {
+physics.collideBalls = function (ball1, ball2, friction) {
 
     if (physics.doBallsOverlap(ball1, ball2)) {
 
@@ -140,6 +156,9 @@ physics.collideBalls = function (ball1, ball2) {
 
         // ball1.velocity = Vector.add(Vector.multiply(tangent, dotTangent1), Vector.multiply(normal, momentum1));
         // ball2.velocity = Vector.add(Vector.multiply(tangent, dotTangent2), Vector.multiply(normal, momentum2));
+
+        ball1.velocity.multiply(1 - 5 * friction);
+        ball2.velocity.multiply(1 - 5 * friction);
 
     };
 
