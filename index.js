@@ -29,7 +29,7 @@ const usersRouter = require('./routes/users');
 const app = express();
 
 // Initialise server
-const server = socket.server(app);
+const server = socket(app);
 
 // Set port
 const PORT = process.env.PORT || 8080;
@@ -51,16 +51,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Session
-const SessionStore = database.sessionStore(expressSession);
 const session = expressSession({
-    store: new SessionStore({ db: 'database.db' }),
+    store: database.sessionStore(expressSession),
     secret: 'secret',
     resave: false,
     saveUninitialized: false,
     cookie: { maxAge: 60 * 60 * 1000 }
 });
 app.use(session);
-server.io.use((socket, next) => session(socket.request, socket.request.res, next));
+socket.session(session);
 
 // Validation
 app.use(expressValidator());

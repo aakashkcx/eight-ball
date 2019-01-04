@@ -2,7 +2,7 @@
 
 // Dependencies
 const sqlite = require('sqlite3');
-const connectsqlite = require('connect-sqlite3');
+const connectSQLite = require('connect-sqlite3');
 
 // Log database errors
 sqlite.verbose();
@@ -38,6 +38,7 @@ database.serialize(() => {
 
 });
 
+database.sessionStore = (session) => new (connectSQLite(session))({ db: 'database.db' });
+
 // Export the database
 module.exports = database;
-module.exports.sessionStore = connectsqlite;

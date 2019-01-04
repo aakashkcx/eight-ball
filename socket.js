@@ -100,20 +100,21 @@ const gameLoop = setInterval(() => {
 }, 1000 / TICKRATE);
 
 
-// Initialise http server, attach socket then return the server
-const server = function (app) {
+// Initialise http server then return the server
+const init = function (app) {
 
     const server = http.createServer(app);
     const io = socket(server);
-    server.io = io;
-
     events(io);
+
+    module.exports.io = io;
+    module.exports.session = (session) => io.use((socket, next) => session(socket.request, socket.request.res, next));
+
     return server;
 
 };
 
-module.exports = {};
-module.exports.server = server;
+module.exports = init;
 module.exports.playersOnline = () => players.size;
 module.exports.playersInQueue = () => queue.size;
 module.exports.gamesInProgress = () => games.size;
