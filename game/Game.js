@@ -90,14 +90,16 @@ Game.prototype.startData = function () {
     return {
         player1: { id: this.player1.id, name: this.player1.name },
         player2: { id: this.player2.id, name: this.player2.name },
-        balls: this.balls.map(ball => {return {x: ball.position.x, y: ball.position.y, colour: ball.colour}})
+        balls: this.balls.map(ball => {return {x: ball.position.x, y: ball.position.y, colour: ball.colour}}),
+        active: this.active
     };
 };
 
 // Data that is sent to the players each game update
 Game.prototype.updateData = function () {
     return {
-        balls: this.balls.map(ball => {return {x: ball.position.x, y: ball.position.y, colour: ball.colour}})
+        balls: this.balls.map(ball => {return {x: ball.position.x, y: ball.position.y, colour: ball.colour}}),
+        active: this.active
     };
 };
 
