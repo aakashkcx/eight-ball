@@ -29,6 +29,9 @@ socket.on('game-update', (data) => {
     game.update(data);
 });
 
+const shoot = function (power, angle) {
+    socket.emit('shoot', { power, angle });
+};
+
 // Debug
 const debug = (string) => socket.emit('debug', string);
-const shoot = (power, angle) => socket.emit('shoot', {power, angle});

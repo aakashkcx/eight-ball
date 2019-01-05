@@ -10,6 +10,6 @@ const Ball = function (position, radius, colour) {
 
 Ball.prototype.draw = function () {
 
-    canvas.drawCircle(this.position, this.radius, this.colour);
+    canvas.drawCircle(this.position, TABLE, this.radius, this.colour);
 
 };
