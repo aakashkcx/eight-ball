@@ -17,7 +17,7 @@ canvas.mouse = {};
 canvas.mouse.position = new Vector();
 canvas.mouse.down = false;
 
-canvas._DOM.onmousemove = function (e) {
+document.onmousemove = function (e) {
     let rect = canvas._DOM.getBoundingClientRect();
     canvas.mouse.position.x = (e.pageX - rect.left) * canvas.width / rect.width - BORDER;
     canvas.mouse.position.y = (e.pageY - rect.top) * canvas.height / rect.height - BORDER;
