@@ -4,6 +4,7 @@
 const Ball = require('./Ball');
 const Vector = require('./Vector');
 const physics = require('./physics');
+const events = require('./events');
 
 // Constants
 const WIDTH = 1280;
@@ -40,10 +41,20 @@ const Game = function (player1, player2) {
     this.cueBall = this.balls[0];
     this.blackBall = this.balls[1];
 
+    this.pockets = [[0, 0], [WIDTH / 2, 0], [WIDTH, 0], [0, HEIGHT], [WIDTH / 2, HEIGHT], [WIDTH, HEIGHT]]
+        .map(params => ({ position: new Vector(params[0], params[1]), radius: BALL_RADIUS }));
+
     this.active = false;
 
     this.player1 = player1;
     this.player2 = player2;
+
+    this.colourSelected = false;
+    this.player1Colour = '';
+    this.player2Colour = '';
+
+    this.player1Score = 0;
+    this.player2Score = 0;
 
     this.turn = 1;
 
@@ -72,8 +83,13 @@ Game.prototype.update = function () {
         };
 
         let ballActive = physics.ballMotion(ball, FRICTION);
-
         if (ballActive) this.active = true;
+
+        this.pockets.forEach(pocket => {
+            if (physics.doBallsOverlap(ball, pocket)) {
+                events.ballPotted(this, ball);
+            };
+        });
 
     };
 
@@ -90,7 +106,7 @@ Game.prototype.startData = function () {
     return {
         player1: { id: this.player1.id, name: this.player1.name },
         player2: { id: this.player2.id, name: this.player2.name },
-        balls: this.balls.map(ball => {return {x: ball.position.x, y: ball.position.y, colour: ball.colour}}),
+        balls: this.balls.map(ball => { return { x: ball.position.x, y: ball.position.y, colour: ball.colour } }),
         active: this.active
     };
 };
@@ -98,7 +114,7 @@ Game.prototype.startData = function () {
 // Data that is sent to the players each game update
 Game.prototype.updateData = function () {
     return {
-        balls: this.balls.map(ball => {return {x: ball.position.x, y: ball.position.y, colour: ball.colour}}),
+        balls: this.balls.map(ball => { return { x: ball.position.x, y: ball.position.y, colour: ball.colour } }),
         active: this.active
     };
 };
