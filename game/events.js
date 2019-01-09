@@ -8,20 +8,20 @@ const events = {};
 events.ballPotted = function (game, ball) {
     switch (ball.colour) {
         case 'red':
-            if (game.colorSelected) {
+            // if (game.colorSelected) {
+                game.redPlayer.score++;
+            // } else {
 
-            } else {
-
-            }
-            game.balls.splice(this.balls.indexOf(ball), 1);
+            // }
+            game.balls.splice(game.balls.indexOf(ball), 1);
             break;
         case 'yellow':
-            if (game.colorSelected) {
+            // if (game.colorSelected) {
+                game.yellowPlayer.score++;
+            // } else {
 
-            } else {
-
-            }
-            game.balls.splice(this.balls.indexOf(ball), 1);
+            // }
+            game.balls.splice(game.balls.indexOf(ball), 1);
             break;
         case 'white':
             ball.position = new Vector(320, 360);

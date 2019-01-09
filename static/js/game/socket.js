@@ -22,11 +22,19 @@ $('#btn-leave-queue').click(() => {
 
 socket.on('game-start', (data) => {
     game = new Game(data);
+    $('#playerUsername').text(data.player.username);
+    $('#playerId').text('#' + data.player.id);
+    $('#playerScore').text(data.player.score);
+    $('#opponentUsername').text(data.opponent.username);
+    $('#opponentId').text('#' + data.opponent.id);
+    $('#opponentScore').text(data.opponent.score);
     showGame();
 });
 
 socket.on('game-update', (data) => {
     game.update(data);
+    $('#playerScore').text(data.player.score);
+    $('#opponentScore').text(data.opponent.score);
 });
 
 const shoot = function (power, angle) {

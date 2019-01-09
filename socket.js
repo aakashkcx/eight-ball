@@ -73,8 +73,8 @@ const gameLoop = setInterval(() => {
 
         console.log(`GAME [${players.size}][${queue.size}][${games.size}] » game#${game.id} has started - ${games.size} games(s) in progress.`);
 
-        player1.socket.emit('game-start', game.startData());
-        player2.socket.emit('game-start', game.startData());
+        player1.socket.emit('game-start', game.startData(player1));
+        player2.socket.emit('game-start', game.startData(player2));
 
     };
 
@@ -87,8 +87,8 @@ const gameLoop = setInterval(() => {
             const { player1, player2 } = game;
 
             try {
-                player1.socket.emit('game-update', game.updateData());
-                player2.socket.emit('game-update', game.updateData());
+                player1.socket.emit('game-update', game.updateData(player1));
+                player2.socket.emit('game-update', game.updateData(player2));
             } catch (err) {
                 console.log(err);
             };

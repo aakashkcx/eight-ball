@@ -31,7 +31,15 @@
             <button type="button" id="btn-leave-queue" class="btn btn-danger">Leave Queue</button>
         </div>
 
-        <div id="game">
+        <div id="game" class="text-center">
+            <div class="px-3 py-1 d-flex flex-row justify-content-between">
+                <div id="playerUsername" class="h3"></div>
+                <div id="playerId" class="text-muted"></div>
+                <div id="playerScore" class="h3 flex-fill"></div>
+                <div id="opponentScore" class="h3 flex-fill"></div>
+                <div id="opponentId" class="text-muted"></div>
+                <div id="opponentUsername" class="h3"></div>
+            </div>
             <canvas id="canvas" class=""></canvas>
         </div>
 
@@ -42,7 +50,7 @@
         crossorigin="anonymous"></script>
 
     {{> js}}
-    
+
     <script src="/js/game/menu.js"></script>
     <script src="/js/game/Vector.js"></script>
     <script src="/js/game/canvas.js"></script>

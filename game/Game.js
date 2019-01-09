@@ -19,6 +19,15 @@ const Game = function (player1, player2) {
 
     this.id = ++num;
 
+    this.player1 = player1;
+    this.player2 = player2;
+    this.player1.game = this;
+    this.player2.game = this;
+    this.player1.inGame = true;
+    this.player2.inGame = true;
+    this.player1.playerNum = 1;
+    this.player2.playerNum = 2;
+
     this.balls = [
         [320, 360, 'white'],
         [1030, 360, 'black'],
@@ -44,26 +53,19 @@ const Game = function (player1, player2) {
     this.pockets = [[0, 0], [WIDTH / 2, 0], [WIDTH, 0], [0, HEIGHT], [WIDTH / 2, HEIGHT], [WIDTH, HEIGHT]]
         .map(params => ({ position: new Vector(params[0], params[1]), radius: BALL_RADIUS }));
 
+    this.player1.score = 0;
+    this.player2.score = 0;
+
+    this.colourSelected = true;
+    this.redPlayer = player1;
+    this.yellowPlayer = player2;
+    this.player1.colour = 'red';
+    this.player2.colour = 'yellow';
+
+    this.turn = player1;
+    this.turnColour = 'red';
+
     this.active = false;
-
-    this.player1 = player1;
-    this.player2 = player2;
-
-    this.colourSelected = false;
-    this.player1Colour = '';
-    this.player2Colour = '';
-
-    this.player1Score = 0;
-    this.player2Score = 0;
-
-    this.turn = 1;
-
-    player1.game = this;
-    player2.game = this;
-    player1.inGame = true;
-    player2.inGame = true;
-    player1.playerNum = 1;
-    player2.playerNum = 2;
 
 };
 
@@ -102,18 +104,22 @@ Game.prototype.shoot = function (power, angle) {
 };
 
 // Data that is sent to the players when the game starts
-Game.prototype.startData = function () {
+Game.prototype.startData = function (player) {
+    let opponent = (player == this.player1 ? this.player2 : this.player1)
     return {
-        player1: { id: this.player1.id, name: this.player1.name },
-        player2: { id: this.player2.id, name: this.player2.name },
+        player: { id: player.id, username: player.username, score: player.score, colour: player.colour },
+        opponent: { id: opponent.id, username: opponent.username, score: opponent.score, colour: opponent.colour },
         balls: this.balls.map(ball => { return { x: ball.position.x, y: ball.position.y, colour: ball.colour } }),
         active: this.active
     };
 };
 
 // Data that is sent to the players each game update
-Game.prototype.updateData = function () {
+Game.prototype.updateData = function (player) {
+    let opponent = (player == this.player1 ? this.player2 : this.player1)
     return {
+        player: { score: player.score, colour: player.colour },
+        opponent: { score: opponent.score, colour: opponent.colour },
         balls: this.balls.map(ball => { return { x: ball.position.x, y: ball.position.y, colour: ball.colour } }),
         active: this.active
     };
