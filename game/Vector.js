@@ -20,11 +20,6 @@ Vector.prototype = {
 
 };
 
-// New zero vector method
-Vector.zero = function() {
-    return new Vector(0, 0);
-};
-
 // Vector addition class method
 Vector.prototype.add = function (vector) {
     this.x += vector.x;

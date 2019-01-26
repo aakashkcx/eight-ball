@@ -3,6 +3,9 @@
 // Imports
 const Vector = require('./Vector');
 
+// Constants
+const FRICTION = 0.01;
+
 // Initialise physics object
 const physics = {};
 
@@ -12,23 +15,23 @@ physics.doBallsOverlap = function (ball1, ball2) {
 };
 
 // Resolve the motion of a ball
-physics.ballMotion = function (ball, friction) {
+physics.ballMotion = function (ball) {
 
-    ball.acceleration = Vector.multiply(ball.velocity, -friction);
+    ball.acceleration = Vector.multiply(ball.velocity, -FRICTION);
     ball.velocity.add(ball.acceleration);
     ball.position.add(ball.velocity);
 
     if (ball.moving) {
         return true;
     } else {
-        ball.velocity = Vector.zero();
+        ball.velocity = new Vector(0, 0);
         return false;
     };
 
 };
 
 // Resolve the collisions between a ball and the table
-physics.collideCushions = function (ball, width, height, friction) {
+physics.collideCushions = function (ball, width, height) {
 
     if (ball.position.x + ball.radius >= width) {
 
@@ -36,7 +39,8 @@ physics.collideCushions = function (ball, width, height, friction) {
         ball.position.x -= 0.5 * offset;
 
         ball.velocity.x *= -1;
-        ball.velocity.multiply(1 - 10 * friction);
+
+        ball.velocity.multiply(1 - 10 * FRICTION);
 
     };
 
@@ -46,7 +50,8 @@ physics.collideCushions = function (ball, width, height, friction) {
         ball.position.x += 0.5 * offset;
 
         ball.velocity.x *= -1;
-        ball.velocity.multiply(1 - 10 * friction);
+
+        ball.velocity.multiply(1 - 10 * FRICTION);
 
     };
 
@@ -56,7 +61,8 @@ physics.collideCushions = function (ball, width, height, friction) {
         ball.position.y -= 0.5 * offset;
 
         ball.velocity.y *= -1;
-        ball.velocity.multiply(1 - 10 * friction);
+
+        ball.velocity.multiply(1 - 10 * FRICTION);
 
     };
 
@@ -66,99 +72,61 @@ physics.collideCushions = function (ball, width, height, friction) {
         ball.position.y += 0.5 * offset;
 
         ball.velocity.y *= -1;
-        ball.velocity.multiply(1 - 10 * friction);
+        
+        ball.velocity.multiply(1 - 10 * FRICTION);
 
     };
 
 };
 
 // Resolve the collision between two balls
-physics.collideBalls = function (ball1, ball2, friction) {
+physics.collideBalls = function (ball1, ball2) {
 
     if (physics.doBallsOverlap(ball1, ball2)) {
 
-        /**
-         * Method 1
-         */
+        // Position
 
-        let distance = Vector.distance(ball1.position, ball2.position);
+        let x1 = Vector.subtract(ball1.position, ball2.position);
+        let x2 = Vector.subtract(ball2.position, ball1.position);
 
-        let overlap = distance - ball1.radius - ball2.radius;
-        let overlapVector = Vector.subtract(ball1.position, ball2.position).divide(distance).multiply(0.5 * overlap);
+        let dist = x1.length;
+        let overlap = dist - ball1.radius - ball2.radius;
 
-        let velocityDifference1 = Vector.subtract(ball1.velocity, ball2.velocity);
-        let velocityDifference2 = Vector.subtract(ball2.velocity, ball1.velocity);
+        let x1Unit = Vector.divide(x1, dist);
+        let x2Unit = Vector.divide(x2, dist);
 
-        let positionDifference1 = Vector.subtract(ball1.position, ball2.position);
-        let positionDifference2 = Vector.subtract(ball2.position, ball1.position);
+        let x1Change = Vector.multiply(x1Unit, overlap);
+        let x2Change = Vector.multiply(x2Unit, overlap);
 
-        let dotProduct1 = Vector.dot(velocityDifference1, positionDifference1);
-        let dotProduct2 = Vector.dot(velocityDifference2, positionDifference2);
+        // Velocity
 
-        let distance1 = positionDifference1.lengthSquared;
-        let distance2 = positionDifference2.lengthSquared;
+        let v1 = Vector.subtract(ball1.velocity, ball2.velocity);
+        let v2 = Vector.subtract(ball2.velocity, ball1.velocity);
 
-        let fraction1 = dotProduct1 / distance1;
-        let fraction2 = dotProduct2 / distance2;
+        let v1Dotx1 = Vector.dot(v1, x1);
+        let v2Dotx2 = Vector.dot(v2, x2);
 
-        ball1.position.subtract(overlapVector);
-        ball2.position.add(overlapVector);
+        let x1LenSquare = x1.lengthSquared;
+        let x2LenSquare = x2.lengthSquared;
 
-        ball1.velocity.subtract(Vector.multiply(positionDifference1, fraction1));
-        ball2.velocity.subtract(Vector.multiply(positionDifference2, fraction2));
+        let frac1 = v1Dotx1 / x1LenSquare;
+        let frac2 = v2Dotx2 / x2LenSquare;
 
-        // /**
-        //  * Method 2
-        //  */
+        let v1Change = Vector.multiply(x1, frac1);
+        let v2Change = Vector.multiply(x2, frac2);
 
-        // let n = Vector.subtract(ball1.position, ball2.position);
-        // let distance = n.length;
-        // let mtd = Vector.multiply(n, (ball1.radius + ball2.radius - distance) / distance);
-        // ball1.position.add(mtd.multiply(0.5));
-        // ball2.position.add(mtd.multiply(0.5));
-        // let un = Vector.divide(n, distance)
-        // let ut = new Vector(-un.y, un.x);
-        // let v1n = Vector.dot(un, ball1.velocity);
-        // let v1t = Vector.dot(ut, ball1.velocity);
-        // let v2n = Vector.dot(un, ball2.velocity);
-        // let v2t = Vector.dot(ut, ball2.velocity);
-        // let v1nTag = v2n;
-        // let v2nTag = v1n;
-        // v1nTag = Vector.multiply(un, v1nTag);
-        // let v1tTag = Vector.multiply(ut, v1t);
-        // v2nTag = Vector.multiply(un, v2nTag);
-        // let v2tTag = Vector.multiply(ut, v2t);
-        // ball1.velocity = Vector.add(v1nTag, v1tTag);
-        // ball2.velocity = Vector.add(v2nTag, v2tTag);
+        // Update
 
-        // /**
-        //  * Method 3
-        //  */
+        ball1.position.subtract(x1Change);
+        ball2.position.subtract(x2Change);
 
-        // let distance = Vector.distance(ball1.position, ball2.position);
-        // let overlapDistance = 0.5 * (distance - ball1.radius - ball2.radius);
-        // let overlapVector = Vector.subtract(ball1.position, ball2.position).divide(distance).multiply(overlapDistance);
+        ball1.velocity.subtract(v1Change);
+        ball2.velocity.subtract(v2Change);
 
-        // ball1.position.subtract(overlapVector);
-        // ball2.position.add(overlapVector);
+        // Friction
 
-        // let normal = Vector.subtract(ball2.position, ball1.position).divide(distance);
-        // let tangent = new Vector(-normal.y, normal.x);
-
-        // let dotTangent1 = Vector.dot(ball1.velocity, tangent);
-        // let dotTangent2 = Vector.dot(ball2.velocity, tangent);
-
-        // let dotNormal1 = Vector.dot(ball1.velocity, normal);
-        // let dotNormal2 = Vector.dot(ball2.velocity, normal);
-
-        // let momentum1 = dotNormal2;
-        // let momentum2 = dotNormal1;
-
-        // ball1.velocity = Vector.add(Vector.multiply(tangent, dotTangent1), Vector.multiply(normal, momentum1));
-        // ball2.velocity = Vector.add(Vector.multiply(tangent, dotTangent2), Vector.multiply(normal, momentum2));
-
-        ball1.velocity.multiply(1 - 5 * friction);
-        ball2.velocity.multiply(1 - 5 * friction);
+        ball1.velocity.multiply(1 - 5 * FRICTION);
+        ball2.velocity.multiply(1 - 5 * FRICTION);
 
     };
 
