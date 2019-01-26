@@ -9,7 +9,6 @@ const physics = require('./physics');
 const WIDTH = 1280;
 const HEIGHT = 720;
 const BALL_RADIUS = 20;
-const FRICTION = 0.01;
 
 let num = 0;
 
@@ -64,14 +63,14 @@ Game.prototype.update = function () {
     for (let i = 0; i < this.balls.length; i++) {
 
         const ball = this.balls[i];
-        physics.collideCushions(ball, WIDTH, HEIGHT, FRICTION);
+        physics.collideCushions(ball, WIDTH, HEIGHT);
 
         for (let j = i + 1; j < this.balls.length; j++) {
             const collidingBall = this.balls[j];
-            physics.collideBalls(ball, collidingBall, FRICTION);
+            physics.collideBalls(ball, collidingBall);
         };
 
-        let ballActive = physics.ballMotion(ball, FRICTION);
+        let ballActive = physics.ballMotion(ball);
 
         if (ballActive) this.active = true;
 
