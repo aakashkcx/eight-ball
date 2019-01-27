@@ -49,7 +49,7 @@ const events = function (io) {
 
             player.socket.on('shoot', (data) => {
                 if (player.inGame) {
-                    player.game.shoot(data.power, data.angle);
+                    player.game.shoot(player, data.power, data.angle);
                 };
             });
 
@@ -92,7 +92,7 @@ const gameLoop = setInterval(() => {
             } catch (err) {
                 console.log(err);
             };
-            
+
         };
 
     });

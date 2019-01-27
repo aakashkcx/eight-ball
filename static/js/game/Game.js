@@ -9,6 +9,7 @@ const Game = function (data) {
     this.cueBall = this.balls[0];
     this.stick = new Stick(this.cueBall.position);
     this.active = data.active;
+    this.turn = data.turn;
 
 };
 
@@ -18,6 +19,7 @@ Game.prototype.update = function (data) {
     this.cueBall = this.balls[0];
     this.stick.position = this.cueBall.position;
     this.active = data.active;
+    this.turn = data.turn;
 
 };
 
@@ -27,6 +29,6 @@ Game.prototype.draw = function () {
     canvas.drawTable();
 
     this.balls.forEach(ball => ball.draw());
-    if (!this.active) this.stick.draw();
+    if (!this.active && this.turn) this.stick.draw();
 
 };

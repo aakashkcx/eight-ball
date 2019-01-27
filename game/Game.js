@@ -24,8 +24,10 @@ const Game = function (player1, player2) {
     this.player2.game = this;
     this.player1.inGame = true;
     this.player2.inGame = true;
-    this.player1.playerNum = 1;
-    this.player2.playerNum = 2;
+    this.player1.num = 1;
+    this.player2.num = 2;
+    this.player1.score = 0;
+    this.player2.score = 0;
 
     this.balls = [
         [320, 360, 'white'],
@@ -52,17 +54,12 @@ const Game = function (player1, player2) {
     this.pockets = [[0, 0], [WIDTH / 2, 0], [WIDTH, 0], [0, HEIGHT], [WIDTH / 2, HEIGHT], [WIDTH, HEIGHT]]
         .map(params => ({ position: new Vector(params[0], params[1]), radius: BALL_RADIUS }));
 
-    this.player1.score = 0;
-    this.player2.score = 0;
-
     this.colourSelected = true;
-    this.redPlayer = player1;
-    this.yellowPlayer = player2;
-    this.player1.colour = 'red';
-    this.player2.colour = 'yellow';
+    this.redPlayer = 1;
+    this.yellowPlayer = 2;
 
-    this.turn = player1;
-    this.turnColour = 'red';
+    this.turn = 1;
+    this.lastTurn = 1;
 
     this.active = false;
 
@@ -98,9 +95,15 @@ Game.prototype.update = function () {
 };
 
 // Shoot class method
-Game.prototype.shoot = function (power, angle) {
-    this.cueBall.velocity = new Vector(power * Math.cos(angle), power * Math.sin(angle));
-    this.active = true;
+Game.prototype.shoot = function (player, power, angle) {
+    if (this.turn == player.num && !this.active) {
+        this.cueBall.velocity = new Vector(power * Math.cos(angle), power * Math.sin(angle));
+        this.active = true;
+        this.lastTurn = this.turn;
+        console.log(this.lastTurn);
+        this.turn = (this.turn % 2) + 1;
+        console.log(this.lastTurn);
+    };
 };
 
 // Data that is sent to the players when the game starts
@@ -110,7 +113,8 @@ Game.prototype.startData = function (player) {
         player: { id: player.id, username: player.username, score: player.score, colour: player.colour },
         opponent: { id: opponent.id, username: opponent.username, score: opponent.score, colour: opponent.colour },
         balls: this.balls.map(ball => { return { x: ball.position.x, y: ball.position.y, colour: ball.colour } }),
-        active: this.active
+        active: this.active,
+        turn: (player.num == this.turn)
     };
 };
 
@@ -121,7 +125,8 @@ Game.prototype.updateData = function (player) {
         player: { score: player.score, colour: player.colour },
         opponent: { score: opponent.score, colour: opponent.colour },
         balls: this.balls.map(ball => { return { x: ball.position.x, y: ball.position.y, colour: ball.colour } }),
-        active: this.active
+        active: this.active,
+        turn: (player.num == this.turn)
     };
 };
 
