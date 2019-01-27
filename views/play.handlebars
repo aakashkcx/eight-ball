@@ -32,13 +32,15 @@
         </div>
 
         <div id="game" class="text-center">
-            <div class="px-3 py-1 d-flex flex-row justify-content-between">
-                <div id="playerUsername" class="h3"></div>
-                <div id="playerId" class="text-muted"></div>
-                <div id="playerScore" class="h3 flex-fill"></div>
-                <div id="opponentScore" class="h3 flex-fill"></div>
-                <div id="opponentId" class="text-muted"></div>
-                <div id="opponentUsername" class="h3"></div>
+            <div class="row mx-0 px-3 py-1 border border-bottom-0">
+                <a id="player" href="#" class="col-3 text-left text-body overflow-hidden">
+                    <span id="playerUsername" class="h3"></span><span id="playerId" class="font-weight-light"></span>
+                </a>
+                <span id="playerScore" class="col-3 h3 text-center"></span>
+                <span id="opponentScore" class="col-3 h3 text-center"></span>
+                <a id="opponent" href="#" class="col-3 text-right text-body overflow-hidden">
+                    <span id="opponentId" class="font-weight-light"></span><span id="opponentUsername" class="h3"></span>
+                </a>
             </div>
             <canvas id="canvas" class=""></canvas>
         </div>
