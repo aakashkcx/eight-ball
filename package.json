@@ -19,15 +19,16 @@
   "homepage": "https://github.com/aakashkcx/eight-ball#readme",
   "dependencies": {
     "bcryptjs": "*",
+    "chalk": "*",
     "connect-flash": "*",
     "connect-sqlite3": "*",
     "express": "*",
     "express-handlebars": "*",
     "express-session": "*",
-    "express-validator": "*",
     "morgan": "*",
     "socket.io": "*",
-    "sqlite3": "*"
+    "sqlite3": "*",
+    "validator": "*"
   },
   "devDependencies": {
     "nodemon": "*"

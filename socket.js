@@ -3,6 +3,7 @@
 // Dependencies
 const http = require('http');
 const socket = require('socket.io');
+const chalk = require('chalk');
 
 // Imports
 const Player = require('./game/Player');
@@ -17,6 +18,9 @@ const players = new Map();
 const games = new Map();
 const queue = new Queue();
 
+// Log function
+const log = (string) => console.log(`${chalk.bold.underline.red(`GAME [${players.size}][${queue.size}][${games.size}]`)} ${chalk.yellow('»')} ${chalk.yellow(string)}`);
+
 // Socket events
 const events = function (io) {
     io.on('connection', (socket) => {
@@ -24,26 +28,26 @@ const events = function (io) {
 
             const player = new Player(socket);
             players.set(player.id, player);
-            console.log(`GAME [${players.size}][${queue.size}][${games.size}] » ${player.username}#${player.id} has connected - ${players.size} player(s) online.`);
+            log(`${player.username}#${player.id} has connected - ${players.size} player(s) online`);
 
             player.socket.on('disconnect', () => {
                 if (player.inQueue) queue.remove(player);
                 if (player.inGame) games.delete(player.game.id);
                 players.delete(player.id);
-                console.log(`GAME [${players.size}][${queue.size}][${games.size}] » ${player.username}#${player.id} has disconnected - ${players.size} player(s) online.`);
+                log(`${player.username}#${player.id} has disconnected - ${players.size} player(s) online`)
             });
 
             player.socket.on('queue-join', () => {
                 if (!player.inQueue && !player.inGame) {
                     queue.enqueue(player);
-                    console.log(`GAME [${players.size}][${queue.size}][${games.size}] » ${player.username}#${player.id} has joined the queue - ${queue.size} player(s) in queue.`);
+                    log(`${player.username}#${player.id} has joined the queue - ${queue.size} player(s) in queue`)
                 };
             });
 
             player.socket.on('queue-leave', () => {
                 if (player.inQueue) {
                     queue.remove(player);
-                    console.log(`GAME [${players.size}][${queue.size}][${games.size}] » ${player.username}#${player.id} has left the queue - ${queue.size} player(s) in queue.`);
+                    log(`${player.username}#${player.id} has left the queue - ${queue.size} player(s) in queue`)
                 };
             });
 
@@ -71,7 +75,7 @@ const gameLoop = setInterval(() => {
         const game = new Game(player1, player2);
         games.set(game.id, game);
 
-        console.log(`GAME [${players.size}][${queue.size}][${games.size}] » game#${game.id} has started - ${games.size} games(s) in progress.`);
+        log(`game#${game.id} has started - ${games.size} games(s) in progress`)
 
         player1.socket.emit('game-start', game.startData(player1));
         player2.socket.emit('game-start', game.startData(player2));

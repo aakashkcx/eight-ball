@@ -8,9 +8,9 @@
 const express = require('express');
 const expressHandlebars = require('express-handlebars');
 const expressSession = require('express-session');
-const expressValidator = require('express-validator');
 const flash = require('connect-flash');
 const logger = require('morgan');
+const chalk = require('chalk');
 
 // Imports
 const database = require('./database');
@@ -43,9 +43,6 @@ app.set('port', PORT);
 app.engine('handlebars', expressHandlebars());
 app.set('view engine', 'handlebars');
 
-// HTTP logger
-app.use(logger('dev'));
-
 // Body parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -60,9 +57,6 @@ const session = expressSession({
 });
 app.use(session);
 socket.session(session);
-
-// Validation
-app.use(expressValidator());
 
 // Authentication
 app.use(authentication);
@@ -84,6 +78,9 @@ app.use((req, res, next) => {
 // Static path
 app.use(express.static('static'));
 
+// HTTP logger
+app.use(logger('tiny'));
+
 // Routers
 app.use('/', indexRouter);
 app.use('/', usersRouter);
@@ -100,6 +97,6 @@ app.use((err, req, res, next) => res.render('error', { error: err }));
 
 // Listen to a port
 server.listen(PORT, () => {
-    console.log('Server started...');
-    console.log(`Listening on port ${PORT}...`);
+    console.log(chalk.bold.red('Server started...'));
+    console.log(chalk.bold.red(`Listening on port ${PORT}...`));
 });
