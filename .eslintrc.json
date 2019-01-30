@@ -12,31 +12,12 @@
     },
     "rules": {
         "no-console": "off",
-        "indent": [
-            "error",
-            4
-        ],
-        "linebreak-style": [
-            "error",
-            "windows"
-        ],
-        "quotes": [
-            "error",
-            "single"
-        ],
-        "semi": [
-            "error",
-            "always"
-        ]
+        "indent": ["error", 4, { "SwitchCase": 1 }],
+        "linebreak-style": ["error", "windows"],
+        "quotes": ["error", "single"],
+        "semi": ["error", "always"]
     },
     "overrides": [
-        {
-            "files": [
-                "static/js/**"
-            ],
-            "rules": {
-                "no-undef": "off"
-            }
-        }
+        { "files": [ "static/js/**" ], "rules": { "no-undef": "off" } }
     ]
 }

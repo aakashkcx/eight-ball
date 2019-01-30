@@ -11,18 +11,14 @@ events.ballPotted = function (game, ball) {
             if (game.colourSelected) {
                 game[`player${game.redPlayer}`].score++;
                 if (game.lastTurn == game.redPlayer) game.turn = game.redPlayer;
-            } else {
-
-            };
+            }
             game.balls.splice(game.balls.indexOf(ball), 1);
             break;
         case 'yellow':
             if (game.colourSelected) {
                 game[`player${game.yellowPlayer}`].score++;
                 if (game.lastTurn == game.yellowPlayer) game.turn = game.yellowPlayer;
-            } else {
-
-            };
+            }
             game.balls.splice(game.balls.indexOf(ball), 1);
             break;
         case 'white':
@@ -35,7 +31,7 @@ events.ballPotted = function (game, ball) {
             ball.velocity = new Vector(0, 0);
             ball.acceleration = new Vector(0, 0);
             break;
-    };
+    }
 };
 
 
