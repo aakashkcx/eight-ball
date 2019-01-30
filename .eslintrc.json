@@ -1,0 +1,42 @@
+{
+    "extends": "eslint:recommended",
+    "env": {
+        "es6": true,
+        "browser": true,
+        "node": true,
+        "shared-node-browser": true,
+        "jquery": true
+    },
+    "parserOptions": {
+        "ecmaVersion": 2018
+    },
+    "rules": {
+        "no-console": "off",
+        "indent": [
+            "error",
+            4
+        ],
+        "linebreak-style": [
+            "error",
+            "windows"
+        ],
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ]
+    },
+    "overrides": [
+        {
+            "files": [
+                "static/js/**"
+            ],
+            "rules": {
+                "no-undef": "off"
+            }
+        }
+    ]
+}
