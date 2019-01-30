@@ -65,6 +65,22 @@ User.findIdByUsername = function (username, callback) {
 
 };
 
+User.findIdByEmail = function (email, callback) {
+
+    let sql = `SELECT id
+               FROM user
+               WHERE email = ?;`;
+
+    database.get(sql, email, (err, user) => {
+        if (!err && user) {
+            callback(null, user.id);
+        } else {
+            callback(err, null);
+        }
+    });
+
+};
+
 User.findPasswordById = function (id, callback) {
 
     let sql = `SELECT password
