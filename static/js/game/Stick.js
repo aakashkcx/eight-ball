@@ -22,7 +22,7 @@ Stick.prototype.draw = function () {
     } else if (this.power > 0) {
         shoot(this.power, this.rotation);
         this.power = 0;
-    };
+    }
 
     let offset = new Vector(-this.width / 2, this.power + 50);
     canvas.drawRect(offset, Vector.add(this.position, TABLE), new Vector(this.width, this.height), 'bisque', this.rotation + Math.PI / 2);

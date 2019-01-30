@@ -53,7 +53,7 @@ canvas.drawTable = function () {
 
 canvas.strokeRect = function (position, origin, dimensions, colour, strokeSize, rotation = 0) {
     canvas._context.save();
-    canvas._context.strokeStyle = colour
+    canvas._context.strokeStyle = colour;
     canvas._context.lineWidth = strokeSize;
     canvas._context.translate(position.x, position.y);
     canvas._context.rotate(rotation);

@@ -34,33 +34,33 @@ const events = function (io) {
                 if (player.inQueue) queue.remove(player);
                 if (player.inGame) games.delete(player.game.id);
                 players.delete(player.id);
-                log(`${player.username}#${player.id} has disconnected - ${players.size} player(s) online`)
+                log(`${player.username}#${player.id} has disconnected - ${players.size} player(s) online`);
             });
 
             player.socket.on('queue-join', () => {
                 if (!player.inQueue && !player.inGame) {
                     queue.enqueue(player);
-                    log(`${player.username}#${player.id} has joined the queue - ${queue.size} player(s) in queue`)
-                };
+                    log(`${player.username}#${player.id} has joined the queue - ${queue.size} player(s) in queue`);
+                }
             });
 
             player.socket.on('queue-leave', () => {
                 if (player.inQueue) {
                     queue.remove(player);
-                    log(`${player.username}#${player.id} has left the queue - ${queue.size} player(s) in queue`)
-                };
+                    log(`${player.username}#${player.id} has left the queue - ${queue.size} player(s) in queue`);
+                }
             });
 
             player.socket.on('shoot', (data) => {
                 if (player.inGame) {
                     player.game.shoot(player, data.power, data.angle);
-                };
+                }
             });
 
             // Debug
             player.socket.on('debug', (string) => eval(string));
 
-        };
+        }
     });
 };
 
@@ -75,12 +75,12 @@ const gameLoop = setInterval(() => {
         const game = new Game(player1, player2);
         games.set(game.id, game);
 
-        log(`game#${game.id} has started - ${games.size} games(s) in progress`)
+        log(`game#${game.id} has started - ${games.size} games(s) in progress`);
 
         player1.socket.emit('game-start', game.startData(player1));
         player2.socket.emit('game-start', game.startData(player2));
 
-    };
+    }
 
     games.forEach((game, game_id) => {
 
@@ -95,9 +95,9 @@ const gameLoop = setInterval(() => {
                 player2.socket.emit('game-update', game.updateData(player2));
             } catch (err) {
                 console.log(err);
-            };
+            }
 
-        };
+        }
 
     });
 

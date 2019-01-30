@@ -26,7 +26,7 @@ physics.ballMotion = function (ball) {
     } else {
         ball.velocity = new Vector(0, 0);
         return false;
-    };
+    }
 
 };
 
@@ -42,7 +42,7 @@ physics.collideCushions = function (ball, width, height) {
 
         ball.velocity.multiply(1 - 10 * FRICTION);
 
-    };
+    }
 
     if (ball.position.x - ball.radius <= 0) {
 
@@ -53,7 +53,7 @@ physics.collideCushions = function (ball, width, height) {
 
         ball.velocity.multiply(1 - 10 * FRICTION);
 
-    };
+    }
 
     if (ball.position.y + ball.radius >= height) {
 
@@ -64,7 +64,7 @@ physics.collideCushions = function (ball, width, height) {
 
         ball.velocity.multiply(1 - 10 * FRICTION);
 
-    };
+    }
 
     if (ball.position.y - ball.radius <= 0) {
 
@@ -72,10 +72,10 @@ physics.collideCushions = function (ball, width, height) {
         ball.position.y += 0.5 * offset;
 
         ball.velocity.y *= -1;
-        
+
         ball.velocity.multiply(1 - 10 * FRICTION);
 
-    };
+    }
 
 };
 
@@ -128,7 +128,7 @@ physics.collideBalls = function (ball1, ball2) {
         ball1.velocity.multiply(1 - 5 * FRICTION);
         ball2.velocity.multiply(1 - 5 * FRICTION);
 
-    };
+    }
 
 };
 

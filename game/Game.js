@@ -78,7 +78,7 @@ Game.prototype.update = function () {
         for (let j = i + 1; j < this.balls.length; j++) {
             const collidingBall = this.balls[j];
             physics.collideBalls(ball, collidingBall);
-        };
+        }
 
         let ballActive = physics.ballMotion(ball);
 
@@ -87,10 +87,10 @@ Game.prototype.update = function () {
         this.pockets.forEach(pocket => {
             if (physics.doBallsOverlap(ball, pocket)) {
                 events.ballPotted(this, ball);
-            };
+            }
         });
 
-    };
+    }
 
 };
 
@@ -103,16 +103,16 @@ Game.prototype.shoot = function (player, power, angle) {
         console.log(this.lastTurn);
         this.turn = (this.turn % 2) + 1;
         console.log(this.lastTurn);
-    };
+    }
 };
 
 // Data that is sent to the players when the game starts
 Game.prototype.startData = function (player) {
-    let opponent = (player == this.player1 ? this.player2 : this.player1)
+    let opponent = (player == this.player1 ? this.player2 : this.player1);
     return {
         player: { id: player.id, username: player.username, score: player.score, colour: player.colour },
         opponent: { id: opponent.id, username: opponent.username, score: opponent.score, colour: opponent.colour },
-        balls: this.balls.map(ball => { return { x: ball.position.x, y: ball.position.y, colour: ball.colour } }),
+        balls: this.balls.map(ball => { return { x: ball.position.x, y: ball.position.y, colour: ball.colour }; }),
         active: this.active,
         turn: (player.num == this.turn)
     };
@@ -120,11 +120,11 @@ Game.prototype.startData = function (player) {
 
 // Data that is sent to the players each game update
 Game.prototype.updateData = function (player) {
-    let opponent = (player == this.player1 ? this.player2 : this.player1)
+    let opponent = (player == this.player1 ? this.player2 : this.player1);
     return {
         player: { score: player.score, colour: player.colour },
         opponent: { score: opponent.score, colour: opponent.colour },
-        balls: this.balls.map(ball => { return { x: ball.position.x, y: ball.position.y, colour: ball.colour } }),
+        balls: this.balls.map(ball => { return { x: ball.position.x, y: ball.position.y, colour: ball.colour }; }),
         active: this.active,
         turn: (player.num == this.turn)
     };

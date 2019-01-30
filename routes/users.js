@@ -27,7 +27,7 @@ router.get('/login', (req, res) => {
     } else {
         req.flash('error', 'You are already logged in.');
         res.redirect('/');
-    };
+    }
 
 });
 
@@ -51,18 +51,18 @@ router.post('/login', (req, res) => {
                         } else {
                             req.flash('danger', 'Incorrect password.');
                             res.redirect('/login/');
-                        };
+                        }
                     });
 
                 } else {
                     if (err) req.flash('danger', JSON.stringify(err));
                     res.redirect('/login/');
-                };
+                }
             });
         } else {
             req.flash('danger', 'User not found.');
             res.redirect('/login/');
-        };
+        }
     });
 
 });
@@ -82,7 +82,7 @@ router.get('/logout', (req, res) => {
     } else {
         req.flash('error', 'You are not logged in.');
         res.redirect('/login/');
-    };
+    }
 
 });
 
@@ -98,7 +98,7 @@ router.get('/register', (req, res) => {
     } else {
         req.flash('error', 'You are already logged in.');
         res.redirect('/');
-    };
+    }
 
 });
 
@@ -120,7 +120,7 @@ router.post('/register', (req, res) => {
         if (password.length >= 64) errors.push('Passwords canot be longer than 64 characters long.');
         if (password != passwordConfirm) errors.push('Passwords do not match.');
         if (firstname.length >= 16 || lastname.length >= 16) errors.push('Names cannot be longer than 16 characters');
-    };
+    }
 
     User.findIdByUsername(username, (err, user_id) => {
         if (!err && user_id) errors.push('Username already taken.');
@@ -143,7 +143,7 @@ router.post('/register', (req, res) => {
             } else {
                 req.flash('danger', errors);
                 res.redirect('/register/');
-            };
+            }
 
         });
     });
