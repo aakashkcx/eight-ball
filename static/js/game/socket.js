@@ -23,10 +23,10 @@ $('#btn-leave-queue').click(() => {
 socket.on('game-start', (data) => {
     game = new Game(data);
     $('#playerUsername').text(data.player.username);
-    $('#playerId').text('#' + data.player.id);
+    $('#playerUsername').attr('href', '/profile/' + data.player.id);
     $('#playerScore').text(data.player.score);
     $('#opponentUsername').text(data.opponent.username);
-    $('#opponentId').text('#' + data.opponent.id);
+    $('#opponentUsername').attr('href', '/profile/' + data.opponent.id);
     $('#opponentScore').text(data.opponent.score);
     showGame();
 });
