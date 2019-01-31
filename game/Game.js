@@ -96,13 +96,11 @@ Game.prototype.update = function () {
 
 // Shoot class method
 Game.prototype.shoot = function (player, power, angle) {
-    if (this.turn == player.num && !this.active) {
+    if (this.turn == player.num && !this.active && power <= 50) {
         this.cueBall.velocity = new Vector(power * Math.cos(angle), power * Math.sin(angle));
         this.active = true;
         this.lastTurn = this.turn;
-        console.log(this.lastTurn);
         this.turn = (this.turn % 2) + 1;
-        console.log(this.lastTurn);
     }
 };
 

@@ -1,4 +1,4 @@
-const MAX_POWER = 100;
+const MAX_POWER = 50;
 
 const Stick = function (position) {
 
@@ -18,7 +18,7 @@ Stick.prototype.draw = function () {
     this.rotation = Math.atan2(opposite, adjacent);
 
     if (canvas.mouse.down) {
-        if (this.power < MAX_POWER) this.power++;
+        if (this.power < MAX_POWER) this.power+= 0.5;
     } else if (this.power > 0) {
         shoot(this.power, this.rotation);
         this.power = 0;
