@@ -13,20 +13,25 @@ events.ballPotted = function (game, ball) {
 
             if (game.colourSelected) {
 
-                game.redPlayer.score++;
-                if (game.lastTurn == game.redPlayer) game.turn = game.redPlayer;
+                if (game.turn == game.redPlayer) {
+                    game.potted = true;
+                } else {
+                    game.foul = true;
+                }
 
             } else {
 
-                game.redPlayer = game.lastTurn;
+                game.redPlayer = game.turn;
                 game.redPlayer.colour = 'red';
                 game.yellowPlayer = (game.redPlayer == game.player1 ? game.player2 : game.player1);
                 game.yellowPlayer.colour = 'yellow';
-                
-                game.redPlayer.score++;
                 game.colourSelected = true;
-                game.turn = game.redPlayer;
+                game.potted = true;
+
             }
+
+            game.redPlayer.score++;
+
             game.balls.splice(game.balls.indexOf(ball), 1);
 
             break;
@@ -35,25 +40,31 @@ events.ballPotted = function (game, ball) {
 
             if (game.colourSelected) {
 
-                game.yellowPlayer.score++;
-                if (game.lastTurn == game.yellowPlayer) game.turn = game.yellowPlayer;
+                if (game.turn == game.yellowPlayer) {
+                    game.potted = true;
+                } else {
+                    game.foul = true;
+                }
 
             } else {
 
-                game.yellowPlayer = game.lastTurn;
+                game.yellowPlayer = game.turn;
                 game.yellowPlayer.colour = 'yellow';
                 game.redPlayer = (game.yellowPlayer == game.player1 ? game.player2 : game.player1);
                 game.redPlayer.colour = 'red';
-
-                game.yellowPlayer.score++;
                 game.colourSelected = true;
-                game.turn = game.yellowPlayer;
+                game.potted = true;
             }
+
+            game.yellowPlayer.score++;
+
             game.balls.splice(game.balls.indexOf(ball), 1);
 
             break;
 
         case 'white':
+
+            game.foul = true;
 
             ball.position = new Vector(320, 360);
             ball.velocity = new Vector(0, 0);

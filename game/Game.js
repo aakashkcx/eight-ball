@@ -28,7 +28,8 @@ const Game = function (player1, player2) {
     this.active = false;
 
     this.turn = this.player1;
-    this.lastTurn = this.player1;
+    this.foul = false;
+    this.potted = false;
 
     this.player1.score = 0;
     this.player2.score = 0;
@@ -38,8 +39,6 @@ const Game = function (player1, player2) {
     this.yellowPlayer = null;
     this.player1.colour = '';
     this.player2.colour = '';
-
-    this.foul = 0;
 
     this.balls = [
         [320, 360, 'white'],
@@ -96,6 +95,12 @@ Game.prototype.update = function () {
 
     if (!this.active) {
 
+        if (this.foul || !this.potted)
+            this.turn = (this.turn == this.player1 ? this.player2 : this.player1);
+
+        this.potted = false;
+        this.foul = false;
+
     }
 
 };
@@ -105,8 +110,6 @@ Game.prototype.shoot = function (player, power, angle) {
     if (this.turn == player && !this.active && power <= 100) {
         this.cueBall.velocity = new Vector(power * Math.cos(angle), power * Math.sin(angle));
         this.active = true;
-        this.lastTurn = this.turn;
-        this.turn = (this.turn == this.player1 ? this.player2 : this.player1);
     }
 };
 
