@@ -95,8 +95,8 @@ physics.collideBalls = function (ball1, ball2) {
         let x1Unit = Vector.divide(x1, dist);
         let x2Unit = Vector.divide(x2, dist);
 
-        let x1Change = Vector.multiply(x1Unit, overlap);
-        let x2Change = Vector.multiply(x2Unit, overlap);
+        let x1Change = Vector.multiply(x1Unit, overlap * 0.5);
+        let x2Change = Vector.multiply(x2Unit, overlap * 0.5);
 
         // Velocity
 
