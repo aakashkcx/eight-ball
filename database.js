@@ -28,9 +28,11 @@ database.serialize(() => {
     // Create game table query then run the query
     let game = `CREATE TABLE IF NOT EXISTS game (
                     id INTEGER PRIMARY KEY NOT NULL UNIQUE,
-                    player1id INTEGER NOT NULL,
-                    player2id INTEGER NOT NULL,
-                    player1score INTEGER DEFAULT 0,
+                    player1Id INTEGER NOT NULL,
+                    player2Id INTEGER NOT NULL,
+                    player1Username TEXT NOT NULL,
+                    player2Username TEXT NOT NULL,
+                    player1Score INTEGER DEFAULT 0,
                     player2Score INTEGER DEFAULT 0,
                     time TEXT DEFAULT CURRENT_TIMESTAMP
                 );`;
