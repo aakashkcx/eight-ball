@@ -26,16 +26,19 @@ socket.on('game-start', (data) => {
 
     game = new Game(data);
 
-    $('#playerUsername').text(data.player.username);
-    $('#opponentUsername').text(data.opponent.username);
-    $('#playerUsername').attr('href', `/profile/${data.player.id}`);
-    $('#opponentUsername').attr('href', `/profile/${data.opponent.id}`);
-    $('#playerScore').text(data.player.score);
-    $('#opponentScore').text(data.opponent.score);
-    $('#playerColour').css('background-color', data.player.colour);
-    $('#opponentColour').css('background-color', data.opponent.colour);
+    $('#playerUsername').text(game.player.username);
+    $('#opponentUsername').text(game.opponent.username);
 
-    if (data.turn) {
+    $('#playerUsername').attr('href', `/profile/${game.player.id}`);
+    $('#opponentUsername').attr('href', `/profile/${game.opponent.id}`);
+    
+    $('#playerScore').text(game.player.score);
+    $('#opponentScore').text(game.opponent.score);
+
+    $('#playerColour').css('background-color', game.player.colour);
+    $('#opponentColour').css('background-color', game.opponent.colour);
+
+    if (game.turn) {
         $('#playerUsername').css('text-decoration', 'underline');
         $('#playerScore').css('text-decoration', 'underline');
         $('#opponentUsername').css('text-decoration', 'none');
@@ -48,30 +51,48 @@ socket.on('game-start', (data) => {
     }
 
     showGame();
+
 });
 
 socket.on('game-update', (data) => {
 
     game.update(data);
 
-    $('#playerScore').text(data.player.score);
-    $('#opponentScore').text(data.opponent.score);
-    $('#playerColour').css('background-color', data.player.colour);
-    $('#opponentColour').css('background-color', data.opponent.colour);
+});
 
-    if (data.turn) {
+socket.on('game-updateTurn', (data) => {
+
+    game.updateTurn(data);
+
+    $('#playerScore').text(game.player.score);
+    $('#opponentScore').text(game.opponent.score);
+
+    $('#playerColour').css('background-color', game.player.colour);
+    $('#opponentColour').css('background-color', game.opponent.colour);
+
+    if (game.turn) {
+        $('#playerUsername').css('text-decoration', 'underline');
         $('#playerScore').css('text-decoration', 'underline');
+        $('#opponentUsername').css('text-decoration', 'none');
         $('#opponentScore').css('text-decoration', 'none');
     } else {
+        $('#playerUsername').css('text-decoration', 'none');
         $('#playerScore').css('text-decoration', 'none');
+        $('#opponentUsername').css('text-decoration', 'underline');
         $('#opponentScore').css('text-decoration', 'underline');
     }
 
 });
 
+socket.on('game-end', (data) => {
+    showGameEnd();
+    if (data.player.score > data.opponent.score) {
+        $('#endMsg').text('You have Won!');
+    } else {
+        $('#endMsg').text('You have Lost!');
+    }
+})
+
 const shoot = function (power, angle) {
     socket.emit('shoot', { power, angle });
 };
-
-// Debug
-const debug = (string) => socket.emit('debug', string);

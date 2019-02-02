@@ -31,34 +31,41 @@ const events = function (io) {
             log(`${player.username}#${player.id} has connected - ${players.size} player(s) online`);
 
             player.socket.on('disconnect', () => {
+
                 if (player.inQueue) queue.remove(player);
-                if (player.inGame) games.delete(player.game.id);
+
+                if (player.inGame) player.game.end(player == player.game.player1 ? player.game.player2 : player.game.player1);
+
                 players.delete(player.id);
                 log(`${player.username}#${player.id} has disconnected - ${players.size} player(s) online`);
+
             });
 
             player.socket.on('queue-join', () => {
+
                 if (!player.inQueue && !player.inGame) {
                     queue.enqueue(player);
                     log(`${player.username}#${player.id} has joined the queue - ${queue.size} player(s) in queue`);
                 }
+
             });
 
             player.socket.on('queue-leave', () => {
+
                 if (player.inQueue) {
                     queue.remove(player);
                     log(`${player.username}#${player.id} has left the queue - ${queue.size} player(s) in queue`);
                 }
+
             });
 
             player.socket.on('shoot', (data) => {
+
                 if (player.inGame) {
                     player.game.shoot(player, data.power, data.angle);
                 }
-            });
 
-            // Debug
-            player.socket.on('debug', (string) => eval(string));
+            });
 
         }
     });
@@ -74,7 +81,6 @@ const gameLoop = setInterval(() => {
 
         const game = new Game(player1, player2);
         games.set(game.id, game);
-
         log(`game#${game.id} has started - ${games.size} games(s) in progress`);
 
         player1.socket.emit('game-start', game.startData(player1));
@@ -86,16 +92,33 @@ const gameLoop = setInterval(() => {
 
         if (game.active) {
 
-            game.update();
+            let turn = game.update();
 
-            const { player1, player2 } = game;
+            game.player1.socket.emit('game-update', game.updateData());
+            game.player2.socket.emit('game-update', game.updateData());
+
+            if (turn) {
+                try {
+                    game.player1.socket.emit('game-updateTurn', game.turnData(game.player1));
+                    game.player2.socket.emit('game-updateTurn', game.turnData(game.player2));
+                } catch (err) {
+                    console.log(err);
+                }
+            }
+
+        }
+
+        if (game.ended) {
 
             try {
-                player1.socket.emit('game-update', game.updateData(player1));
-                player2.socket.emit('game-update', game.updateData(player2));
+                game.player1.socket.emit('game-end', game.endData(game.player1));
+                game.player2.socket.emit('game-end', game.endData(game.player2));
+                log(`game#${game_id} has ended - ${games.size} games(s) in progress`);
             } catch (err) {
                 console.log(err);
             }
+
+            games.delete(game_id);
 
         }
 

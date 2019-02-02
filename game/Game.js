@@ -5,6 +5,7 @@ const Ball = require('./Ball');
 const Vector = require('./Vector');
 const physics = require('./physics');
 const events = require('./events');
+const GameDB = require('../models/Game');
 
 // Constants
 const WIDTH = 1280;
@@ -26,6 +27,7 @@ const Game = function (player1, player2) {
     this.player2.inGame = true;
 
     this.active = false;
+    this.ended = false;
 
     this.turn = this.player1;
     this.foul = false;
@@ -93,10 +95,6 @@ Game.prototype.update = function () {
 
     }
 
-    if (this.player1.score >= 8 || this.player2.score >= 8) {
-        this.end();
-    }
-
     if (!this.active) {
 
         if (this.foul || !this.potted)
@@ -105,11 +103,35 @@ Game.prototype.update = function () {
         this.potted = false;
         this.foul = false;
 
+        if (this.player1.score >= 8) this.end(this.player1);
+        if (this.player2.score >= 8) this.end(this.player2);
+
+        return true;
+
     }
+
+    return false;
 
 };
 
-Game.prototype.end = function () {
+Game.prototype.end = function (winner) {
+
+    winner.score = 8;
+
+    GameDB.create(this.player1, this.player2, () => {
+
+        this.active = false;
+
+        this.player1.inGame = false;
+        this.player2.inGame = false;
+        delete this.player1.game;
+        delete this.player2.game;
+        delete this.player1.colour;
+        delete this.player2.colour;
+    
+        this.ended = true;
+
+    });
 
 };
 
@@ -127,22 +149,35 @@ Game.prototype.startData = function (player) {
     return {
         player: { id: player.id, username: player.username, score: player.score, colour: player.colour },
         opponent: { id: opponent.id, username: opponent.username, score: opponent.score, colour: opponent.colour },
-        balls: this.balls.map(ball => { return { x: ball.position.x, y: ball.position.y, colour: ball.colour }; }),
         active: this.active,
-        turn: (player == this.turn)
+        turn: (player == this.turn),
+        balls: this.balls.map(ball => { return { x: ball.position.x, y: ball.position.y, colour: ball.colour }; })
     };
 };
 
 // Data that is sent to the players each game update
-Game.prototype.updateData = function (player) {
+Game.prototype.updateData = function () {
+    return {
+        active: this.active,
+        balls: this.balls.map(ball => { return { x: ball.position.x, y: ball.position.y, colour: ball.colour }; })
+    };
+};
+
+Game.prototype.turnData = function (player) {
     let opponent = (player == this.player1 ? this.player2 : this.player1);
     return {
         player: { score: player.score, colour: player.colour },
         opponent: { score: opponent.score, colour: opponent.colour },
-        balls: this.balls.map(ball => { return { x: ball.position.x, y: ball.position.y, colour: ball.colour }; }),
-        active: this.active,
         turn: (player == this.turn)
     };
+};
+
+Game.prototype.endData = function (player) {
+    let opponent = (player == this.player1 ? this.player2 : this.player1);
+    return {
+        player: { score: player.score },
+        opponent: { score: opponent.score },
+    }
 };
 
 // Export game class
