@@ -74,9 +74,13 @@ events.ballPotted = function (game, ball) {
 
         case 'black':
 
-            ball.position = new Vector(1030, 360);
-            ball.velocity = new Vector(0, 0);
-            ball.acceleration = new Vector(0, 0);
+            if (game.turn.score >= 7) {
+                game.turn.score = 8;
+            } else {
+                (game.turn == game.player1 ? game.player2: game.player1).score = 8;
+            }
+
+            game.balls.splice(game.balls.indexOf(ball), 1);
 
             break;
 

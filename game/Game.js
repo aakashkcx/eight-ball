@@ -93,6 +93,10 @@ Game.prototype.update = function () {
 
     }
 
+    if (this.player1.score >= 8 || this.player2.score >= 8) {
+        this.end();
+    }
+
     if (!this.active) {
 
         if (this.foul || !this.potted)
@@ -102,6 +106,10 @@ Game.prototype.update = function () {
         this.foul = false;
 
     }
+
+};
+
+Game.prototype.end = function () {
 
 };
 

@@ -10,48 +10,61 @@ const gameloop = function () {
 };
 window.requestAnimationFrame(gameloop);
 
-$('#btn-join-queue').click(() => {
+$('#btn-joinQueue').click(() => {
     socket.emit('queue-join');
     showQueue();
 });
 
-$('#btn-leave-queue').click(() => {
+$('#btn-leaveQueue').click(() => {
     socket.emit('queue-leave');
     showMenu();
 });
 
+$('#btn-showMenu').click(showMenu);
+
 socket.on('game-start', (data) => {
+
     game = new Game(data);
 
     $('#playerUsername').text(data.player.username);
     $('#opponentUsername').text(data.opponent.username);
-    $('#playerUsername').attr('href', '/profile/' + data.player.id);
-    $('#opponentUsername').attr('href', '/profile/' + data.opponent.id);
+    $('#playerUsername').attr('href', `/profile/${data.player.id}`);
+    $('#opponentUsername').attr('href', `/profile/${data.opponent.id}`);
     $('#playerScore').text(data.player.score);
     $('#opponentScore').text(data.opponent.score);
+    $('#playerColour').css('background-color', data.player.colour);
+    $('#opponentColour').css('background-color', data.opponent.colour);
 
-    if (data.player.colour && data.opponent.colour) {
-        $('#colours').css('display', 'flex');
-        $('#playerColour').css('background-color', data.player.colour);
-        $('#opponentColour').css('background-color', data.opponent.colour);
+    if (data.turn) {
+        $('#playerUsername').css('text-decoration', 'underline');
+        $('#playerScore').css('text-decoration', 'underline');
+        $('#opponentUsername').css('text-decoration', 'none');
+        $('#opponentScore').css('text-decoration', 'none');
     } else {
-        $('#colours').css('display', 'none');
+        $('#playerUsername').css('text-decoration', 'none');
+        $('#playerScore').css('text-decoration', 'none');
+        $('#opponentUsername').css('text-decoration', 'underline');
+        $('#opponentScore').css('text-decoration', 'underline');
     }
 
     showGame();
 });
 
 socket.on('game-update', (data) => {
+
     game.update(data);
+
     $('#playerScore').text(data.player.score);
     $('#opponentScore').text(data.opponent.score);
+    $('#playerColour').css('background-color', data.player.colour);
+    $('#opponentColour').css('background-color', data.opponent.colour);
 
-    if (data.player.colour && data.opponent.colour) {
-        $('#colours').css('display', 'flex');
-        $('#playerColour').css('background-color', data.player.colour);
-        $('#opponentColour').css('background-color', data.opponent.colour);
+    if (data.turn) {
+        $('#playerScore').css('text-decoration', 'underline');
+        $('#opponentScore').css('text-decoration', 'none');
     } else {
-        $('#colours').css('display', 'none');
+        $('#playerScore').css('text-decoration', 'none');
+        $('#opponentScore').css('text-decoration', 'underline');
     }
 
 });
