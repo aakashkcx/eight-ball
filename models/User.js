@@ -97,4 +97,20 @@ User.findPasswordById = function (id, callback) {
 
 };
 
+User.queryIdByUsername = function (username, callback) {
+
+    let sql = `SELECT id
+               FROM user
+               WHERE username LIKE ?;`;
+
+    database.get(sql, '%' + username + '%', (err, user) => {
+        if (!err && user) {
+            callback(null, user.id);
+        } else {
+            callback(err, null);
+        }
+    });
+
+};
+
 module.exports = User;
