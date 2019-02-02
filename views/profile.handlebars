@@ -23,7 +23,7 @@
             <div class="col-xl-4 col-lg-5 col-md-6">
                 <form action="/profile/" method="GET">
                     <div class="input-group">
-                        <input type="text" name="username" class="form-control" placeholder="Search" >
+                        <input type="text" name="username" class="form-control" placeholder="Search">
                         <div class="input-group-append">
                             <button class="btn btn-secondary" type="submit"><i class="fas fa-search"></i></button>
                         </div>
@@ -58,61 +58,31 @@
 
             <div class="col-md-7 col-lg-8">
 
+                {{#each games}}
                 <div class="card mt-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <span>Game#1</span>
-                        <span>12:12:12 12/12/12</span>
+                        <span>Game#{{this.id}}</span>
+                        <span>{{this.time}}</span>
                     </div>
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0">Player1</h5>
-                            <h5 class="mb-0">Player2</h5>
+                            <h5 class="mb-0">{{this.player1Username}}</h5>
+                            <h5 class="mb-0">{{this.player2Username}}</h5>
                         </div>
                         <div class="d-flex justify-content-between align-items-top">
-                            <span class="text-muted">#1</span>
-                            <h2 class="">15 - 10</h2>
-                            <span class="text-muted">#2</span>
+                            <span class="text-muted">#{{this.player1Id}}</span>
+                            <h2 class="">{{this.player1Score}} - {{this.player2Score}}</h2>
+                            <span class="text-muted">#{{this.player2Id}}</span>
                         </div>
                     </div>
                 </div>
+                {{else}}
+                <div class="text-center border rounded px-3 py-5 mt-4">You have not played any games yet.</div>
+                {{/each}}
 
-                <div class="card mt-4">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <span>Game#1</span>
-                        <span>12:12:12 12/12/12</span>
-                    </div>
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0">Player1</h5>
-                            <h5 class="mb-0">Player2</h5>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-top">
-                            <span class="text-muted">#1</span>
-                            <h2 class="">15 - 10</h2>
-                            <span class="text-muted">#2</span>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="card mt-4">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <span>Game#1</span>
-                        <span>12:12:12 12/12/12</span>
-                    </div>
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0">Player1</h5>
-                            <h5 class="mb-0">Player2</h5>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-top">
-                            <span class="text-muted">#1</span>
-                            <h2 class="">15 - 10</h2>
-                            <span class="text-muted">#2</span>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="card mt-4">
+                {{!-- <div class="card mt-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <span>Game#1</span>
                         <span>12:12:12 12/12/12</span>
@@ -128,61 +98,7 @@
                             <span class="text-muted">#2</span>
                         </div>
                     </div>
-                </div>
-
-                <div class="card mt-4">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <span>Game#1</span>
-                        <span>12:12:12 12/12/12</span>
-                    </div>
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0">Player1</h5>
-                            <h5 class="mb-0">Player2</h5>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-top">
-                            <span class="text-muted">#1</span>
-                            <h2 class="">15 - 10</h2>
-                            <span class="text-muted">#2</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card mt-4">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <span>Game#1</span>
-                        <span>12:12:12 12/12/12</span>
-                    </div>
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0">Player1</h5>
-                            <h5 class="mb-0">Player2</h5>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-top">
-                            <span class="text-muted">#1</span>
-                            <h2 class="">15 - 10</h2>
-                            <span class="text-muted">#2</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card mt-4">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <span>Game#1</span>
-                        <span>12:12:12 12/12/12</span>
-                    </div>
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0">Player1</h5>
-                            <h5 class="mb-0">Player2</h5>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-top">
-                            <span class="text-muted">#1</span>
-                            <h2 class="">15 - 10</h2>
-                            <span class="text-muted">#2</span>
-                        </div>
-                    </div>
-                </div>
+                </div> --}}
 
             </div>
 

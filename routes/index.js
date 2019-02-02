@@ -5,6 +5,7 @@ const express = require('express');
 
 // Imports
 const User = require('../models/User');
+const Game = require('../models/Game');
 const socket = require('../socket');
 
 // Initialise route handler
@@ -18,17 +19,19 @@ const router = express.Router();
 router.get('/', (req, res) => {
 
     if (req.authenticated) {
-
-        res.render('dashboard', {
-            playersOnline: socket.playersOnline,
-            playersInQueue: socket.playersInQueue,
-            gamesInProgress: socket.gamesInProgress
+        Game.findLatestGameByUserId(req.user_id, (err, game) => {
+            if (!err) {
+                res.render('dashboard', {
+                    playersOnline: socket.playersOnline,
+                    playersInQueue: socket.playersInQueue,
+                    gamesInProgress: socket.gamesInProgress,
+                    game
+                });
+            }
         });
-
+        
     } else {
-
         res.render('login', { login: req.session.login });
-
     }
 
 });
@@ -41,14 +44,10 @@ router.get('/', (req, res) => {
 router.get('/play', (req, res) => {
 
     if (req.authenticated) {
-
         res.render('play');
-
     } else {
-
         req.flash('error', 'You are not logged in.');
         res.redirect('/login/');
-
     }
 
 });
@@ -73,14 +72,10 @@ router.get('/profile', (req, res, next) => {
     } else {
 
         if (req.authenticated) {
-
             res.redirect(`/profile/${req.user_id}`);
-
         } else {
-
             req.flash('error', 'You are not logged in.');
             res.redirect('/login/');
-
         }
 
     }
@@ -92,13 +87,13 @@ router.get('/profile/:id', (req, res, next) => {
 
     User.findUserById(req.params.id, (err, user) => {
         if (!err && user) {
-
-            res.render('profile', { profile: user });
-
+            Game.findGamesByUserId(user.id, (err, games) => {
+                if (!err && games) {
+                    res.render('profile', { profile: user, games });
+                }
+            });
         } else {
-
             next('User not found.');
-
         }
     });
 

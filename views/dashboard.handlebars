@@ -44,23 +44,27 @@
             </div>
             <div class="col-md mt-4 mt-md-0">
                 <a href="/profile/" class="btn btn-dark btn-lg btn-block py-4"><h3>Profile</h3></a>
+                {{#if game}}
                 <div class="card mt-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <span>Game#1</span>
-                        <span>12:12:12 12/12/12</span>
+                        <span>Game#{{game.id}}</span>
+                        <span>{{game.time}}</span>
                     </div>
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0">Player1</h5>
-                            <h5 class="mb-0">Player2</h5>
+                            <h5 class="mb-0">{{game.player1Username}}</h5>
+                            <h5 class="mb-0">{{game.player2Username}}</h5>
                         </div>
                         <div class="d-flex justify-content-between align-items-top">
-                            <span class="text-muted">#1</span>
-                        <h2 class="">15 - 10</h2>
-                            <span class="text-muted">#2</span>
+                            <span class="text-muted">#{{game.player1Id}}</span>
+                            <h2 class="">{{game.player1Score}} - {{game.player2Score}}</h2>
+                            <span class="text-muted">#{{game.player2Id}}</span>
                         </div>
                     </div>
                 </div>
+                {{else}}
+                <div class="text-center border rounded px-3 py-5 mt-4">You have not played any games yet.</div>
+                {{/if}}
             </div>
         </div>
 
