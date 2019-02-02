@@ -36,8 +36,8 @@ const Game = function (player1, player2) {
     this.colourSelected = false;
     this.redPlayer = null;
     this.yellowPlayer = null;
-    this.player1.colour = "";
-    this.player2.colour = "";
+    this.player1.colour = '';
+    this.player2.colour = '';
 
     this.foul = 0;
 

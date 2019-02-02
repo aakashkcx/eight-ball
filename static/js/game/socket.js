@@ -22,23 +22,38 @@ $('#btn-leave-queue').click(() => {
 
 socket.on('game-start', (data) => {
     game = new Game(data);
+
     $('#playerUsername').text(data.player.username);
-    $('#playerUsername').attr('href', '/profile/' + data.player.id);
-    $('#playerUsername').css('color', data.player.colour);
-    $('#playerScore').text(data.player.score);
     $('#opponentUsername').text(data.opponent.username);
+    $('#playerUsername').attr('href', '/profile/' + data.player.id);
     $('#opponentUsername').attr('href', '/profile/' + data.opponent.id);
-    $('#opponentUsername').css('color', data.opponent.colour);
+    $('#playerScore').text(data.player.score);
     $('#opponentScore').text(data.opponent.score);
+
+    if (data.player.colour && data.opponent.colour) {
+        $('#colours').css('display', 'flex');
+        $('#playerColour').css('background-color', data.player.colour);
+        $('#opponentColour').css('background-color', data.opponent.colour);
+    } else {
+        $('#colours').css('display', 'none');
+    }
+
     showGame();
 });
 
 socket.on('game-update', (data) => {
     game.update(data);
     $('#playerScore').text(data.player.score);
-    $('#playerUsername').css('color', data.player.colour);
     $('#opponentScore').text(data.opponent.score);
-    $('#opponentUsername').css('color', data.opponent.colour);
+
+    if (data.player.colour && data.opponent.colour) {
+        $('#colours').css('display', 'flex');
+        $('#playerColour').css('background-color', data.player.colour);
+        $('#opponentColour').css('background-color', data.opponent.colour);
+    } else {
+        $('#colours').css('display', 'none');
+    }
+
 });
 
 const shoot = function (power, angle) {
