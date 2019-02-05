@@ -113,13 +113,13 @@ router.post('/register', (req, res) => {
     if (!username || !email || !password || !passwordConfirm || !firstname || !lastname) {
         errors.push('All fields must be filled.');
     } else {
-        if (username.length >= 16) errors.push('Usernames cannot be longer than 16 characters.');
+        if (username.length > 16) errors.push('Usernames cannot be longer than 16 characters.');
         if (!validator.isEmail(email)) errors.push('Email is not valid.');
-        if (email.length >= 64) errors.push('Emails cannot be longer than 64 characters.');
-        if (password.length <= 8) errors.push('Passwords must be at least 8 characters long.');
-        if (password.length >= 64) errors.push('Passwords canot be longer than 64 characters long.');
+        if (email.length > 64) errors.push('Emails cannot be longer than 64 characters.');
+        if (password.length < 8) errors.push('Passwords must be at least 8 characters long.');
+        if (password.length > 64) errors.push('Passwords canot be longer than 64 characters long.');
         if (password != passwordConfirm) errors.push('Passwords do not match.');
-        if (firstname.length >= 16 || lastname.length >= 16) errors.push('Names cannot be longer than 16 characters');
+        if (firstname.length > 16 || lastname.length > 16) errors.push('Names cannot be longer than 16 characters');
     }
 
     User.findIdByUsername(username, (err, user_id) => {
