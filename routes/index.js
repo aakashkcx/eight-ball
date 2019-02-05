@@ -61,7 +61,7 @@ router.get('/profile', (req, res, next) => {
 
     if (req.query.username) {
 
-        User.findIdByUsername(req.query.username, (err, id) => {
+        User.queryIdByUsername(req.query.username, (err, id) => {
             if (!err && id) {
                 res.redirect(`/profile/${id}`);
             } else {
