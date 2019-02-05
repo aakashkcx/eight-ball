@@ -33,6 +33,21 @@ User.create = function (user, callback) {
 
 };
 
+User.delete = function (id, callback) {
+
+    let sql = `DELETE FROM user
+               WHERE id = ?;`;
+    
+    database.run(sql, id, (err) => {
+        if (!err) {
+            callback(null);
+        } else {
+            callback(err);
+        }
+    });
+
+};
+
 User.findUserById = function (id, callback) {
 
     let sql = `SELECT id, username, email, firstname, lastname, rating
