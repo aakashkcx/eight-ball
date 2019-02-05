@@ -55,7 +55,7 @@ router.post('/login', (req, res) => {
                     });
 
                 } else {
-                    if (err) req.flash('danger', JSON.stringify(err));
+                    req.flash('danger', JSON.stringify(err));
                     res.redirect('/login/');
                 }
             });
@@ -75,10 +75,10 @@ router.post('/login', (req, res) => {
 router.get('/logout', (req, res) => {
 
     if (req.authenticated) {
-        log(`${req.user.username}#${req.user_id} has logged out`);
         req.logout();
         req.flash('success', 'You have successfully logged out.');
         res.redirect('/');
+        log(`${req.user.username}#${req.user_id} has logged out`);
     } else {
         req.flash('error', 'You are not logged in.');
         res.redirect('/login/');
@@ -146,6 +146,43 @@ router.post('/register', (req, res) => {
             }
 
         });
+    });
+
+});
+
+/**
+ * Delete Route
+ */
+
+//POST
+router.post('/delete', (req, res) => {
+
+    let { password } = req.body;
+
+    User.findPasswordById(req.user_id, (err, hash) => {
+        if (!err && hash) {
+            authentication.comparePassword(password, hash, (match) => {
+                if (match) {
+                    User.delete(req.user_id, (err) => {
+                        if (!err) {
+                            req.logout();
+                            req.flash('success', 'Your account has been deleted.');
+                            res.redirect('/');
+                            log(`${username}#${user_id} has deleted their account`);
+                        } else {
+                            req.flash('danger', JSON.stringify(err));
+                            res.redirect(`/profile/${req.user_id}`);
+                        }
+                    })
+                } else {
+                    req.flash('danger', 'Incorrect password.');
+                    res.redirect(`/profile/${req.user_id}`);
+                }
+            });
+        } else {
+            req.flash('danger', JSON.stringify(err));
+            res.redirect(`/profile/${req.user_id}`);
+        }
     });
 
 });
