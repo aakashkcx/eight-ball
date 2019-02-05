@@ -49,8 +49,7 @@
                         </div>
                         <div class="list-group-item">{{profile.firstname}} {{profile.lastname}}</div>
                         <div class="list-group-item">{{profile.email}}</div>
-                        <button class="list-group-item list-group-item-action list-group-item-primary">Edit Profile</button>
-                        <button class="list-group-item list-group-item-action list-group-item-danger">Delete Profile</button>
+                        <button type="button" data-toggle="modal" data-target="#deleteProfile" class="list-group-item list-group-item-action list-group-item-danger">Delete Profile</button>
                     </div>
                 </div>
 
@@ -66,8 +65,8 @@
                     </div>
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0">{{this.player1Username}}</h5>
-                            <h5 class="mb-0">{{this.player2Username}}</h5>
+                            <a href="/profile/{{this.player1Id}}" class="h5 mb-0 text-body">{{this.player1Username}}</a>
+                            <a href="/profile/{{this.player2Id}}" class="h5 mb-0 text-body">{{this.player2Username}}</a>
                         </div>
                         <div class="d-flex justify-content-between align-items-top">
                             <span class="text-muted">#{{this.player1Id}}</span>
@@ -80,30 +79,31 @@
                 <div class="text-center border rounded px-3 py-5 mt-4">You have not played any games yet.</div>
                 {{/each}}
 
-
-
-                {{!-- <div class="card mt-4">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <span>Game#1</span>
-                        <span>12:12:12 12/12/12</span>
-                    </div>
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0">Player1</h5>
-                            <h5 class="mb-0">Player2</h5>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-top">
-                            <span class="text-muted">#1</span>
-                            <h2 class="">15 - 10</h2>
-                            <span class="text-muted">#2</span>
-                        </div>
-                    </div>
-                </div> --}}
-
             </div>
 
         </div>
 
+    </div>
+
+    <div class="modal fade" id="deleteProfile" tabindex="-1" role="dialog" aria-labelledby="deleteProfileLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form action="/delete/" method="post">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteProfileLabel">Delete Profile</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="text-danger">Are you sure you want to delete your profile?</p>
+                        <input type="password" name="password" placeholder="Password" class="form-control">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-danger">Delete Profile</button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 
     {{> js}}

@@ -55,7 +55,7 @@ router.post('/login', (req, res) => {
                     });
 
                 } else {
-                    if (err) req.flash('danger', JSON.stringify(err));
+                    req.flash('danger', JSON.stringify(err));
                     res.redirect('/login/');
                 }
             });
@@ -75,10 +75,10 @@ router.post('/login', (req, res) => {
 router.get('/logout', (req, res) => {
 
     if (req.authenticated) {
-        log(`${req.user.username}#${req.user_id} has logged out`);
         req.logout();
         req.flash('success', 'You have successfully logged out.');
         res.redirect('/');
+        log(`${req.user.username}#${req.user_id} has logged out`);
     } else {
         req.flash('error', 'You are not logged in.');
         res.redirect('/login/');
@@ -113,13 +113,13 @@ router.post('/register', (req, res) => {
     if (!username || !email || !password || !passwordConfirm || !firstname || !lastname) {
         errors.push('All fields must be filled.');
     } else {
-        if (username.length >= 16) errors.push('Usernames cannot be longer than 16 characters.');
+        if (username.length > 16) errors.push('Usernames cannot be longer than 16 characters.');
         if (!validator.isEmail(email)) errors.push('Email is not valid.');
-        if (email.length >= 64) errors.push('Emails cannot be longer than 64 characters.');
-        if (password.length <= 8) errors.push('Passwords must be at least 8 characters long.');
-        if (password.length >= 64) errors.push('Passwords canot be longer than 64 characters long.');
+        if (email.length > 64) errors.push('Emails cannot be longer than 64 characters.');
+        if (password.length < 8) errors.push('Passwords must be at least 8 characters long.');
+        if (password.length > 64) errors.push('Passwords canot be longer than 64 characters long.');
         if (password != passwordConfirm) errors.push('Passwords do not match.');
-        if (firstname.length >= 16 || lastname.length >= 16) errors.push('Names cannot be longer than 16 characters');
+        if (firstname.length > 16 || lastname.length > 16) errors.push('Names cannot be longer than 16 characters');
     }
 
     User.findIdByUsername(username, (err, user_id) => {
@@ -146,6 +146,43 @@ router.post('/register', (req, res) => {
             }
 
         });
+    });
+
+});
+
+/**
+ * Delete Route
+ */
+
+//POST
+router.post('/delete', (req, res) => {
+
+    let { password } = req.body;
+
+    User.findPasswordById(req.user_id, (err, hash) => {
+        if (!err && hash) {
+            authentication.comparePassword(password, hash, (match) => {
+                if (match) {
+                    User.delete(req.user_id, (err) => {
+                        if (!err) {
+                            req.logout();
+                            req.flash('success', 'Your account has been deleted.');
+                            res.redirect('/');
+                            log(`${username}#${user_id} has deleted their account`);
+                        } else {
+                            req.flash('danger', JSON.stringify(err));
+                            res.redirect(`/profile/${req.user_id}`);
+                        }
+                    })
+                } else {
+                    req.flash('danger', 'Incorrect password.');
+                    res.redirect(`/profile/${req.user_id}`);
+                }
+            });
+        } else {
+            req.flash('danger', JSON.stringify(err));
+            res.redirect(`/profile/${req.user_id}`);
+        }
     });
 
 });
