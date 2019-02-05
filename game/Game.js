@@ -32,6 +32,7 @@ const Game = function (player1, player2) {
     this.turn = this.player1;
     this.foul = false;
     this.potted = false;
+    this.firstHit = null;
 
     this.player1.score = 0;
     this.player2.score = 0;
@@ -121,6 +122,7 @@ Game.prototype.end = function (winner) {
     GameDB.create(this.player1, this.player2, () => {
 
         this.active = false;
+        this.ended = true;
 
         this.player1.inGame = false;
         this.player2.inGame = false;
@@ -128,8 +130,6 @@ Game.prototype.end = function (winner) {
         delete this.player2.game;
         delete this.player1.colour;
         delete this.player2.colour;
-    
-        this.ended = true;
 
     });
 
