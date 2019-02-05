@@ -85,11 +85,11 @@ router.get('/profile', (req, res, next) => {
 // GET
 router.get('/profile/:id', (req, res, next) => {
 
-    User.findUserById(req.params.id, (err, user) => {
-        if (!err && user) {
-            Game.findGamesByUserId(user.id, (err, games) => {
+    User.findUserById(req.params.id, (err, profile) => {
+        if (!err && profile) {
+            Game.findGamesByUserId(profile.id, (err, games) => {
                 if (!err && games) {
-                    res.render('profile', { profile: user, games });
+                    res.render('profile', { profile, games });
                 }
             });
         } else {

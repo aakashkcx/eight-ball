@@ -14,61 +14,39 @@ const authentication = function (req, res, next) {
 
     if (req.session.user_id) {
 
-        req.user_id = req.session.user_id;
-        req.session.authenticated = true;
-        req.authenticated = true;
-
-        res.locals.authenticated = true;
-
-        User.findUserById(req.user_id, (err, user) => {
-            if (!err) {
+        User.findUserById(req.session.user_id, (err, user) => {
+            if (!err && user) {
 
                 req.user_id = req.session.user_id;
-
-                req.session.authenticated = true;
                 req.authenticated = true;
+                req.user = user;
 
-                req.session.user = user;
-                req.user = req.session.user;
-
+                res.locals.user_id = req.session.user_id;
                 res.locals.authenticated = true;
-                res.locals.user = req.user;
-                res.locals.user_id = req.user_id;
+                res.locals.user = user;
 
                 next();
 
             } else {
 
                 delete req.user_id;
-
-                req.session.authenticated = false;
                 req.authenticated = false;
-
-                delete req.session.user;
                 delete req.user;
 
+                delete res.locals.user_id;
                 res.locals.authenticated = false;
                 delete res.locals.user;
 
-                next(err);
+                next('User account not found.');
 
             }
         });
 
     } else {
 
-        delete req.user_id;
-        delete req.session.user_id;
-
-        req.session.authenticated = false;
         req.authenticated = false;
 
-        delete req.user;
-        delete req.session.user;
-
         res.locals.authenticated = false;
-        delete res.locals.user;
-        delete res.locals.user_id;
 
         next();
 
