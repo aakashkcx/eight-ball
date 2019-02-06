@@ -90,9 +90,8 @@ router.get('/profile/:id', (req, res, next) => {
     User.findUserById(req.params.id, (err, profile) => {
         if (!err && profile) {
 
-            let gamesPlayed = profile.wins + profile.losses
-            let winRate = (gamesPlayed != 0 ? profile.wins * 100 / gamesPlayed + "%" : 'N/A');
-            console.log(winRate)
+            let gamesPlayed = profile.wins + profile.losses;
+            let winRate = (gamesPlayed != 0 ? Math.round(profile.wins * 100 / gamesPlayed) + '%' : 'N/A');
 
             Game.findGamesByUserId(profile.id, (err, games) => {
                 if (!err && games) {
