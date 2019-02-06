@@ -29,7 +29,7 @@ router.get('/', (req, res) => {
                 });
             }
         });
-        
+
     } else {
         res.render('login', { login: req.session.login });
     }
@@ -85,11 +85,18 @@ router.get('/profile', (req, res, next) => {
 // GET
 router.get('/profile/:id', (req, res, next) => {
 
+    let selfProfile = req.params.id == req.user_id;
+
     User.findUserById(req.params.id, (err, profile) => {
         if (!err && profile) {
+
+            let gamesPlayed = profile.wins + profile.losses
+            let winRate = (gamesPlayed != 0 ? profile.wins * 100 / gamesPlayed + "%" : 'N/A');
+            console.log(winRate)
+
             Game.findGamesByUserId(profile.id, (err, games) => {
                 if (!err && games) {
-                    res.render('profile', { profile, games });
+                    res.render('profile', { profile, games, selfProfile, winRate });
                 }
             });
         } else {

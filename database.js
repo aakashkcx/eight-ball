@@ -21,7 +21,8 @@ database.serialize(() => {
                     password TEXT NOT NULL,
                     firstname TEXT NOT NULL,
                     lastname TEXT NOT NULL,
-                    rating INTEGER DEFAULT 1500
+                    wins INTEGER DEFAULT 0,
+                    losses INTEGER DEFAULT 0
                 );`;
     database.run(user);
 

@@ -50,7 +50,7 @@ User.delete = function (id, callback) {
 
 User.findUserById = function (id, callback) {
 
-    let sql = `SELECT id, username, email, firstname, lastname, rating
+    let sql = `SELECT id, username, email, firstname, lastname, wins, losses
                FROM user
                WHERE id = ?;`;
 
@@ -127,5 +127,38 @@ User.queryIdByUsername = function (username, callback) {
     });
 
 };
+
+User.incrementWins = function (id, callback) {
+
+    let sql = `UPDATE user
+               SET wins = wins + 1
+               WHERE id = ?;`;
+
+    database.run(sql, id, (err) => {
+        if (!err) {
+            callback(null);
+        } else {
+            callback(err);
+        }
+    });
+
+};
+
+User.incrementLosses = function (id, callback) {
+
+    let sql = `UPDATE user
+               SET losses = losses + 1
+               WHERE id = ?;`;
+
+    database.run(sql, id, (err) => {
+        if (!err) {
+            callback(null);
+        } else {
+            callback(err);
+        }
+    });
+
+};
+
 
 module.exports = User;

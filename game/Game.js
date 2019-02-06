@@ -6,6 +6,7 @@ const Vector = require('./Vector');
 const physics = require('./physics');
 const events = require('./events');
 const GameDB = require('../models/Game');
+const UserDB = require('../models/User')
 
 // Constants
 const WIDTH = 1280;
@@ -118,18 +119,31 @@ Game.prototype.update = function () {
 Game.prototype.end = function (winner) {
 
     winner.score = 8;
+    let loser = (winner == this.player1 ? this.player2 : this.player1);
 
     GameDB.create(this.player1, this.player2, () => {
 
-        this.active = false;
-        this.ended = true;
+        UserDB.incrementWins(winner.id, (err) => {
 
-        this.player1.inGame = false;
-        this.player2.inGame = false;
-        delete this.player1.game;
-        delete this.player2.game;
-        delete this.player1.colour;
-        delete this.player2.colour;
+            if (err) console.log(err);
+
+            UserDB.incrementLosses(loser.id, (err) => {
+
+                if (err) console.log(err);
+
+                this.active = false;
+                this.ended = true;
+            
+                this.player1.inGame = false;
+                this.player2.inGame = false;
+                delete this.player1.game;
+                delete this.player2.game;
+                delete this.player1.colour;
+                delete this.player2.colour;
+
+            });
+
+        });
 
     });
 
