@@ -60,13 +60,13 @@
                 {{#if game}}
                 <div class="card mt-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <span>Game#{{game.id}}</span>
+                        <span>Latest Game: Game#{{game.id}}</span>
                         <span>{{game.time}}</span>
                     </div>
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0">{{game.player1Username}}</h5>
-                            <h5 class="mb-0">{{game.player2Username}}</h5>
+                            <a href="/profile/{{game.player1Id}}" class="h5 mb-0 text-body">{{game.player1Username}}</a>
+                            <a href="/profile/{{game.player2Id}}" class="h5 mb-0 text-body">{{game.player2Username}}</a>
                         </div>
                         <div class="d-flex justify-content-between align-items-top">
                             <span class="text-muted">#{{game.player1Id}}</span>
