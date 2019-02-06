@@ -80,7 +80,7 @@
                 </div>
                 {{else}}
                 <div class="text-center border rounded px-3 py-5 mt-4">
-                    <p>You have not played any games yet.</p>
+                    <p>{{#if selfProfile}}You have{{else}}{{profile.username}} has{{/if}} not played any games yet.</p>
                     <a href="/play/">Play a game now</a>
                 </div>
                 {{/each}}
