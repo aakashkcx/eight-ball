@@ -43,6 +43,12 @@ app.set('port', PORT);
 app.engine('handlebars', expressHandlebars());
 app.set('view engine', 'handlebars');
 
+// Static path
+app.use(express.static('static'));
+
+// HTTP logger
+app.use(logger('tiny'));
+
 // Body parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -74,12 +80,6 @@ app.use((req, res, next) => {
 /**
  * Routing
  */
-
-// Static path
-app.use(express.static('static'));
-
-// HTTP logger
-app.use(logger('tiny'));
 
 // Routers
 app.use('/', indexRouter);
