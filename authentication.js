@@ -25,6 +25,9 @@ const authentication = function (req, res, next) {
                 res.locals.authenticated = true;
                 res.locals.user = user;
 
+                req.session.authenticated = true;
+                req.session.user = user;
+
                 next();
 
             } else {
@@ -37,7 +40,7 @@ const authentication = function (req, res, next) {
                 res.locals.authenticated = false;
                 delete res.locals.user;
 
-                next('User account not found.');
+                next(JSON.stringify(err));
 
             }
         });
