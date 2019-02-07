@@ -1,9 +1,5 @@
 'use strict';
 
-/**
- * Imports
- */
-
 // Dependencies
 const express = require('express');
 const expressHandlebars = require('express-handlebars');
@@ -21,9 +17,7 @@ const authentication = require('./authentication');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 
-/**
- * Initialise
- */
+
 
 // Initialise app
 const app = express();
@@ -35,25 +29,21 @@ const server = socket(app);
 const PORT = process.env.PORT || 8080;
 app.set('port', PORT);
 
-/**
- * Middlewares
- */
-
-// View engine
+// Set view engine
 app.engine('handlebars', expressHandlebars());
 app.set('view engine', 'handlebars');
 
-// Static path
+// Set static path
 app.use(express.static('static'));
 
-// HTTP logger
+// HTTP logger middleware
 app.use(logger('tiny'));
 
-// Body parser
+// Body parser middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Session
+// Session middleware
 const session = expressSession({
     store: database.sessionStore(expressSession),
     secret: 'secret',
@@ -64,11 +54,12 @@ const session = expressSession({
 app.use(session);
 socket.session(session);
 
-// Authentication
+// Authentication middleware
 app.use(authentication);
 
-// Flash messaging
+// Flash messaging middleware
 app.use(flash());
+// Custom middleware to load preset flash messages into local variables
 app.use((req, res, next) => {
     res.locals.flash_success = req.flash('success');
     res.locals.flash_danger = req.flash('danger');
@@ -76,10 +67,6 @@ app.use((req, res, next) => {
     res.locals.flash_error = req.flash('error');
     next();
 });
-
-/**
- * Routing
- */
 
 // Routers
 app.use('/', indexRouter);
@@ -91,11 +78,9 @@ app.get('*', (req, res, next) => next('Page not found.'));
 // Error handler
 app.use((err, req, res, next) => res.render('error', { error: err }));
 
-/**
- * Start the server
- */
 
-// Listen to a port
+
+// Start the server
 server.listen(PORT, () => {
     console.log(chalk.bold.red('Server started...'));
     console.log(chalk.bold.red(`Listening on port ${PORT}...`));
