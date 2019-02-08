@@ -168,7 +168,7 @@ router.post('/delete', (req, res) => {
                             req.logout();
                             req.flash('success', 'Your account has been deleted.');
                             res.redirect('/');
-                            log(`${username}#${user_id} has deleted their account`);
+                            log(`${req.user.username}#${req.user_id} has deleted their account`);
                         } else {
                             req.flash('danger', JSON.stringify(err));
                             res.redirect(`/profile/${req.user_id}`);
