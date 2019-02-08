@@ -11,14 +11,18 @@ const socket = require('../socket');
 // Initialise route handler
 const router = express.Router();
 
+/**
+ * Index route
+ */
+
 // GET '/' route
 router.get('/', (req, res, next) => {
 
     // If the request is authenticated
     if (req.authenticated) {
-        // Find the latest game played by the user
+        // Find the latest game played by the user from the database
         Game.findLatestGameByUserId(req.user_id, (err, game) => {
-            // If there is no error
+            // If there was no error
             if (!err) {
                 // Render the dashboard page and pass in game status and the latest game played
                 res.render('dashboard', {
@@ -27,7 +31,7 @@ router.get('/', (req, res, next) => {
                     gamesInProgress: socket.gamesInProgress,
                     game
                 });
-            // If there is an error send it to the error handler
+            // If there was an error send it to the error handler
             } else {
                 next(JSON.stringify(err));
             }
@@ -35,11 +39,15 @@ router.get('/', (req, res, next) => {
 
     // If the request is not authenticated
     } else {
-        // Render the login page and pass in the saved login infomation
+        // Render the login page and pass in saved login infomation
         res.render('login', { login: req.session.login });
     }
 
 });
+
+/**
+ * Play route
+ */
 
 // GET '/play' route
 router.get('/play', (req, res, next) => {
@@ -51,11 +59,15 @@ router.get('/play', (req, res, next) => {
     // If the request is not authenticated
     } else {
         // Send an error flash message and redirect to the login route
-        req.flash('error', 'You are not logged in.');
+        req.flash('danger', 'You are not logged in.');
         res.redirect('/login/');
     }
 
 });
+
+/**
+ * Profile route
+ */
 
 // GET '/profile'
 router.get('/profile', (req, res, next) => {
@@ -65,10 +77,10 @@ router.get('/profile', (req, res, next) => {
 
         // Query the database for a user with a username similar to the query
         User.queryIdByUsername(req.query.username, (err, id) => {
-            // If a user is found and there is no error
+            // If a user was found and there was no error
             if (!err && id) {
                 res.redirect(`/profile/${id}`);
-            // If no user is found or there is an error
+            // If no user was found or there was an error
             } else {
                 // Send a suitable message to the error handler
                 next(err ? JSON.stringify(err) : 'User not found.');
@@ -85,7 +97,7 @@ router.get('/profile', (req, res, next) => {
         // If the request is not authenticated
         } else {
             // Send an error flash message and redirect to the login route
-            req.flash('error', 'You are not logged in.');
+            req.flash('danger', 'You are not logged in.');
             res.redirect('/login/');
         }
 
@@ -98,7 +110,7 @@ router.get('/profile/:id', (req, res, next) => {
 
     // Find a user in the database with the id specified in the url
     User.findUserById(req.params.id, (err, profile) => {
-        // If a user is found and there is no error
+        // If a user was found and there was no error
         if (!err && profile) {
 
             // Check if the profile being requested is the request's own profile
@@ -108,17 +120,17 @@ router.get('/profile/:id', (req, res, next) => {
 
             // Find the games played by the user
             Game.findGamesByUserId(profile.id, (err, games) => {
-                // If there is no error
+                // If there was no error
                 if (!err) {
                     // Render the profile page and pass in the profile data, games played, whether its a self profile and the winrate
                     res.render('profile', { profile, games, selfProfile, winRate });
-                // If there is an error send it to the error handler
+                // If there was an error send it to the error handler
                 } else {
                     next(JSON.stringify(err));
                 }
             });
 
-        // If no user if found or there is an error
+        // If no user was found or there was an error
         } else {
             // Send a suitable message to the error handler
             next(err ? JSON.stringify(err) : 'User not found.');

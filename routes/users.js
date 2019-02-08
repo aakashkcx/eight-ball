@@ -16,51 +16,71 @@ const router = express.Router();
 const log = (string) => console.log(`${chalk.bold.underline.cyan('USER')} ${chalk.yellow('»')} ${chalk.green(string)}`);
 
 /**
- * Login Route
+ * Login route
  */
 
-// GET
+// GET '/login' route
 router.get('/login', (req, res) => {
 
+    // If request is not authenticated
     if (!req.authenticated) {
+        // Render the login page and pass in saved login infomation
         res.render('login', { login: req.session.login });
+    // If request is already authenticated
     } else {
-        req.flash('error', 'You are already logged in.');
+        // Send an error flash message and redirect to the dashboard
+        req.flash('danger', 'You are already logged in.');
         res.redirect('/');
     }
 
 });
 
-// POST
+// POST '/login' route
 router.post('/login', (req, res) => {
 
+    // Extract data from the request's body
     let { username, password } = req.body;
+    // Save the username to saved login data
     req.session.login = { username };
 
+    // Find a user in the database with the username entered
     User.findIdByUsername(username, (err, user_id) => {
+        // If a user was found and there was no error
         if (!err && user_id) {
+            // Find the password for the user from the database
             User.findPasswordById(user_id, (err, hash) => {
-                if (!err && hash) {
+                // If there was no error
+                if (!err) {
 
+                    // Compare the password entered to the hash from the database
                     authentication.comparePassword(password, hash, (match) => {
+                        // If the password matches the hash
                         if (match) {
+                            // Login the user
                             req.login(user_id);
+                            log(`${username}#${user_id} has logged in`);
+                            // Send a successful login flash message and redirect to the dashboard 
                             req.flash('success', 'You have logged in.');
                             res.redirect('/');
-                            log(`${username}#${user_id} has logged in`);
+                        // If the password does not match the hash
                         } else {
+                            // Send an error flash message and reload the login page
                             req.flash('danger', 'Incorrect password.');
                             res.redirect('/login/');
                         }
                     });
 
+                // If there was an error
                 } else {
+                    // Send an error flash message and reload the login page
                     req.flash('danger', JSON.stringify(err));
                     res.redirect('/login/');
                 }
             });
+        // If no user was found or there was an error
         } else {
-            req.flash('danger', 'User not found.');
+            // Send a suitable error flash message and reload the login page
+            req.flash('danger', err ? JSON.stringify(err) : 'User not found.');
             res.redirect('/login/');
         }
     });
@@ -68,48 +88,59 @@ router.post('/login', (req, res) => {
 });
 
 /**
- * Logout Route
+ * Logout route
  */
 
-// GET
+// GET '/logout' route
 router.get('/logout', (req, res) => {
 
+    // If the request is authenticated
     if (req.authenticated) {
+        // Logout the user
         req.logout();
+        log(`${req.user.username}#${req.user_id} has logged out`);
+        // Send a successful logout flash message and redirect to the index route
         req.flash('success', 'You have successfully logged out.');
         res.redirect('/');
-        log(`${req.user.username}#${req.user_id} has logged out`);
+    // If the request is not authenticated
     } else {
-        req.flash('error', 'You are not logged in.');
+        // Send an error flash message and redirect to the login route
+        req.flash('danger', 'You are not logged in.');
         res.redirect('/login/');
     }
 
 });
 
 /**
- * Register Route
+ * Register route
  */
 
-// GET
+// GET '/register' route
 router.get('/register', (req, res) => {
 
+    // If the request is not authenticated
     if (!req.authenticated) {
+        // Render the register page and pass in saved registration info
         res.render('register', { register: req.session.register });
+    // If the request is already authenticated
     } else {
-        req.flash('error', 'You are already logged in.');
+        // Send an error flash message and redirect to the dashboard
+        req.flash('danger', 'You are already logged in.');
         res.redirect('/');
     }
 
 });
 
-// POST
+// POST '/register' route
 router.post('/register', (req, res) => {
 
+    // Extract data from the request's body
     let { username, email, password, passwordConfirm, firstname, lastname } = req.body;
+    // Save the form data to saved registration data
     req.session.register = { username, email, firstname, lastname };
 
+    // Data validation
     let errors = [];
-
     if (!username || !email || !password || !passwordConfirm || !firstname || !lastname) {
         errors.push('All fields must be filled.');
     } else {
@@ -122,25 +153,37 @@ router.post('/register', (req, res) => {
         if (firstname.length > 16 || lastname.length > 16) errors.push('Names cannot be longer than 16 characters');
     }
 
+    // Check if the username has already been taken in the database
     User.findIdByUsername(username, (err, user_id) => {
         if (!err && user_id) errors.push('Username already taken.');
+        // Check if the email has already been used in the database
         User.findIdByEmail(email, (err, user_id) => {
             if (!err && user_id) errors.push('Email already taken.');
 
+            // If there are no errors
             if (errors.length == 0) {
+                // Create a new user in the database
                 User.create({ username, email, password, firstname, lastname }, (err, user_id) => {
-                    if (!err && user_id) {
+                    // If there was no error
+                    if (!err) {
+                        // Login the user
                         req.login(user_id);
+                        log(`${username}#${user_id} has registered`);
+                        // Save the username to saved login data
                         req.session.login = { username };
+                        // Send a 
                         req.flash('success', 'You have successfully registered.');
                         res.redirect('/');
-                        log(`${username}#${user_id} has registered`);
+                    // If there was an error
                     } else {
+                        // Send a successful registration flash message and redirect to the dashboard
                         req.flash('danger', JSON.stringify(err));
                         res.redirect('/register/');
                     }
                 });
+            // If there are validation errors
             } else {
+                // Send the validation errors to the user and reload the register page
                 req.flash('danger', errors);
                 res.redirect('/register/');
             }
@@ -151,16 +194,20 @@ router.post('/register', (req, res) => {
 });
 
 /**
- * Delete Route
+ * Delete route
  */
 
-//POST
+//POST '/delete' route
 router.post('/delete', (req, res) => {
 
+    // Extract password from the request's body
     let { password } = req.body;
 
+    // Find the password of the user from the database
     User.findPasswordById(req.user_id, (err, hash) => {
-        if (!err && hash) {
+        // If there was no error
+        if (!err) {
+            // Compare the password entered to the hash from the database
             authentication.comparePassword(password, hash, (match) => {
                 if (match) {
                     User.delete(req.user_id, (err) => {
@@ -179,7 +226,9 @@ router.post('/delete', (req, res) => {
                     res.redirect(`/profile/${req.user_id}`);
                 }
             });
+        // If there was an error
         } else {
+            // Send a error flash message and reload their profile page
             req.flash('danger', JSON.stringify(err));
             res.redirect(`/profile/${req.user_id}`);
         }
