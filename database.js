@@ -28,8 +28,6 @@ database.serialize(() => {
                         id INTEGER PRIMARY KEY NOT NULL UNIQUE,
                         player1Id INTEGER NOT NULL,
                         player2Id INTEGER NOT NULL,
-                        player1Username TEXT NOT NULL,
-                        player2Username TEXT NOT NULL,
                         player1Score INTEGER DEFAULT 0,
                         player2Score INTEGER DEFAULT 0,
                         time TEXT DEFAULT CURRENT_TIMESTAMP
