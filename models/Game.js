@@ -48,7 +48,8 @@ Game.findLatestGameByUserId = function (id, callback) {
                JOIN user user1 ON game.player1Id = user1.id
                JOIN user user2 ON game.player2Id = user2.id
                WHERE game.player1Id = ? OR game.player2Id = ?
-               ORDER BY game.time DESC;`;
+               ORDER BY game.time DESC
+               LIMIT 1;`;
 
     database.get(sql, [id, id], (err, game) => {
         if (!err) {
