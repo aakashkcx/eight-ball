@@ -118,7 +118,7 @@ User.queryIdByUsername = function (username, callback) {
                FROM user
                WHERE username LIKE ?;`;
 
-    database.get(sql, '%' + username + '%', (err, user) => {
+    database.get(sql, `%${username}%`, (err, user) => {
         if (!err && user) {
             callback(null, user.id);
         } else {

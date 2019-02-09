@@ -121,7 +121,9 @@ Game.prototype.end = function (winner) {
     winner.score = 8;
     let loser = (winner == this.player1 ? this.player2 : this.player1);
 
-    GameDB.create(this.player1, this.player2, () => {
+    GameDB.create(this.player1, this.player2, (err) => {
+
+        if (err) console.log(err);
 
         UserDB.incrementWins(winner.id, (err) => {
 
