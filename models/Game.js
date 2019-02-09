@@ -26,8 +26,8 @@ Game.findGamesByUserId = function (id, callback) {
 
     let sql = `SELECT game.id, game.player1Id, game.player2Id, game.player1Score, game.player2Score, game.time, user1.username AS player1Username, user2.username AS player2Username
                FROM game
-               JOIN user user1 ON game.player1Id = user1.id
-               JOIN user user2 ON game.player2Id = user2.id
+               LEFT JOIN user AS user1 ON user1.id = game.player1Id
+               LEFT JOIN user AS user2 ON user2.id = game.player2Id
                WHERE game.player1Id = ? OR game.player2Id = ?
                ORDER BY game.time DESC;`;
 
@@ -45,8 +45,8 @@ Game.findLatestGameByUserId = function (id, callback) {
 
     let sql = `SELECT game.id, game.player1Id, game.player2Id, game.player1Score, game.player2Score, game.time, user1.username AS player1Username, user2.username AS player2Username
                FROM game
-               JOIN user user1 ON game.player1Id = user1.id
-               JOIN user user2 ON game.player2Id = user2.id
+               LEFT JOIN user AS user1 ON user1.id = game.player1Id
+               LEFT JOIN user AS user2 ON user2.id = game.player2Id
                WHERE game.player1Id = ? OR game.player2Id = ?
                ORDER BY game.time DESC
                LIMIT 1;`;
