@@ -209,19 +209,28 @@ router.post('/delete', (req, res) => {
         if (!err) {
             // Compare the password entered to the hash from the database
             authentication.comparePassword(password, hash, (match) => {
+                // If the password matches the hash
                 if (match) {
+                    // Delete the user record from the database
                     User.delete(req.user_id, (err) => {
+                        // If there was no error
                         if (!err) {
+                            // Logout the user
                             req.logout();
+                            log(`${req.user.username}#${req.user_id} has deleted their account`);
+                            // Send a successful logout flash message and redirect to the index route
                             req.flash('success', 'Your account has been deleted.');
                             res.redirect('/');
-                            log(`${req.user.username}#${req.user_id} has deleted their account`);
+                        // If there was an error
                         } else {
+                            // Send a error flash message and reload their profile page
                             req.flash('danger', JSON.stringify(err));
                             res.redirect(`/profile/${req.user_id}`);
                         }
-                    })
+                    });
+                // If the password does not match the hash
                 } else {
+                    // Send a error flash message and reload their profile page
                     req.flash('danger', 'Incorrect password.');
                     res.redirect(`/profile/${req.user_id}`);
                 }
