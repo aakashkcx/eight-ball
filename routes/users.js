@@ -148,7 +148,7 @@ router.post('/register', (req, res) => {
         if (!validator.isEmail(email)) errors.push('Email is not valid.');
         if (email.length > 64) errors.push('Emails cannot be longer than 64 characters.');
         if (password.length < 8) errors.push('Passwords must be at least 8 characters long.');
-        if (password.length > 64) errors.push('Passwords canot be longer than 64 characters long.');
+        if (password.length > 64) errors.push('Passwords cannot be longer than 64 characters long.');
         if (password != passwordConfirm) errors.push('Passwords do not match.');
         if (firstname.length > 16 || lastname.length > 16) errors.push('Names cannot be longer than 16 characters');
     }
