@@ -6,7 +6,7 @@ const Vector = require('./Vector');
 const physics = require('./physics');
 const events = require('./events');
 const GameDB = require('../models/Game');
-const UserDB = require('../models/User')
+const UserDB = require('../models/User');
 
 // Constants
 const WIDTH = 1280;
@@ -193,7 +193,7 @@ Game.prototype.endData = function (player) {
     return {
         player: { score: player.score },
         opponent: { score: opponent.score },
-    }
+    };
 };
 
 // Export game class

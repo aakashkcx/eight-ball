@@ -91,7 +91,7 @@ socket.on('game-end', (data) => {
     } else {
         $('#endMsg').text('You have Lost!');
     }
-})
+});
 
 const shoot = function (power, angle) {
     socket.emit('shoot', { power, angle });
