@@ -9,7 +9,6 @@ const database = require('../database');
 const User = {};
 
 User.create = function (user, callback) {
-
     bcrypt.hash(user.password, 10, (err, hash) => {
         if (!err) {
 
@@ -30,7 +29,6 @@ User.create = function (user, callback) {
             callback(err, null);
         }
     });
-
 };
 
 User.delete = function (id, callback) {
