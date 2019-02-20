@@ -13,14 +13,30 @@ canvas._context = canvas._DOM.getContext('2d');
 canvas._DOM.width = canvas.width = WIDTH + 2 * BORDER;
 canvas._DOM.height = canvas.height = HEIGHT + 2 * BORDER;
 
+
 canvas.mouse = {};
 canvas.mouse.position = new Vector();
 canvas.mouse.down = false;
 
+canvas._DOM.ontouchmove = function (e) {
+    e.preventDefault();
+    let rect = canvas._DOM.getBoundingClientRect();
+    canvas.mouse.position.x = (e.touches[0].pageX - rect.left - window.scrollX) * canvas.width / rect.width - BORDER;
+    canvas.mouse.position.y = (e.touches[0].pageY - rect.top - window.scrollY) * canvas.height / rect.height - BORDER;
+};
+
+canvas._DOM.ontouchstart = function () {
+    canvas.mouse.down = true;
+};
+
+canvas._DOM.ontouchend = function () {
+    canvas.mouse.down = false;
+};
+
 document.onmousemove = function (e) {
     let rect = canvas._DOM.getBoundingClientRect();
-    canvas.mouse.position.x = (e.pageX - rect.left) * canvas.width / rect.width - BORDER;
-    canvas.mouse.position.y = (e.pageY - rect.top) * canvas.height / rect.height - BORDER;
+    canvas.mouse.position.x = (e.pageX - rect.left - window.scrollX) * canvas.width / rect.width - BORDER;
+    canvas.mouse.position.y = (e.pageY - rect.top - window.scrollY) * canvas.height / rect.height - BORDER;
 };
 
 canvas._DOM.onmousedown = function () {
@@ -30,6 +46,7 @@ canvas._DOM.onmousedown = function () {
 canvas._DOM.onmouseup = function () {
     canvas.mouse.down = false;
 };
+
 
 canvas.clear = function () {
     canvas._context.clearRect(0, 0, canvas.width, canvas.height);
