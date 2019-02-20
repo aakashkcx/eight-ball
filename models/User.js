@@ -35,7 +35,7 @@ User.delete = function (id, callback) {
 
     let sql = `DELETE FROM user
                WHERE id = ?;`;
-    
+
     database.run(sql, id, (err) => {
         if (!err) {
             callback(null);
@@ -66,7 +66,8 @@ User.findIdByUsername = function (username, callback) {
 
     let sql = `SELECT id
                FROM user
-               WHERE username = ?;`;
+               WHERE username = ?
+               COLLATE NOCASE;`;
 
     database.get(sql, username, (err, user) => {
         if (!err && user) {
@@ -82,7 +83,8 @@ User.findIdByEmail = function (email, callback) {
 
     let sql = `SELECT id
                FROM user
-               WHERE email = ?;`;
+               WHERE email = ?
+               COLLATE NOCASE;`;
 
     database.get(sql, email, (err, user) => {
         if (!err && user) {
@@ -116,7 +118,7 @@ User.queryIdByUsername = function (username, callback) {
                FROM user
                WHERE username LIKE ?;`;
 
-    database.get(sql, `%${username}%`, (err, user) => {
+    database.get(sql, '%' + username + '%', (err, user) => {
         if (!err && user) {
             callback(null, user.id);
         } else {
