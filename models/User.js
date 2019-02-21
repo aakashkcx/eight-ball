@@ -48,7 +48,7 @@ User.delete = function (id, callback) {
 
 User.findAllUsers = function (callback) {
 
-    let sql = `SELECT id, username, wins, losses
+    let sql = `SELECT id, username, email, firstname, lastname, wins, losses
                FROM user
                ORDER BY wins DESC;`;
 
