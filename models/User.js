@@ -46,6 +46,22 @@ User.delete = function (id, callback) {
 
 };
 
+User.findAllUsers = function (callback) {
+
+    let sql = `SELECT id, username, wins, losses
+               FROM user
+               ORDER BY wins DESC;`;
+
+    database.all(sql, (err, users) => {
+        if (!err) {
+            callback(null, users);
+        } else {
+            callback(err, null);
+        }
+    });
+
+};
+
 User.findUserById = function (id, callback) {
 
     let sql = `SELECT id, username, email, firstname, lastname, wins, losses
@@ -159,6 +175,5 @@ User.incrementLosses = function (id, callback) {
     });
 
 };
-
 
 module.exports = User;
