@@ -151,17 +151,16 @@ router.get('/leaderboard', (req, res, next) => {
         if (!err) {
 
             users.map((user) => {
+                user.self = user.id == req.user_id;
                 user.gamesPlayed = user.wins + user.losses;
                 user.winRate = user.gamesPlayed ? Math.round(user.wins * 100 / user.gamesPlayed) + '%' : 'N/A';
             });
-
-            console.log(users)
 
             res.render('leaderboard', {users});
 
         } else {
 
-            next(err);
+            next(JSON.stringify(err));
 
         }
 
