@@ -9,13 +9,12 @@
         <div class="collapse navbar-collapse" id="navbar">
             <div class="navbar-nav ml-auto">
                 {{#if authenticated}}
+                <a class="nav-item nav-link {{#if active_leaderboard}}active{{/if}}" href="/leaderboard/">Leaderboard</a>
                 <a class="nav-item nav-link {{#if active_play}}active{{/if}}" href="/play/">Play</a>
                 <div class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle {{#if active_profile}}active{{/if}}" href="" id="dropdown"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{user.username}}</a>
                     <div class="dropdown-menu" aria-labelledby="dropdown">
-                        {{!-- <a class="dropdown-item" href="/profile/">{{user.username}}<small class="text-muted">#{{user.id}}</small><br><mark>{{user.rating}}</mark></a>
-                        <div class="dropdown-divider"></div> --}}
                         <a class="dropdown-item" href="/profile/">Profile</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="/logout/">Logout</a>

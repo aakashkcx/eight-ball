@@ -116,14 +116,15 @@ router.get('/profile/:id', (req, res, next) => {
             // Check if the profile being requested is the request's own profile
             let selfProfile = req.params.id == req.user_id;
             // Caluclate the user's winrate
-            let winRate = profile.wins + profile.losses != 0 ? `${Math.round(profile.wins / (profile.wins + profile.losses) * 100)}%` : 'N/A';
+            let gamesPlayed = profile.wins + profile.losses;
+            let winRate = gamesPlayed ? Math.round(profile.wins * 100 / gamesPlayed) + '%' : 'N/A';
 
             // Find the games played by the user
             Game.findGamesByUserId(profile.id, (err, games) => {
                 // If there was no error
                 if (!err) {
                     // Render the profile page and pass in the profile data, games played, whether its a self profile and the winrate
-                    res.render('profile', { profile, games, selfProfile, winRate });
+                    res.render('profile', { profile, games, selfProfile, gamesPlayed, winRate });
                 // If there was an error send it to the error handler
                 } else {
                     next(JSON.stringify(err));
@@ -135,6 +136,35 @@ router.get('/profile/:id', (req, res, next) => {
             // Send a suitable message to the error handler
             next(err ? JSON.stringify(err) : 'User not found.');
         }
+    });
+
+});
+
+/**
+ * Leaderboard route
+ */
+
+router.get('/leaderboard', (req, res, next) => {
+
+    User.findAllUsers((err, users) => {
+
+        if (!err) {
+
+            users.map((user) => {
+                user.gamesPlayed = user.wins + user.losses;
+                user.winRate = user.gamesPlayed ? Math.round(user.wins * 100 / user.gamesPlayed) + '%' : 'N/A';
+            });
+
+            console.log(users)
+
+            res.render('leaderboard', {users});
+
+        } else {
+
+            next(err);
+
+        }
+
     });
 
 });

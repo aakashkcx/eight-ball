@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    {{> meta}}
+
+    <title>Leaderboard | Eight Ball</title>
+
+    {{> css}}
+
+</head>
+
+<body>
+
+    {{> navbar active_leaderboard=true}}
+
+    <div class="container">
+
+        <div class="row justify-content-end mb-3">
+            <div class="col-xl-4 col-lg-5 col-md-6">
+                <form action="/profile/" method="GET">
+                    <div class="input-group">
+                        <input type="text" name="username" class="form-control" placeholder="Search Players">
+                        <div class="input-group-append">
+                            <button class="btn btn-secondary" type="submit"><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        {{> flash}}
+
+        <div class="jumbotron">
+            <h1 class="display-1">Leaderboard</h1>
+        </div>
+
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Wins</th>
+                    <th scope="col">Losses</th>
+                    <th scope="col">Games Played</th>
+                    <th scope="col">Win Rate</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each users}}
+                <tr onclick="window.location='/profile/{{this.id}}'" style="cursor:pointer">
+                    <th scope="row">{{this.id}}</th>
+                    <td>{{this.username}}</td>
+                    <td>{{this.wins}}</td>
+                    <td>{{this.losses}}</td>
+                    <td>{{this.gamesPlayed}}</td>
+                    <td>{{this.winRate}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+
+    </div>
+
+    {{> js}}
+
+</body>
+
+</html>
