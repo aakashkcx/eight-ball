@@ -43,7 +43,7 @@
             </thead>
             <tbody>
                 {{#each users}}
-                <tr class="{{#if this.self}}table-primary{{/if}}" onclick="window.location='/profile/{{this.id}}'" style="cursor:pointer">
+                <tr class="{{#if this.self}}table-active{{/if}}" onclick="window.location='/profile/{{this.id}}'" style="cursor:pointer">
                     <th scope="row">{{this.id}}</th>
                     <td>{{this.username}}</td>
                     <td>{{this.firstname}} {{this.lastname}}</td>
