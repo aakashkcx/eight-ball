@@ -27,4 +27,6 @@ Stick.prototype.draw = function () {
     let offset = new Vector(-this.width / 2, this.power + 50);
     canvas.drawRect(offset, Vector.add(this.position, TABLE), new Vector(this.width, this.height), 'bisque', this.rotation + Math.PI / 2);
 
+    canvas.drawLine(this.position, canvas.mouse.position, TABLE, 10, 0.25);
+
 };
