@@ -67,7 +67,7 @@ const Game = function (player1, player2) {
     this.blackBall = this.balls[1];
 
     this.pockets = [[0, 0], [WIDTH / 2, 0], [WIDTH, 0], [0, HEIGHT], [WIDTH / 2, HEIGHT], [WIDTH, HEIGHT]]
-        .map(params => ({ position: new Vector(params[0], params[1]), radius: BALL_RADIUS }));
+        .map(params => ({ position: new Vector(params[0], params[1]), radius: BALL_RADIUS , velocity: new Vector()}));
 
 };
 
@@ -79,20 +79,19 @@ Game.prototype.update = function () {
     for (let i = 0; i < this.balls.length; i++) {
 
         const ball = this.balls[i];
-        physics.collideCushions(ball, WIDTH, HEIGHT);
 
         for (let j = i + 1; j < this.balls.length; j++) {
             const collidingBall = this.balls[j];
             physics.collideBalls(ball, collidingBall);
         }
 
+        physics.collideCushions(ball, WIDTH, HEIGHT);
+
         let ballActive = physics.ballMotion(ball);
         if (ballActive) this.active = true;
 
         this.pockets.forEach(pocket => {
-            if (physics.doBallsOverlap(ball, pocket)) {
-                events.ballPotted(this, ball);
-            }
+            if (physics.doBallsOverlap(ball, pocket)) events.ballPotted(this, ball);
         });
 
     }
@@ -122,15 +121,12 @@ Game.prototype.end = function (winner) {
     let loser = (winner == this.player1 ? this.player2 : this.player1);
 
     GameDB.create(this.player1, this.player2, (err) => {
-
         if (err) console.log(err);
 
         UserDB.incrementWins(winner.id, (err) => {
-
             if (err) console.log(err);
 
             UserDB.incrementLosses(loser.id, (err) => {
-
                 if (err) console.log(err);
 
                 this.active = false;
@@ -146,7 +142,7 @@ Game.prototype.end = function (winner) {
             });
 
         });
-
+        
     });
 
 };

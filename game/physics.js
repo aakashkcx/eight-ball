@@ -9,9 +9,9 @@ const FRICTION = 0.01;
 // Initialise physics object
 const physics = {};
 
-// Check if two balls overlap
+// Check if two balls will overlap
 physics.doBallsOverlap = function (ball1, ball2) {
-    return Vector.distanceSquared(ball1.position, ball2.position) <= (ball1.radius + ball2.radius) ** 2;
+    return Vector.distanceSquared(Vector.add(ball1.position, ball1.velocity), Vector.add(ball2.position, ball2.velocity)) <= (ball1.radius + ball2.radius) ** 2;
 };
 
 // Resolve the motion of a ball
@@ -33,48 +33,14 @@ physics.ballMotion = function (ball) {
 // Resolve the collisions between a ball and the table
 physics.collideCushions = function (ball, width, height) {
 
-    if (ball.position.x + ball.radius >= width) {
-
-        let offset = ball.position.x + ball.radius - width;
-        ball.position.x -= 0.5 * offset;
-
-        ball.velocity.x *= -1;
-
+    if (ball.position.x + ball.velocity.x + ball.radius >= width || ball.position.x + ball.velocity.x - ball.radius <= 0) {
+        ball.velocity.x = -ball.velocity.x;
         ball.velocity.multiply(1 - 10 * FRICTION);
-
     }
 
-    if (ball.position.x - ball.radius <= 0) {
-
-        let offset = ball.radius - ball.position.x;
-        ball.position.x += 0.5 * offset;
-
-        ball.velocity.x *= -1;
-
+    if (ball.position.y + ball.velocity.y + ball.radius >= height || ball.position.y + ball.velocity.y - ball.radius <= 0) {
+        ball.velocity.y = -ball.velocity.y;
         ball.velocity.multiply(1 - 10 * FRICTION);
-
-    }
-
-    if (ball.position.y + ball.radius >= height) {
-
-        let offset = ball.position.y + ball.radius - height;
-        ball.position.y -= 0.5 * offset;
-
-        ball.velocity.y *= -1;
-
-        ball.velocity.multiply(1 - 10 * FRICTION);
-
-    }
-
-    if (ball.position.y - ball.radius <= 0) {
-
-        let offset = ball.radius - ball.position.y;
-        ball.position.y += 0.5 * offset;
-
-        ball.velocity.y *= -1;
-
-        ball.velocity.multiply(1 - 10 * FRICTION);
-
     }
 
 };
@@ -84,51 +50,59 @@ physics.collideBalls = function (ball1, ball2) {
 
     if (physics.doBallsOverlap(ball1, ball2)) {
 
-        // Position
+        let dist = Vector.subtract(ball2.position, ball1.position);
+        let vDist = Vector.subtract(ball1.velocity, ball2.velocity);
 
-        let x1 = Vector.subtract(ball1.position, ball2.position);
-        let x2 = Vector.subtract(ball2.position, ball1.position);
+        if (Vector.dot(dist, vDist) >= 0) {
 
-        let dist = x1.length;
-        let overlap = dist - ball1.radius - ball2.radius;
+            let angle = -dist.angle;
 
-        let x1Unit = Vector.divide(x1, dist);
-        let x2Unit = Vector.divide(x2, dist);
+            let u1 = Vector.rotate(ball1.velocity, angle);
+            let u2 = Vector.rotate(ball2.velocity, angle);
 
-        let x1Change = Vector.multiply(x1Unit, overlap * 0.5);
-        let x2Change = Vector.multiply(x2Unit, overlap * 0.5);
+            let v1 = new Vector(u2.x, u1.y);
+            let v2 = new Vector(u1.x, u2.y);
 
-        // Velocity
+            let vFinal1 = Vector.rotate(v1, -angle);
+            let vFinal2 = Vector.rotate(v2, -angle);
 
-        let v1 = Vector.subtract(ball1.velocity, ball2.velocity);
-        let v2 = Vector.subtract(ball2.velocity, ball1.velocity);
+            ball1.velocity = vFinal1;
+            ball2.velocity = vFinal2;
 
-        let v1Dotx1 = Vector.dot(v1, x1);
-        let v2Dotx2 = Vector.dot(v2, x2);
+            ball1.velocity.multiply(1 - 5 * FRICTION);
+            ball2.velocity.multiply(1 - 5 * FRICTION);
 
-        let x1LenSquare = x1.lengthSquared;
-        let x2LenSquare = x2.lengthSquared;
-
-        let frac1 = v1Dotx1 / x1LenSquare;
-        let frac2 = v2Dotx2 / x2LenSquare;
-
-        let v1Change = Vector.multiply(x1, frac1);
-        let v2Change = Vector.multiply(x2, frac2);
-
-        // Update
-
-        ball1.position.subtract(x1Change);
-        ball2.position.subtract(x2Change);
-
-        ball1.velocity.subtract(v1Change);
-        ball2.velocity.subtract(v2Change);
-
-        // Friction
-
-        ball1.velocity.multiply(1 - 5 * FRICTION);
-        ball2.velocity.multiply(1 - 5 * FRICTION);
+        }
 
     }
+
+    // if (physics.doBallsOverlap(ball1, ball2)) {
+
+    //     let x1 = Vector.subtract(ball1.position, ball2.position);
+    //     let x2 = Vector.subtract(ball2.position, ball1.position);
+
+    //     let v1 = Vector.subtract(ball1.velocity, ball2.velocity);
+    //     let v2 = Vector.subtract(ball2.velocity, ball1.velocity);
+
+    //     let v1Dotx1 = Vector.dot(v1, x1);
+    //     let v2Dotx2 = Vector.dot(v2, x2);
+
+    //     let x1LenSquare = x1.lengthSquared;
+    //     let x2LenSquare = x2.lengthSquared;
+
+    //     let frac1 = v1Dotx1 / x1LenSquare;
+    //     let frac2 = v2Dotx2 / x2LenSquare;
+
+    //     let v1Change = Vector.multiply(x1, frac1);
+    //     let v2Change = Vector.multiply(x2, frac2);
+
+    //     ball1.velocity.subtract(v1Change);
+    //     ball2.velocity.subtract(v2Change);
+
+    //     ball1.velocity.multiply(1 - 5 * FRICTION);
+    //     ball2.velocity.multiply(1 - 5 * FRICTION);
+
+    // }
 
 };
 
