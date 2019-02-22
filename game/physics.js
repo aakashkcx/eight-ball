@@ -11,7 +11,10 @@ const physics = {};
 
 // Check if two balls will overlap
 physics.doBallsOverlap = function (ball1, ball2) {
-    return Vector.distanceSquared(Vector.add(ball1.position, ball1.velocity), Vector.add(ball2.position, ball2.velocity)) <= (ball1.radius + ball2.radius) ** 2;
+    return Vector.distanceSquared(
+        Vector.add(ball1.position, ball1.velocity),
+        Vector.add(ball2.position, ball2.velocity)
+    ) <= (ball1.radius + ball2.radius) ** 2;
 };
 
 // Resolve the motion of a ball
@@ -48,6 +51,10 @@ physics.collideCushions = function (ball, width, height) {
 // Resolve the collision between two balls
 physics.collideBalls = function (ball1, ball2) {
 
+    /**
+     * Trigonometry method
+     */
+
     if (physics.doBallsOverlap(ball1, ball2)) {
 
         let dist = Vector.subtract(ball2.position, ball1.position);
@@ -75,6 +82,10 @@ physics.collideBalls = function (ball1, ball2) {
         }
 
     }
+
+    /**
+     * Vector method
+     */
 
     // if (physics.doBallsOverlap(ball1, ball2)) {
 
