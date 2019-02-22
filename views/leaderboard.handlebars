@@ -33,6 +33,7 @@
             <thead>
                 <tr>
                     <th scope="col">#</th>
+                    <th scope="col">ID</th>
                     <th scope="col">Username</th>
                     <th scope="col">Name</th>
                     <th scope="col">Wins</th>
@@ -44,7 +45,8 @@
             <tbody>
                 {{#each users}}
                 <tr class="{{#if this.self}}table-active{{/if}}" onclick="window.location='/profile/{{this.id}}'" style="cursor:pointer">
-                    <th scope="row">{{this.id}}</th>
+                    <th scope="row">{{this.position}}</th>
+                    <td>{{this.id}}</td>
                     <td>{{this.username}}</td>
                     <td>{{this.firstname}} {{this.lastname}}</td>
                     <td>{{this.wins}}</td>

@@ -144,24 +144,36 @@ router.get('/profile/:id', (req, res, next) => {
  * Leaderboard route
  */
 
+// GET '/leaderboard' route
 router.get('/leaderboard', (req, res, next) => {
 
+    // Get all of the users from the database
     User.findAllUsers((err, users) => {
 
+        // If there is no error
         if (!err) {
 
+            // Position counter
+            let i = 0;
+
+            // Iterate through the users array
             users.map((user) => {
+                // Position in leaderboard
+                user.position = ++i;
+                // Add a self boolean attribute
                 user.self = user.id == req.user_id;
+                // Calculate the game played
                 user.gamesPlayed = user.wins + user.losses;
+                // Calcualte the win rate
                 user.winRate = user.gamesPlayed ? Math.round(user.wins * 100 / user.gamesPlayed) + '%' : 'N/A';
             });
 
+            // Render the leaderboard page and pass in the users array
             res.render('leaderboard', {users});
 
+        // If there was an error send it to the error handler
         } else {
-
             next(JSON.stringify(err));
-
         }
 
     });
