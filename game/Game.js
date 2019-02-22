@@ -33,7 +33,6 @@ const Game = function (player1, player2) {
     this.turn = this.player1;
     this.foul = false;
     this.potted = false;
-    this.firstHit = null;
 
     this.player1.score = 0;
     this.player2.score = 0;
@@ -115,6 +114,15 @@ Game.prototype.update = function () {
 
 };
 
+// Shoot class method
+Game.prototype.shoot = function (player, power, angle) {
+    if (this.turn == player && !this.active && power <= 100) {
+        this.cueBall.velocity = new Vector(power * Math.cos(angle), power * Math.sin(angle));
+        this.active = true;
+    }
+};
+
+
 Game.prototype.end = function (winner) {
 
     winner.score = 8;
@@ -146,15 +154,6 @@ Game.prototype.end = function (winner) {
     });
 
 };
-
-// Shoot class method
-Game.prototype.shoot = function (player, power, angle) {
-    if (this.turn == player && !this.active && power <= 100) {
-        this.cueBall.velocity = new Vector(power * Math.cos(angle), power * Math.sin(angle));
-        this.active = true;
-    }
-};
-
 // Data that is sent to the players when the game starts
 Game.prototype.startData = function (player) {
     let opponent = (player == this.player1 ? this.player2 : this.player1);
@@ -186,10 +185,7 @@ Game.prototype.turnData = function (player) {
 
 Game.prototype.endData = function (player) {
     let opponent = (player == this.player1 ? this.player2 : this.player1);
-    return {
-        player: { score: player.score },
-        opponent: { score: opponent.score },
-    };
+    return { winner: player.score > opponent.score };
 };
 
 // Export game class

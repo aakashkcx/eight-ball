@@ -86,7 +86,7 @@ socket.on('game-updateTurn', (data) => {
 
 socket.on('game-end', (data) => {
     showGameEnd();
-    if (data.player.score > data.opponent.score) {
+    if (data.winner) {
         $('#endMsg').text('You have Won!');
     } else {
         $('#endMsg').text('You have Lost!');
