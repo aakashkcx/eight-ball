@@ -16,7 +16,12 @@ Vector.prototype = {
     // Length squared property
     get lengthSquared() {
         return this.x ** 2 + this.y ** 2;
-    }
+    },
+
+    // Angle property
+    get angle() {
+        return Math.atan2(this.y, this.x);
+    },
 
 };
 
@@ -55,6 +60,13 @@ Vector.prototype.divide = function (scalar) {
     return this;
 };
 
+// Vector rotate class method
+Vector.prototype.rotate = function (angle) {
+    this.x = this.x * Math.cos(angle) - this.y * Math.sin(angle);
+    this.y = this.x * Math.sin(angle) + this.y * Math.cos(angle);
+    return this;
+};
+
 // Vector addition static method
 Vector.add = function (vector1, vector2) {
     return new Vector(vector1.x + vector2.x, vector1.y + vector2.y);
@@ -73,6 +85,14 @@ Vector.multiply = function (vector, scalar) {
 // Vector division static method
 Vector.divide = function (vector, scalar) {
     return new Vector(vector.x / scalar, vector.y / scalar);
+};
+
+// Vector rotate static method
+Vector.rotate = function (vector, angle) {
+    return new Vector(
+        vector.x * Math.cos(angle) - vector.y * Math.sin(angle),
+        vector.x * Math.sin(angle) + vector.y * Math.cos(angle)        
+    );
 };
 
 // Vector dot product static method
