@@ -106,11 +106,9 @@ Game.prototype.update = function () {
         if (this.player1.score >= 8) this.end(this.player1);
         if (this.player2.score >= 8) this.end(this.player2);
 
-        return true;
-
     }
 
-    return false;
+    return !this.active;
 
 };
 
