@@ -15,14 +15,5 @@ const Ball = function (position, radius, colour) {
 
 };
 
-Ball.prototype = {
-
-    // Moving property
-    get moving() {
-        return this.velocity.length > 0.25;
-    }
-
-};
-
 // Export ball class
 module.exports = Ball;

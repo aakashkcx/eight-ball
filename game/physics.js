@@ -24,7 +24,7 @@ physics.ballMotion = function (ball) {
     ball.velocity.add(ball.acceleration);
     ball.position.add(ball.velocity);
 
-    if (ball.moving) {
+    if (ball.velocity.length > 0.25) {
         return true;
     } else {
         ball.velocity = new Vector(0, 0);
