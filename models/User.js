@@ -6,20 +6,28 @@ const bcrypt = require('bcryptjs');
 // Imports
 const database = require('../database');
 
+// Declare User object
 const User = {};
 
+// User create function
 User.create = function (user, callback) {
+    // Hash the password
     bcrypt.hash(user.password, 10, (err, hash) => {
         if (!err) {
 
+            // SQL query
             let sql = `INSERT INTO user (username, email, password, firstname, lastname)
                        VALUES (?, ?, ?, ?, ?);`;
 
-            let data = [user.username, user.email, hash, user.firstname, user.lastname];
+            // Query parameters
+            let params = [user.username, user.email, hash, user.firstname, user.lastname];
 
-            database.run(sql, data, function (err) {
+            // Execute the query
+            database.run(sql, params, function (err) {
+                // If no error, send no error and the id of the created user
                 if (!err) {
                     callback(null, this.lastID);
+                // If error return error
                 } else {
                     callback(err, null);
                 }
