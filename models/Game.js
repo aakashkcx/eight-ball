@@ -10,9 +10,9 @@ Game.create = function (player1, player2, callback) {
     let sql = `INSERT INTO game (player1Id, player2Id, player1Score, player2Score)
                VALUES (?, ?, ?, ?);`;
 
-    let data = [player1.id, player2.id, player1.score, player2.score];
+    let params = [player1.id, player2.id, player1.score, player2.score];
 
-    database.run(sql, data, function (err) {
+    database.run(sql, params, function (err) {
         if (!err) {
             callback(null, this.lastID);
         } else {
