@@ -21,7 +21,7 @@ router.get('/', (req, res, next) => {
     // If the request is authenticated
     if (req.authenticated) {
         // Find the latest game played by the user from the database
-        Game.findLatestGameByUserId(req.user_id, (err, game) => {
+        Game.getLatestByUserId(req.user_id, (err, game) => {
             // If there was no error
             if (!err) {
                 // Render the dashboard page and pass in game status and the latest game played
@@ -120,7 +120,7 @@ router.get('/profile/:id', (req, res, next) => {
             let winRate = gamesPlayed ? Math.round(profile.wins * 100 / gamesPlayed) + '%' : 'N/A';
 
             // Find the games played by the user
-            Game.findGamesByUserId(profile.id, (err, games) => {
+            Game.getGamesByUserId(profile.id, (err, games) => {
                 // If there was no error
                 if (!err) {
                     // Render the profile page and pass in the profile data, games played, whether its a self profile and the winrate
@@ -148,7 +148,7 @@ router.get('/profile/:id', (req, res, next) => {
 router.get('/leaderboard', (req, res, next) => {
 
     // Get all of the users from the database
-    User.findAllUsers((err, users) => {
+    User.getLeaderboard((err, users) => {
 
         // If there is no error
         if (!err) {

@@ -22,7 +22,7 @@ Game.create = function (player1, player2, callback) {
 
 };
 
-Game.findGamesByUserId = function (id, callback) {
+Game.getGamesByUserId = function (id, callback) {
 
     let sql = `SELECT game.id, game.player1Id, game.player2Id, game.player1Score, game.player2Score, game.time, user1.username AS player1Username, user2.username AS player2Username
                FROM game
@@ -41,7 +41,7 @@ Game.findGamesByUserId = function (id, callback) {
 
 };
 
-Game.findLatestGameByUserId = function (id, callback) {
+Game.getLatestByUserId = function (id, callback) {
 
     let sql = `SELECT game.id, game.player1Id, game.player2Id, game.player1Score, game.player2Score, game.time, user1.username AS player1Username, user2.username AS player2Username
                FROM game
