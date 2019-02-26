@@ -22,13 +22,11 @@ const log = (string) => console.log(`${chalk.bold.underline.cyan('USER')} ${chal
 // GET '/login' route
 router.get('/login', (req, res) => {
 
-    // If request is not authenticated
+    // If request is not authenticated render the login page and pass in saved login infomation
     if (!req.authenticated) {
-        // Render the login page and pass in saved login infomation
         res.render('login', { login: req.session.login });
-    // If request is already authenticated
+    // If request is already authenticated send an error flash message and redirect to the dashboard
     } else {
-        // Send an error flash message and redirect to the dashboard
         req.flash('danger', 'You are already logged in.');
         res.redirect('/');
     }
@@ -40,6 +38,7 @@ router.post('/login', (req, res) => {
 
     // Extract data from the request's body
     let { username, password } = req.body;
+
     // Save the username to saved login data
     req.session.login = { username };
 
@@ -70,16 +69,14 @@ router.post('/login', (req, res) => {
                         }
                     });
 
-                // If there was an error
+                // If there was an error send an error flash message and reload the login page
                 } else {
-                    // Send an error flash message and reload the login page
                     req.flash('danger', JSON.stringify(err));
                     res.redirect('/login/');
                 }
             });
-        // If no user was found or there was an error
+        // If no user was found or there was an error send a suitable error flash message and reload the login page
         } else {
-            // Send a suitable error flash message and reload the login page
             req.flash('danger', err ? JSON.stringify(err) : 'User not found.');
             res.redirect('/login/');
         }
@@ -102,9 +99,8 @@ router.get('/logout', (req, res) => {
         // Send a successful logout flash message and redirect to the index route
         req.flash('success', 'You have successfully logged out.');
         res.redirect('/');
-    // If the request is not authenticated
+    // If the request is not authenticated send an error flash message and redirect to the login route
     } else {
-        // Send an error flash message and redirect to the login route
         req.flash('danger', 'You are not logged in.');
         res.redirect('/login/');
     }
@@ -118,13 +114,11 @@ router.get('/logout', (req, res) => {
 // GET '/register' route
 router.get('/register', (req, res) => {
 
-    // If the request is not authenticated
+    // If the request is not authenticated render the register page and pass in saved registration info
     if (!req.authenticated) {
-        // Render the register page and pass in saved registration info
         res.render('register', { register: req.session.register });
-    // If the request is already authenticated
+    // If the request is already authenticated send an error flash message and redirect to the dashboard
     } else {
-        // Send an error flash message and redirect to the dashboard
         req.flash('danger', 'You are already logged in.');
         res.redirect('/');
     }
@@ -134,23 +128,41 @@ router.get('/register', (req, res) => {
 // POST '/register' route
 router.post('/register', (req, res) => {
 
+    // Validators and sanitisers
+    const { equals, isAlphanumeric, isAscii, isEmail, isEmpty, isLength } = validator;
+    const { escape, normalizeEmail, stripLow, trim } = validator;
+
     // Extract data from the request's body
     let { username, email, password, passwordConfirm, firstname, lastname } = req.body;
-    // Save the form data to saved registration data
+
+    // Data sanitisation
+    username = escape(stripLow(trim(username)));
+    email = escape(normalizeEmail(stripLow(trim(email))));
+    firstname = escape(stripLow(trim(firstname)));
+    lastname = escape(stripLow(trim(lastname)));
+    firstname = firstname.charAt(0).toUpperCase() + firstname.slice(1);
+    lastname = lastname.charAt(0).toUpperCase() + lastname.slice(1);
+
+    // Save the sanitised data to saved registration data
     req.session.register = { username, email, firstname, lastname };
 
     // Data validation
     let errors = [];
-    if (!username || !email || !password || !passwordConfirm || !firstname || !lastname) {
+    if (isEmpty(username) || isEmpty(email) || isEmpty(password) || isEmpty(passwordConfirm) || isEmpty(firstname) || isEmpty(lastname)) {
         errors.push('All fields must be filled.');
     } else {
-        if (username.length > 16) errors.push('Usernames cannot be longer than 16 characters.');
-        if (!validator.isEmail(email)) errors.push('Email is not valid.');
-        if (email.length > 64) errors.push('Emails cannot be longer than 64 characters.');
-        if (password.length < 8) errors.push('Passwords must be at least 8 characters long.');
-        if (password.length > 64) errors.push('Passwords cannot be longer than 64 characters long.');
-        if (password != passwordConfirm) errors.push('Passwords do not match.');
-        if (firstname.length > 16 || lastname.length > 16) errors.push('Names cannot be longer than 16 characters');
+        if (!isAlphanumeric(username)) errors.push('Usernames must only contain letters and numbers.');
+        if (!isAscii(username)) errors.push('Usernames must only contain ASCII characters.');
+        if (!isLength(username, { max: 16 })) errors.push('Usernames cannot be longer than 16 characters.');
+        if (!isAscii(email)) errors.push('Emails must only contain ASCII characters.');
+        if (!isEmail(email)) errors.push('Emails must be valid.');
+        if (!isLength(email, { max: 64 })) errors.push('Emails cannot be longer than 64 characters.');
+        if (!isLength(password, { min: 8 })) errors.push('Passwords must be at least 8 characters long.');
+        if (!isLength(password, { max: 64 })) errors.push('Passwords cannot be longer than 64 characters long.');
+        if (!equals(password, passwordConfirm)) errors.push('Passwords must match.');
+        if (!isAlphanumeric(firstname) || !isAlphanumeric(lastname)) errors.push('Names must only contain letters and numbers.');
+        if (!isAscii(firstname) || !isAlphanumeric(lastname)) errors.push('Names must only contain ASCII characters.');
+        if (!isLength(firstname, { max: 16 }) || !isLength(lastname, { max: 16 })) errors.push('Names cannot be longer than 16 characters');
     }
 
     // Check if the username has already been taken in the database
@@ -166,24 +178,21 @@ router.post('/register', (req, res) => {
                 User.create({ username, email, password, firstname, lastname }, (err, user_id) => {
                     // If there was no error
                     if (!err) {
-                        // Login the user
+                        // Login the user and save the username to saved login data
                         req.login(user_id);
                         log(`${username}#${user_id} has registered`);
-                        // Save the username to saved login data
                         req.session.login = { username };
-                        // Send a 
+                        // Send a successful registration flash message and redirect to the dashboard
                         req.flash('success', 'You have successfully registered.');
                         res.redirect('/');
-                    // If there was an error
+                    // If there was an error send an error flash message and reload the login page
                     } else {
-                        // Send a successful registration flash message and redirect to the dashboard
                         req.flash('danger', JSON.stringify(err));
                         res.redirect('/register/');
                     }
                 });
-            // If there are validation errors
+            // If there are validation errors send the errors and reload the register page
             } else {
-                // Send the validation errors to the user and reload the register page
                 req.flash('danger', errors);
                 res.redirect('/register/');
             }
@@ -228,16 +237,14 @@ router.post('/delete', (req, res) => {
                             res.redirect(`/profile/${req.user_id}`);
                         }
                     });
-                // If the password does not match the hash
+                // If the password does not match the hash send a error flash message and reload their profile page
                 } else {
-                    // Send a error flash message and reload their profile page
                     req.flash('danger', 'Incorrect password.');
                     res.redirect(`/profile/${req.user_id}`);
                 }
             });
-        // If there was an error
+        // If there was an error send a error flash message and reload their profile page
         } else {
-            // Send a error flash message and reload their profile page
             req.flash('danger', JSON.stringify(err));
             res.redirect(`/profile/${req.user_id}`);
         }
