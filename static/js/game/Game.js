@@ -44,10 +44,15 @@ Game.prototype.updateTurn = function (data) {
 Game.prototype.draw = function () {
 
     canvas.clear();
+
     canvas.drawTable();
 
-    if (!this.active && this.turn) this.stick.draw();
-    
+    if (!this.active && this.turn) this.stick.drawGuide();
+
+    canvas.drawBorders();
+
     this.balls.forEach(ball => ball.draw());
+
+    if (!this.active && this.turn) this.stick.draw();
 
 };

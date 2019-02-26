@@ -82,30 +82,21 @@ canvas.drawCircle = function (position, origin, radius, colour) {
     canvas._context.restore();
 };
 
-canvas.drawLine = function (position1, position2, origin, width=1, alpha=1) {
-    canvas._context.save();
-    canvas._context.lineWidth = width;
-    canvas._context.globalAlpha = alpha;
-    canvas._context.translate(origin.x, origin.y);
-    canvas._context.beginPath();
-    canvas._context.moveTo(position1.x, position1.y);
-    canvas._context.lineTo(position2.x, position2.y);
-    canvas._context.stroke();
-    canvas._context.restore();
-};
-
 canvas.drawTable = function () {
 
-    canvas.drawRect(new Vector(0, 0), new Vector(0, 0), new Vector(canvas.width, canvas.height), 'saddlebrown');
     canvas.drawRect(new Vector(0, 0), TABLE, new Vector(WIDTH, HEIGHT), 'green');
 
+};
+
+canvas.drawBorders = function () {
+
+    canvas.strokeRect(new Vector(0, 0), new Vector(0, 0), new Vector(canvas.width, canvas.height), 'saddlebrown', 100);
     canvas.drawCircle(new Vector(0, 0), TABLE, BALL_RADIUS * 2, 'black');
     canvas.drawCircle(new Vector(WIDTH / 2, -10), TABLE, BALL_RADIUS * 2, 'black');
     canvas.drawCircle(new Vector(WIDTH, 0), TABLE, BALL_RADIUS * 2, 'black');
     canvas.drawCircle(new Vector(0, HEIGHT), TABLE, BALL_RADIUS * 2, 'black');
     canvas.drawCircle(new Vector(WIDTH / 2, HEIGHT + 10), TABLE, BALL_RADIUS * 2, 'black');
     canvas.drawCircle(new Vector(WIDTH, HEIGHT), TABLE, BALL_RADIUS * 2, 'black');
-
-    canvas.strokeRect(new Vector(), new Vector(0, 0), new Vector(canvas.width, canvas.height), 'saddlebrown', 50);
+    canvas.strokeRect(new Vector(0, 0), new Vector(0, 0), new Vector(canvas.width, canvas.height), 'saddlebrown', 50);
 
 };
