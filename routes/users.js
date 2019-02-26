@@ -47,7 +47,7 @@ router.post('/login', (req, res) => {
         // If a user was found and there was no error
         if (!err && user_id) {
             // Find the password for the user from the database
-            User.findPasswordById(user_id, (err, hash) => {
+            User.getPasswordFromId(user_id, (err, hash) => {
                 // If there was no error
                 if (!err) {
 
@@ -213,7 +213,7 @@ router.post('/delete', (req, res) => {
     let { password } = req.body;
 
     // Find the password of the user from the database
-    User.findPasswordById(req.user_id, (err, hash) => {
+    User.getPasswordFromId(req.user_id, (err, hash) => {
         // If there was no error
         if (!err) {
             // Compare the password entered to the hash from the database
