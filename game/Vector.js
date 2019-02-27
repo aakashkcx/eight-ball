@@ -6,6 +6,7 @@ const Vector = function (x = 0, y = 0) {
     this.y = y;
 };
 
+// Vector class properties
 Vector.prototype = {
 
     // Length property
@@ -110,5 +111,5 @@ Vector.distanceSquared = function (vector1, vector2) {
     return Vector.subtract(vector1, vector2).lengthSquared;
 };
 
-// Export vector class
+// Export Vector class
 module.exports = Vector;

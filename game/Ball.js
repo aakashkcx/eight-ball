@@ -15,5 +15,5 @@ const Ball = function (position, radius, colour) {
 
 };
 
-// Export ball class
+// Export Ball class
 module.exports = Ball;

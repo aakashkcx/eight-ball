@@ -14,5 +14,5 @@ const Player = function (socket) {
 
 };
 
-// Export player class
+// Export Player class
 module.exports = Player;

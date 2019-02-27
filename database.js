@@ -39,5 +39,5 @@ database.serialize(() => {
 // Session store
 database.sessionStore = (session) => new (connectSQLite(session))({ db: 'database.db' });
 
-// Export the database
+// Export the database module
 module.exports = database;

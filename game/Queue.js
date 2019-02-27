@@ -5,6 +5,7 @@ const Queue = function () {
     this._queue = [];
 };
 
+// Queue class properties
 Queue.prototype = {
 
     // Size property
@@ -33,5 +34,5 @@ Queue.prototype.remove = function (player) {
     player.inQueue = false;
 };
 
-// Export queue class
+// Export Queue class
 module.exports = Queue;
