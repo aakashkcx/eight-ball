@@ -35,9 +35,15 @@ router.get('/login', (req, res) => {
 
 // POST '/login' route
 router.post('/login', (req, res) => {
+    
+    // Sanitisers
+    const { escape, stripLow, trim } = validator;
 
     // Extract data from the request's body
     let { username, password } = req.body;
+    
+    // Data sanitisation
+    username = escape(stripLow(trim(username)));
 
     // Save the username to saved login data
     req.session.login = { username };
