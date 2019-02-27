@@ -20,10 +20,12 @@ physics.doBallsOverlap = function (ball1, ball2) {
 // Resolve the motion of a ball
 physics.ballMotion = function (ball) {
 
+    // Update acceleration (with friction), velocity and position
     ball.acceleration = Vector.multiply(ball.velocity, -FRICTION);
     ball.velocity.add(ball.acceleration);
     ball.position.add(ball.velocity);
 
+    // Static friction
     if (ball.velocity.length > 0.25) {
         return true;
     } else {
@@ -36,13 +38,19 @@ physics.ballMotion = function (ball) {
 // Resolve the collisions between a ball and the table
 physics.collideCushions = function (ball, width, height) {
 
+    // Check if about to collide with cushiong
     if (ball.position.x + ball.velocity.x + ball.radius >= width || ball.position.x + ball.velocity.x - ball.radius <= 0) {
+        // Reverse velocity
         ball.velocity.x = -ball.velocity.x;
+        // Friction
         ball.velocity.multiply(1 - 10 * FRICTION);
     }
 
+    // Check if about to collide with cushiong
     if (ball.position.y + ball.velocity.y + ball.radius >= height || ball.position.y + ball.velocity.y - ball.radius <= 0) {
+        // Reverse velocity
         ball.velocity.y = -ball.velocity.y;
+        // Friction
         ball.velocity.multiply(1 - 10 * FRICTION);
     }
 
@@ -55,6 +63,7 @@ physics.collideBalls = function (ball1, ball2) {
      * Trigonometry method
      */
 
+    // Check if the balls are about to collide
     if (physics.doBallsOverlap(ball1, ball2)) {
 
         let dist = Vector.subtract(ball2.position, ball1.position);
@@ -76,6 +85,7 @@ physics.collideBalls = function (ball1, ball2) {
             ball1.velocity = vFinal1;
             ball2.velocity = vFinal2;
 
+            // Friction
             ball1.velocity.multiply(1 - 5 * FRICTION);
             ball2.velocity.multiply(1 - 5 * FRICTION);
 
@@ -87,6 +97,7 @@ physics.collideBalls = function (ball1, ball2) {
      * Vector method
      */
 
+    // // Check if the balls are about to collide
     // if (physics.doBallsOverlap(ball1, ball2)) {
 
     //     let x1 = Vector.subtract(ball1.position, ball2.position);
@@ -110,6 +121,7 @@ physics.collideBalls = function (ball1, ball2) {
     //     ball1.velocity.subtract(v1Change);
     //     ball2.velocity.subtract(v2Change);
 
+    //     // Friction
     //     ball1.velocity.multiply(1 - 5 * FRICTION);
     //     ball2.velocity.multiply(1 - 5 * FRICTION);
 
@@ -117,5 +129,5 @@ physics.collideBalls = function (ball1, ball2) {
 
 };
 
-// Export physics object
+// Export physics module
 module.exports = physics;
