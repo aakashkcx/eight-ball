@@ -236,4 +236,5 @@ User.incrementLosses = function (id, callback) {
 
 };
 
+// Export the User module
 module.exports = User;
