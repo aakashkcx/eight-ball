@@ -14,7 +14,7 @@ const HEIGHT = 720;
 const BALL_RADIUS = 20;
 const MAX_POWER = 50;
 const POCKETS = [[0, 0], [WIDTH / 2, 0], [WIDTH, 0], [0, HEIGHT], [WIDTH / 2, HEIGHT], [WIDTH, HEIGHT]]
-    .map(params => ({ position: new Vector(params[0], params[1]), radius: BALL_RADIUS , velocity: new Vector()}));
+    .map(params => ({ position: new Vector(params[0], params[1]), radius: BALL_RADIUS, velocity: new Vector() }));
 
 // Game counter
 let num = 0;
@@ -39,6 +39,7 @@ const Game = function (player1, player2) {
 
     // Game turn properties
     this.turn = this.player1;
+    this.nextTurn = this.player2;
     this.foul = false;
     this.potted = false;
 
@@ -116,14 +117,12 @@ Game.prototype.update = function () {
     if (!this.active) {
 
         // If there was a foul or no ball potted, change the turn
-        if (this.foul || !this.potted)
-            this.turn = (this.turn == this.player1 ? this.player2 : this.player1);
+        if (this.foul || !this.potted) [this.turn, this.nextTurn] = [this.nextTurn, this.turn];
 
         // Reset foul and potted properties
         this.foul = false;
         this.potted = false;
 
-        // Check if game should end
         if (this.player1.score >= 8) this.end(this.player1);
         if (this.player2.score >= 8) this.end(this.player2);
 
@@ -167,7 +166,7 @@ Game.prototype.end = function (winner) {
                 // Set ending game properties
                 this.active = false;
                 this.ended = true;
-            
+
                 // Set player properties
                 this.player1.inGame = false;
                 this.player2.inGame = false;
@@ -179,10 +178,11 @@ Game.prototype.end = function (winner) {
             });
 
         });
-        
+
     });
 
 };
+
 // Data that is sent to the players when the game starts
 Game.prototype.startData = function (player) {
     let opponent = (player == this.player1 ? this.player2 : this.player1);
@@ -203,6 +203,7 @@ Game.prototype.updateData = function () {
     };
 };
 
+// Data that is sent to the palyers when the turn changes
 Game.prototype.turnData = function (player) {
     let opponent = (player == this.player1 ? this.player2 : this.player1);
     return {
@@ -212,6 +213,7 @@ Game.prototype.turnData = function (player) {
     };
 };
 
+// Data that is sent to the players when the game ends
 Game.prototype.endData = function (player) {
     let opponent = (player == this.player1 ? this.player2 : this.player1);
     return { winner: player.score > opponent.score };
