@@ -149,13 +149,11 @@ router.get('/leaderboard', (req, res, next) => {
 
     // Get all of the users from the database
     User.getLeaderboard((err, users) => {
-
         // If there is no error
         if (!err) {
 
             // Position counter
             let i = 0;
-
             // Iterate through the users array
             users.map((user) => {
                 // Position in leaderboard
@@ -169,13 +167,12 @@ router.get('/leaderboard', (req, res, next) => {
             });
 
             // Render the leaderboard page and pass in the users array
-            res.render('leaderboard', {users});
+            res.render('leaderboard', { users });
 
         // If there was an error send it to the error handler
         } else {
             next(JSON.stringify(err));
         }
-
     });
 
 });

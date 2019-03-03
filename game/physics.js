@@ -66,22 +66,29 @@ physics.collideBalls = function (ball1, ball2) {
     // Check if the balls are about to collide
     if (physics.doBallsOverlap(ball1, ball2)) {
 
+        // Difference in positions and velocity
         let dist = Vector.subtract(ball2.position, ball1.position);
         let vDist = Vector.subtract(ball1.velocity, ball2.velocity);
 
+        // Prevent accedental collisions
         if (Vector.dot(dist, vDist) >= 0) {
 
+            // Angle between balls
             let angle = -dist.angle;
 
+            // Rotate velocities
             let u1 = Vector.rotate(ball1.velocity, angle);
             let u2 = Vector.rotate(ball2.velocity, angle);
 
+            // Resolve new velocities
             let v1 = new Vector(u2.x, u1.y);
             let v2 = new Vector(u1.x, u2.y);
 
+            // Rotate velocities back to normal
             let vFinal1 = Vector.rotate(v1, -angle);
             let vFinal2 = Vector.rotate(v2, -angle);
 
+            // Set new velocities
             ball1.velocity = vFinal1;
             ball2.velocity = vFinal2;
 
@@ -97,12 +104,10 @@ physics.collideBalls = function (ball1, ball2) {
      * Vector method
      */
 
-    // // Check if the balls are about to collide
     // if (physics.doBallsOverlap(ball1, ball2)) {
 
     //     let x1 = Vector.subtract(ball1.position, ball2.position);
     //     let x2 = Vector.subtract(ball2.position, ball1.position);
-
     //     let v1 = Vector.subtract(ball1.velocity, ball2.velocity);
     //     let v2 = Vector.subtract(ball2.velocity, ball1.velocity);
 

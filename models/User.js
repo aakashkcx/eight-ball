@@ -155,7 +155,7 @@ User.queryIdByUsername = function (username, callback) {
     let sql = `SELECT id
                FROM user
                WHERE username LIKE ?;`;
-    
+
     // Query parameters
     let params = ['%' + username + '%'];
 

@@ -18,7 +18,6 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 
 
-
 // Initialise app
 const app = express();
 
@@ -76,7 +75,6 @@ app.get('*', (req, res, next) => next('Page not found.'));
 
 // Error handler
 app.use((err, req, res, next) => res.render('error', { error: err }));
-
 
 
 // Start the server

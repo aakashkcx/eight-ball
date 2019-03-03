@@ -92,7 +92,7 @@ Vector.divide = function (vector, scalar) {
 Vector.rotate = function (vector, angle) {
     return new Vector(
         vector.x * Math.cos(angle) - vector.y * Math.sin(angle),
-        vector.x * Math.sin(angle) + vector.y * Math.cos(angle)        
+        vector.x * Math.sin(angle) + vector.y * Math.cos(angle)
     );
 };
 

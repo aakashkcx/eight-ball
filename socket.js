@@ -131,7 +131,7 @@ const gameLoop = setInterval(() => {
             // Send ending data to the players
             game.player1.socket.emit('game-end', game.endData(game.player1));
             game.player2.socket.emit('game-end', game.endData(game.player2));
-            
+
             // Remove the game from games
             games.delete(game_id);
             log(`game#${game_id} has ended - ${games.size} games(s) in progress`);
@@ -156,7 +156,7 @@ const init = function (app) {
 
     // Export session middleware function
     module.exports.session = (session) => io.use((socket, next) => session(socket.request, socket.request.res, next));
-    
+
     // Return the http server
     return server;
 

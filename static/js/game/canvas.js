@@ -1,67 +1,72 @@
 'use strict';
 
+// Constants
 const WIDTH = 1280;
 const HEIGHT = 720;
 const BORDER = 50;
-const TABLE = new Vector(BORDER, BORDER);
+const TABLE = new Vector(BORDER, BORDER); // Origin for drawing to table
 
+// Initialise canvas object
 const canvas = {};
 
+// Get the canvas element and its context
 canvas._DOM = document.getElementById('canvas');
 canvas._context = canvas._DOM.getContext('2d');
 
+// Set the canvas width and height
 canvas._DOM.width = canvas.width = WIDTH + 2 * BORDER;
 canvas._DOM.height = canvas.height = HEIGHT + 2 * BORDER;
 
+/**
+ * Mouse
+ */
 
-canvas.mouse = {};
-canvas.mouse.position = new Vector();
-canvas.mouse.down = false;
+// Initialise canvas mouse object
+canvas.mouse = {
+    position: new Vector(),
+    down: false
+};
 
+// Mouse move event
 document.onmousemove = function (e) {
+    // Get position of canvas on page
     let rect = canvas._DOM.getBoundingClientRect();
+    // Get position of mouse relative to the canvas
     canvas.mouse.position.x = (e.pageX - rect.left - window.scrollX) * canvas.width / rect.width - BORDER;
     canvas.mouse.position.y = (e.pageY - rect.top - window.scrollY) * canvas.height / rect.height - BORDER;
 };
 
-canvas._DOM.onmousedown = function () {
-    canvas.mouse.down = true;
-};
+// Mouse down event
+canvas._DOM.onmousedown = () => canvas.mouse.down = true;
 
-canvas._DOM.onmouseup = function () {
-    canvas.mouse.down = false;
-};
+// Mouse up event
+canvas._DOM.onmouseup = () => canvas.mouse.down = false;
 
+// Touch move event
 canvas._DOM.ontouchmove = function (e) {
+    // Prevent accidental scrolling
     e.preventDefault();
+    // Get position of canvas on page
     let rect = canvas._DOM.getBoundingClientRect();
+    // Get touch position relative to the canvas
     canvas.mouse.position.x = (e.touches[0].pageX - rect.left - window.scrollX) * canvas.width / rect.width - BORDER;
     canvas.mouse.position.y = (e.touches[0].pageY - rect.top - window.scrollY) * canvas.height / rect.height - BORDER;
 };
 
-canvas._DOM.ontouchstart = function () {
-    canvas.mouse.down = true;
-};
+canvas._DOM.ontouchstart = () => canvas.mouse.down = true;
 
-canvas._DOM.ontouchend = function () {
-    canvas.mouse.down = false;
-};
+canvas._DOM.ontouchend = () => canvas.mouse.down = false;
 
+/**
+ * Drawing to the canvas
+ */
 
+// Canvas clear method
 canvas.clear = function () {
     canvas._context.clearRect(0, 0, canvas.width, canvas.height);
 };
 
-canvas.strokeRect = function (position, origin, dimensions, colour, strokeSize, rotation = 0) {
-    canvas._context.save();
-    canvas._context.strokeStyle = colour;
-    canvas._context.lineWidth = strokeSize;
-    canvas._context.translate(position.x, position.y);
-    canvas._context.rotate(rotation);
-    canvas._context.strokeRect(origin.x, origin.y, dimensions.x, dimensions.y);
-    canvas._context.restore();
-};
-
+// Draw a filled rectangle
 canvas.drawRect = function (position, origin, dimensions, colour, rotation = 0) {
     canvas._context.save();
     canvas._context.fillStyle = colour;
@@ -71,6 +76,7 @@ canvas.drawRect = function (position, origin, dimensions, colour, rotation = 0) 
     canvas._context.restore();
 };
 
+// Draw a filled circle
 canvas.drawCircle = function (position, origin, radius, colour) {
     canvas._context.save();
     canvas._context.fillStyle = colour;
@@ -82,14 +88,24 @@ canvas.drawCircle = function (position, origin, radius, colour) {
     canvas._context.restore();
 };
 
-canvas.drawTable = function () {
-
-    canvas.drawRect(new Vector(0, 0), TABLE, new Vector(WIDTH, HEIGHT), 'green');
-
+// Draw a stroked rectangle
+canvas.strokeRect = function (position, origin, dimensions, colour, strokeSize, rotation = 0) {
+    canvas._context.save();
+    canvas._context.strokeStyle = colour;
+    canvas._context.lineWidth = strokeSize;
+    canvas._context.translate(position.x, position.y);
+    canvas._context.rotate(rotation);
+    canvas._context.strokeRect(origin.x, origin.y, dimensions.x, dimensions.y);
+    canvas._context.restore();
 };
 
-canvas.drawBorders = function () {
+// Draw the table
+canvas.drawTable = function () {
+    canvas.drawRect(new Vector(0, 0), TABLE, new Vector(WIDTH, HEIGHT), 'green');
+};
 
+// Draw the table borders
+canvas.drawBorders = function () {
     canvas.strokeRect(new Vector(0, 0), new Vector(0, 0), new Vector(canvas.width, canvas.height), 'saddlebrown', 100);
     canvas.drawCircle(new Vector(0, 0), TABLE, BALL_RADIUS * 2, 'black');
     canvas.drawCircle(new Vector(WIDTH / 2, -10), TABLE, BALL_RADIUS * 2, 'black');
@@ -98,5 +114,4 @@ canvas.drawBorders = function () {
     canvas.drawCircle(new Vector(WIDTH / 2, HEIGHT + 10), TABLE, BALL_RADIUS * 2, 'black');
     canvas.drawCircle(new Vector(WIDTH, HEIGHT), TABLE, BALL_RADIUS * 2, 'black');
     canvas.strokeRect(new Vector(0, 0), new Vector(0, 0), new Vector(canvas.width, canvas.height), 'saddlebrown', 50);
-
 };
