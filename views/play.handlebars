@@ -32,18 +32,28 @@
         </div>
 
         <div id="game" class="text-center">
-            <div class="row mx-0 px-3 py-2 border border-bottom-0">
-                <div class="col-3 text-left">
-                    <a id="playerUsername" href="#" class="h3 text-body text-truncate">playerUsername</a>
+            {{!-- <div class="row mx-0 px-3 py-2 border border-bottom-0">
+                <div class="col-3 px-0 text-left">
+                    <a id="playerUsername" href="#" class="h3 d-block text-body text-truncate">playerUsername</a>
                 </div>
-                <div class="col-3">
-                    <span id="playerScore" class="h3 text-center">playerScore</span>
+                <div class="col-3 px-0">
+                    <span id="playerScore" class="h3 d-block text-center">playerScore</span>
                 </div>
-                <div class="col-3">
-                    <span id="opponentScore" class="h3 text-center">opponentScore</span>
+                <div class="col-3 px-0">
+                    <span id="opponentScore" class="h3 d-block text-center">opponentScore</span>
                 </div>
-                <div class="col-3 text-right">
-                    <a id="opponentUsername" href="#" class="h3 text-body text-truncate">opponentUsername</a>
+                <div class="col-3 px-0 text-right">
+                    <a id="opponentUsername" href="#" class="h3 d-block text-body text-truncate">opponentUsername</a>
+                </div>
+            </div> --}}
+            <div class="d-flex border border-bottom-0 mx-0 pt-2">
+                <div class="d-flex w-50 flex-column flex-sm-row justify-content-center justify-content-sm-between px-sm-5">
+                    <a id="playerUsername" href="#" class="h3 d-block text-body text-truncate">playerUsername</a>
+                    <span id="playerScore" class="h3 d-block pr-md-3 pr-lg-5">pScore</span>
+                </div>
+                <div class="d-flex w-50 flex-column flex-sm-row-reverse justify-content-center justify-content-sm-between px-sm-5">
+                    <a id="opponentUsername" href="#" class="h3 d-block text-body text-truncate">opponentUsername</a>
+                    <span id="opponentScore" class="h3 d-block pl-md-3 pl-lg-5">oScore</span>
                 </div>
             </div>
             <div id="colours" class="clearfix border-left border-right" style="margin-top: -5px;">
