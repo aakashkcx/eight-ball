@@ -136,6 +136,8 @@ socket.on('game-end', (data) => {
         $('#endMsg').text('You have Lost!');
     }
 
+    game = null;
+
     // Show game ending
     showGameEnd();
 
