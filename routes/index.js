@@ -150,7 +150,7 @@ router.get('/leaderboard', (req, res, next) => {
     // Get all of the users from the database
     User.getLeaderboard((err, users) => {
         // If there is no error
-        if (!err) {
+        if (!err && users) {
 
             // Position counter
             let i = 0;
