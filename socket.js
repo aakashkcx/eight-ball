@@ -140,7 +140,7 @@ const gameLoop = setInterval(() => {
 
     });
 
-// tickrate of game loop in ms
+// Tickrate of the game loop in ms
 }, 1000 / TICKRATE);
 
 
