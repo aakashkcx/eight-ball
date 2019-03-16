@@ -25,18 +25,14 @@ User.create = function (user, callback) {
 
             // Execute the query
             database.run(sql, params, function (err) {
-                // If there was no error, return the id of the created user
-                if (!err) {
-                    callback(null, this.lastID);
-                // If there was an error, return the error
-                } else {
-                    callback(err, null);
-                }
+                if (err) console.log(err);
+                // If a new user was created, return the id
+                callback(Boolean(err), this.lastID ? this.lastID : null);
             });
 
-        // If there was an error while hashing return the error
         } else {
-            callback(err, null);
+            console.log(err);
+            callback(true, null);
         }
     });
 
@@ -51,13 +47,8 @@ User.delete = function (id, callback) {
 
     // Execute the query
     database.run(sql, id, (err) => {
-        // If there was no error, return no error
-        if (!err) {
-            callback(null);
-        // If there was an error, return the error
-        } else {
-            callback(err);
-        }
+        if (err) console.log(err);
+        callback(Boolean(err));
     });
 
 };
@@ -72,13 +63,9 @@ User.findUserById = function (id, callback) {
 
     // Execute the query
     database.get(sql, id, (err, user) => {
-        // If there was no error and a user was found, return the user object
-        if (!err && user) {
-            callback(null, user);
-        // If there was an error or no user was found, return the error
-        } else {
-            callback(err, null);
-        }
+        if (err) console.log(err);
+        // If a user was found, return the user
+        callback(Boolean(err), user ? user : null);
     });
 
 };
@@ -94,13 +81,9 @@ User.findIdByUsername = function (username, callback) {
 
     // Execute the query
     database.get(sql, username, (err, user) => {
-        // If there was no error and a user was found, return the id of the user
-        if (!err && user) {
-            callback(null, user.id);
-        // If there was an error or no user was found, return the error
-        } else {
-            callback(err, null);
-        }
+        if (err) console.log(err);
+        // If a user was found, return their id
+        callback(Boolean(err), user ? user.id : null);
     });
 
 };
@@ -116,13 +99,9 @@ User.findIdByEmail = function (email, callback) {
 
     // Execute the query
     database.get(sql, email, (err, user) => {
-        // If there was no error and a user was found, return the id of the user
-        if (!err && user) {
-            callback(null, user.id);
-        // If there was an error or no user was found, return the error
-        } else {
-            callback(err, null);
-        }
+        if (err) console.log(err);
+        // If a user was found, return their id
+        callback(Boolean(err), user ? user.id : null);
     });
 
 };
@@ -137,13 +116,9 @@ User.getPasswordFromId = function (id, callback) {
 
     // Execute the query
     database.get(sql, id, (err, user) => {
-        // If there was no error and the user was found, return the password of the user
-        if (!err && user) {
-            callback(null, user.password);
-        // If there was an error or the user was not found, return the error
-        } else {
-            callback(err, null);
-        }
+        if (err) console.log(err);
+        // If a user was found, return their password
+        callback(Boolean(err), user ? user.password : null);
     });
 
 };
@@ -161,13 +136,9 @@ User.queryIdByUsername = function (username, callback) {
 
     // Execute the query
     database.get(sql, params, (err, user) => {
-        // If there was no error and a user was found, return the id of the user
-        if (!err && user) {
-            callback(null, user.id);
-        // If there was an error or a user was not found, return the error
-        } else {
-            callback(err, null);
-        }
+        if (err) console.log(err);
+        // If a user was found, return their id
+        callback(Boolean(err), user ? user.id : null);
     });
 
 };
@@ -183,13 +154,9 @@ User.getLeaderboard = function (callback) {
 
     // Execute the query
     database.all(sql, (err, users) => {
-        // If there was no error return array of users
-        if (!err) {
-            callback(null, users);
-        // If there was an error, return the error
-        } else {
-            callback(err, null);
-        }
+        if (err) console.log(err);
+        // If users were found, return the users
+        callback(Boolean(err), users ? users : null);
     });
 
 };
@@ -204,13 +171,8 @@ User.incrementWins = function (id, callback) {
 
     // Execute the query
     database.run(sql, id, (err) => {
-        // If there was no error return no error
-        if (!err) {
-            callback(null);
-        // If there was an error return the error
-        } else {
-            callback(err);
-        }
+        if (err) console.log(err);
+        callback(Boolean(err));
     });
 
 };
@@ -225,13 +187,8 @@ User.incrementLosses = function (id, callback) {
 
     // Execute the query
     database.run(sql, id, (err) => {
-        // If there was no error return no error
-        if (!err) {
-            callback(null);
-        // If there was an error return the error
-        } else {
-            callback(err);
-        }
+        if (err) console.log(err);
+        callback(Boolean(err));
     });
 
 };

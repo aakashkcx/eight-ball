@@ -18,13 +18,9 @@ Game.create = function (player1, player2, callback) {
 
     // Execute the query
     database.run(sql, params, function (err) {
-        // If there was no error, return the id of the created game
-        if (!err) {
-            callback(null, this.lastID);
-        // If there was an error, return the error
-        } else {
-            callback(err, null);
-        }
+        if (err) console.log(err);
+        // If a new game was created, return the id
+        callback(Boolean(err), this.lastID ? this.lastID : null);
     });
 
 };
@@ -42,13 +38,9 @@ Game.getGamesByUserId = function (id, callback) {
 
     // Execute the query
     database.all(sql, [id, id], (err, games) => {
-        // If there was no error, return the games
-        if (!err) {
-            callback(null, games);
-        // If there was an error, return the error
-        } else {
-            callback(err, null);
-        }
+        if (err) console.log(err);
+        // If games were found, return the games
+        callback(Boolean(err), games ? games : null);
     });
 
 };
@@ -67,13 +59,9 @@ Game.getLatestByUserId = function (id, callback) {
 
     // Execute the query
     database.get(sql, [id, id], (err, game) => {
-        // If there was no error, return the game
-        if (!err) {
-            callback(null, game);
-        // If there was an error, return the error
-        } else {
-            callback(err, null);
-        }
+        if (err) console.log(err);
+        // If games were found, return the games
+        callback(Boolean(err), game ? game : null);
     });
 
 };
