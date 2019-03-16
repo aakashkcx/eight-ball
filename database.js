@@ -3,9 +3,13 @@
 // Dependencies
 const sqlite = require('sqlite3');
 const connectSQLite = require('connect-sqlite3');
+const chalk = require('chalk');
 
 // Initialise database connection
-const database = new sqlite.Database('./database.db');
+const database = new sqlite.Database('./database.db', (err) => {
+    if (err) throw err;
+    console.log(chalk.bold.red('Database connected...'));
+});
 
 // Execute in serialised mode
 database.serialize(() => {
@@ -21,7 +25,7 @@ database.serialize(() => {
                         wins INTEGER DEFAULT 0,
                         losses INTEGER DEFAULT 0
                     );`;
-    database.run(sql_user);
+    database.run(sql_user, (err) => { if (err) throw err; });
 
     // Create game table query then run the query
     let sql_game = `CREATE TABLE IF NOT EXISTS game (
@@ -32,7 +36,7 @@ database.serialize(() => {
                         player2Score INTEGER DEFAULT 0,
                         time TEXT DEFAULT CURRENT_TIMESTAMP
                     );`;
-    database.run(sql_game);
+    database.run(sql_game, (err) => { if (err) throw err; });
 
 });
 
