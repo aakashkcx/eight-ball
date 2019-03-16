@@ -48,7 +48,7 @@ const session = expressSession({
     secret: 'secret',
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 24 * 60 * 60 * 1000 }
+    cookie: { maxAge: 1 * 24 * 60 * 60 * 1000 } // 1 day
 });
 app.use(session);
 socket.session(session);
