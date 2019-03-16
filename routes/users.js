@@ -77,13 +77,13 @@ router.post('/login', (req, res) => {
 
                 // If there was an error send an error flash message and reload the login page
                 } else {
-                    req.flash('danger', JSON.stringify(err));
+                    req.flash('danger', 'Database error.');
                     res.redirect('/login/');
                 }
             });
         // If no user was found or there was an error send a suitable error flash message and reload the login page
         } else {
-            req.flash('danger', err ? JSON.stringify(err) : 'User not found.');
+            req.flash('danger', err ? 'Database error.' : 'User not found.');
             res.redirect('/login/');
         }
     });
@@ -193,7 +193,7 @@ router.post('/register', (req, res) => {
                         res.redirect('/');
                     // If there was an error send an error flash message and reload the login page
                     } else {
-                        req.flash('danger', JSON.stringify(err));
+                        req.flash('danger', 'Database error.');
                         res.redirect('/register/');
                     }
                 });
@@ -239,7 +239,7 @@ router.post('/delete', (req, res) => {
                         // If there was an error
                         } else {
                             // Send a error flash message and reload their profile page
-                            req.flash('danger', JSON.stringify(err));
+                            req.flash('danger', 'Database error.');
                             res.redirect(`/profile/${req.user_id}`);
                         }
                     });
@@ -251,7 +251,7 @@ router.post('/delete', (req, res) => {
             });
         // If there was an error send a error flash message and reload their profile page
         } else {
-            req.flash('danger', JSON.stringify(err));
+            req.flash('danger', 'Database error.');
             res.redirect(`/profile/${req.user_id}`);
         }
     });

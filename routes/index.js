@@ -33,7 +33,7 @@ router.get('/', (req, res, next) => {
                 });
             // If there was an error send it to the error handler
             } else {
-                next(JSON.stringify(err));
+                next('Database error.');
             }
         });
 
@@ -83,7 +83,7 @@ router.get('/profile', (req, res, next) => {
             // If no user was found or there was an error
             } else {
                 // Send a suitable message to the error handler
-                next(err ? JSON.stringify(err) : 'User not found.');
+                next(err ? 'Database error.' : 'User not found.');
             }
         });
 
@@ -127,14 +127,14 @@ router.get('/profile/:id', (req, res, next) => {
                     res.render('profile', { profile, games, selfProfile, gamesPlayed, winRate });
                 // If there was an error send it to the error handler
                 } else {
-                    next(JSON.stringify(err));
+                    next('Database error.');
                 }
             });
 
         // If no user was found or there was an error
         } else {
             // Send a suitable message to the error handler
-            next(err ? JSON.stringify(err) : 'User not found.');
+            next(err ? 'Database error.' : 'User not found.');
         }
     });
 
@@ -171,7 +171,7 @@ router.get('/leaderboard', (req, res, next) => {
 
         // If there was an error send it to the error handler
         } else {
-            next(JSON.stringify(err));
+            next('Database error.');
         }
     });
 

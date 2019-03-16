@@ -50,7 +50,7 @@ const authentication = function (req, res, next) {
                 res.locals.authenticated = false;
 
                 // Call next middleware and send a suitable message
-                next(err ? JSON.stringify(err) : 'User not found.');
+                next(err ? 'Database error.' : 'User not found.');
 
             }
         });
