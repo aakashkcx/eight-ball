@@ -49,6 +49,9 @@ const authentication = function (req, res, next) {
                 // Set response local variable
                 res.locals.authenticated = false;
 
+                // Set session property
+                req.session.authenticated = true;
+
                 // Call next middleware and send a suitable message
                 next(err ? 'Database error.' : 'User not found.');
 
@@ -63,6 +66,9 @@ const authentication = function (req, res, next) {
 
         // Set response local variable
         res.locals.authenticated = false;
+
+        // Set session property
+        req.session.authenticated = true;
 
         // Call next middleware
         next();
