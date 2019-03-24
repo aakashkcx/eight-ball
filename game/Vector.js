@@ -22,7 +22,7 @@ Vector.prototype = {
     // Angle property
     get angle() {
         return Math.atan2(this.y, this.x);
-    },
+    }
 
 };
 

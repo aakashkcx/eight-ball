@@ -59,10 +59,6 @@ physics.collideCushions = function (ball, width, height) {
 // Resolve the collision between two balls
 physics.collideBalls = function (ball1, ball2) {
 
-    /**
-     * Trigonometry method
-     */
-
     // Check if the balls are about to collide
     if (physics.doBallsOverlap(ball1, ball2)) {
 
@@ -99,38 +95,6 @@ physics.collideBalls = function (ball1, ball2) {
         }
 
     }
-
-    /**
-     * Vector method
-     */
-
-    // if (physics.doBallsOverlap(ball1, ball2)) {
-
-    //     let x1 = Vector.subtract(ball1.position, ball2.position);
-    //     let x2 = Vector.subtract(ball2.position, ball1.position);
-    //     let v1 = Vector.subtract(ball1.velocity, ball2.velocity);
-    //     let v2 = Vector.subtract(ball2.velocity, ball1.velocity);
-
-    //     let v1Dotx1 = Vector.dot(v1, x1);
-    //     let v2Dotx2 = Vector.dot(v2, x2);
-
-    //     let x1LenSquare = x1.lengthSquared;
-    //     let x2LenSquare = x2.lengthSquared;
-
-    //     let frac1 = v1Dotx1 / x1LenSquare;
-    //     let frac2 = v2Dotx2 / x2LenSquare;
-
-    //     let v1Change = Vector.multiply(x1, frac1);
-    //     let v2Change = Vector.multiply(x2, frac2);
-
-    //     ball1.velocity.subtract(v1Change);
-    //     ball2.velocity.subtract(v2Change);
-
-    //     // Friction
-    //     ball1.velocity.multiply(1 - 5 * FRICTION);
-    //     ball2.velocity.multiply(1 - 5 * FRICTION);
-
-    // }
 
 };
 
