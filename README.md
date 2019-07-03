@@ -23,3 +23,13 @@ $ npm start
 ```
 
 The server will be running on [localhost:8080](http://localhost:8080/).
+
+## Images
+
+![Dashboard](https://imgur.com/jUVF5VM)
+
+![Game](https://imgur.com/TuLkajR)
+
+![Profile](https://imgur.com/Euju0cU)
+
+![Leaderboard](https://imgur.com/KSHzVNm)
