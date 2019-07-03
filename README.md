@@ -26,10 +26,18 @@ The server will be running on [localhost:8080](http://localhost:8080/).
 
 ## Images
 
+Dashboard:
+
 ![Dashboard](https://i.imgur.com/jUVF5VM.png)
+
+Game:
 
 ![Game](https://i.imgur.com/TuLkajR.png)
 
+Profile:
+
 ![Profile](https://i.imgur.com/Euju0cU.png)
+
+Leaderboard:
 
 ![Leaderboard](https://i.imgur.com/KSHzVNm.png)
