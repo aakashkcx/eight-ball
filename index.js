@@ -29,7 +29,7 @@ const PORT = process.env.PORT || 8080;
 app.set('port', PORT);
 
 // Set view engine
-app.engine('handlebars', expressHandlebars());
+app.engine('handlebars', expressHandlebars({defaultLayout: false}));
 app.set('view engine', 'handlebars');
 
 // Set static path
