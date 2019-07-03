@@ -31,14 +31,14 @@ _Account and game data will not be saved._
 
 ## Images
 
-Dashboard:\
+#### Dashboard:
 ![Dashboard](https://i.imgur.com/jUVF5VM.png)
 
-Game:\
+#### Game:
 ![Game](https://i.imgur.com/TuLkajR.png)
 
-Profile:\
+#### Profile:
 ![Profile](https://i.imgur.com/Euju0cU.png)
 
-Leaderboard:\
+#### Leaderboard:
 ![Leaderboard](https://i.imgur.com/KSHzVNm.png)
