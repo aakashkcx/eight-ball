@@ -24,20 +24,21 @@ $ npm start
 
 The server will be running on [localhost:8080](http://localhost:8080/).
 
+## Example
+
+The game can be played at [eight-ball--aakashkcx.repl.co](https://eight-ball--aakashkcx.repl.co).\
+_Account and game data will not be saved._
+
 ## Images
 
-Dashboard:
-
+Dashboard:\
 ![Dashboard](https://i.imgur.com/jUVF5VM.png)
 
-Game:
-
+Game:\
 ![Game](https://i.imgur.com/TuLkajR.png)
 
-Profile:
-
+Profile:\
 ![Profile](https://i.imgur.com/Euju0cU.png)
 
-Leaderboard:
-
+Leaderboard:\
 ![Leaderboard](https://i.imgur.com/KSHzVNm.png)
