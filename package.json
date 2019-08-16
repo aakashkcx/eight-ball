@@ -19,20 +19,20 @@
   },
   "homepage": "https://github.com/aakashkcx/eight-ball#readme",
   "dependencies": {
-    "bcryptjs": "*",
-    "chalk": "*",
-    "connect-flash": "*",
-    "connect-sqlite3": "*",
-    "express": "*",
-    "express-handlebars": "*",
-    "express-session": "*",
-    "morgan": "*",
-    "socket.io": "*",
-    "sqlite3": "*",
-    "validator": "*"
+    "bcryptjs": "^2.4.3",
+    "chalk": "^2.4.2",
+    "connect-flash": "^0.1.1",
+    "connect-sqlite3": "^0.9.11",
+    "express": "^4.17.1",
+    "express-handlebars": "^3.1.0",
+    "express-session": "^1.16.2",
+    "morgan": "^1.9.1",
+    "socket.io": "^2.2.0",
+    "sqlite3": "^4.0.9",
+    "validator": "^11.1.0"
   },
   "devDependencies": {
-    "eslint": "*",
-    "nodemon": "*"
+    "eslint": "^6.1.0",
+    "nodemon": "^1.19.1"
   }
 }
