@@ -25,14 +25,14 @@
     "connect-sqlite3": "^0.9.11",
     "express": "^4.17.1",
     "express-handlebars": "^3.1.0",
-    "express-session": "^1.16.2",
+    "express-session": "^1.17.0",
     "morgan": "^1.9.1",
-    "socket.io": "^2.2.0",
-    "sqlite3": "^4.0.9",
+    "socket.io": "^2.3.0",
+    "sqlite3": "^4.1.1",
     "validator": "^11.1.0"
   },
   "devDependencies": {
-    "eslint": "^6.1.0",
-    "nodemon": "^1.19.1"
+    "eslint": "^6.8.0",
+    "nodemon": "^1.19.4"
   }
 }
