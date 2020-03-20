@@ -17,7 +17,6 @@ const authentication = require('./authentication');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 
-
 // Initialise app
 const app = express();
 
@@ -29,7 +28,7 @@ const PORT = process.env.PORT || 8080;
 app.set('port', PORT);
 
 // Set view engine
-app.engine('handlebars', expressHandlebars({defaultLayout: false}));
+app.engine('handlebars', expressHandlebars({ defaultLayout: false }));
 app.set('view engine', 'handlebars');
 
 // Set static path
@@ -75,7 +74,6 @@ app.get('*', (req, res, next) => next('Page not found.'));
 
 // Error handler
 app.use((err, req, res, next) => res.render('error', { error: err }));
-
 
 // Start the server
 server.listen(PORT, () => {
