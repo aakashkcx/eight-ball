@@ -24,7 +24,7 @@
     "connect-flash": "^0.1.1",
     "connect-sqlite3": "^0.9.11",
     "express": "^4.17.1",
-    "express-handlebars": "^3.1.0",
+    "express-handlebars": "^5.3.1",
     "express-session": "^1.17.0",
     "morgan": "^1.9.1",
     "socket.io": "^2.3.0",
