@@ -23,7 +23,7 @@
     "chalk": "^2.4.2",
     "connect-flash": "^0.1.1",
     "connect-sqlite3": "^0.9.11",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "express-handlebars": "^3.1.0",
     "express-session": "^1.17.0",
     "morgan": "^1.9.1",
